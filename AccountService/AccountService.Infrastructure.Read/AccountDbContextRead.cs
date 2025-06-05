@@ -1,0 +1,41 @@
+﻿using AccountService.Domain.Entity;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AccountService.Infrastructure.Read
+{
+    public class AccountDbContextRead : DbContext
+    {
+        public AccountDbContextRead(DbContextOptions<AccountDbContextRead> options) : base(options)
+        {
+        }
+
+        public DbSet<Account> Accounts { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.ToTable("Account");
+                entity.HasKey(e => e.AccountId);
+                entity.Property(e => e.AccountId).ValueGeneratedOnAdd();
+                entity.Property(e => e.AccountUsername).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.AccountPassword).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.AccountEmail).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.AccountFullName).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.AccountDob).IsRequired(false);
+                entity.Property(e => e.AccountGender).IsRequired();
+                entity.Property(e => e.AccountPhone).HasMaxLength(15);
+                entity.Property(e => e.AccountPhone).IsRequired(false);
+                entity.Property(e => e.AccountImage).HasMaxLength(500);
+                entity.Property(e => e.AccountImage).IsRequired(false);
+                entity.Property(e => e.AccountRole).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.AccountStatus).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.AccountTicketRequest).HasDefaultValue(0);
+            });
+        }
+    }
+}
