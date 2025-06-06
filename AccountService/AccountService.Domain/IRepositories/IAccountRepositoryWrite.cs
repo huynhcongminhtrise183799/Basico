@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AccountService.Domain.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace AccountService.Domain.IRepositories
 {
     public interface IAccountRepositoryWrite
     {
-    }
+		Task AddAsync(Account account);
+		Task SaveChangesAsync();
+	}
 }
