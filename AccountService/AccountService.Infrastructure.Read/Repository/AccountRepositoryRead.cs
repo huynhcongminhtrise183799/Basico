@@ -1,4 +1,6 @@
-﻿using AccountService.Domain.IRepositories;
+﻿using AccountService.Domain.Entity;
+using AccountService.Domain.IRepositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +11,21 @@ namespace AccountService.Infrastructure.Read.Repository
 {
     public class AccountRepositoryRead : IAccountRepositoryRead
     {
+        private readonly AccountDbContextRead _context;
+        public AccountRepositoryRead(AccountDbContextRead context)
+        {
+            _context = context ;
+        }
+        public async Task<Account?> GetAccountByUserNameAndPassword(string username, string password)
+        {
+            return await _context.Accounts
+                .FirstOrDefaultAsync(a => a.AccountUsername == username && a.AccountPassword == password);
+        }
+
+        public async Task<Account?> GetAccountById(Guid accountId)
+        {
+            return await _context.Accounts
+                .FirstOrDefaultAsync(a => a.AccountId == accountId);
+        }
     }
 }
