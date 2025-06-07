@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace AccountService.Application.IService
 {
-    public interface ITokenService
-    {
-        string GenerateToken(Account account);
+	public interface ITokenService
+	{
+		string GenerateToken(Account account);
 
-    }
+	}
 }
