@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 
@@ -31,9 +32,11 @@ namespace AccountService.API.Configuration
 			var configuration = builder.Configuration;
 
 			// Đăng ký Service
+
+
+			// Đăng ký Repo
 			services.AddScoped<IAccountRepositoryRead, AccountRepositoryRead>();
 			services.AddScoped<IAccountRepositoryWrite, AccountRepositoryWrite>();
-			// Đăng ký Repo
 
 			// Đăng ký MediatR
 			services.AddMediatR(cfg =>
@@ -69,7 +72,7 @@ namespace AccountService.API.Configuration
 			builder.Services.AddMassTransit(x =>
 			{
 				x.AddConsumers(typeof(GoogleAccountCreatedConsumers).Assembly);
-
+				x.AddConsumer<AccountRegisteredEventConsumer>();
 				x.UsingRabbitMq((context, cfg) =>
 				{
 					cfg.Host("localhost", "/", h =>
@@ -86,7 +89,41 @@ namespace AccountService.API.Configuration
 			// Swagger and Controllers
 			services.AddControllers();
 			services.AddEndpointsApiExplorer();
-			services.AddSwaggerGen();
+
+			builder.Services.AddSwaggerGen(cfg =>
+			{
+				cfg.AddSecurityDefinition(
+					"Bearer",
+					new OpenApiSecurityScheme
+					{
+						Name = "Authorization",
+						Type = SecuritySchemeType.Http,
+						Scheme = "Bearer",
+						BearerFormat = "JWT",
+						In = ParameterLocation.Header,
+						Description =
+							"Register a user, then authenticate using the respective endpoint, and add the token in the following input."
+					}
+				);
+
+				cfg.AddSecurityRequirement(
+					new OpenApiSecurityRequirement
+					{
+			{
+				new OpenApiSecurityScheme
+				{
+					Reference = new OpenApiReference
+					{
+						Type = ReferenceType.SecurityScheme,
+						Id = "Bearer"
+					}
+				},
+				new string[] { }
+			}
+					}
+				);
+			});
+
 		}
 	}
 }
