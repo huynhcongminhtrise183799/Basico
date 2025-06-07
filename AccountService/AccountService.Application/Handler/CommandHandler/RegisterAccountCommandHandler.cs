@@ -10,16 +10,21 @@ using DryIoc.ImTools;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using MassTransit;
+using AccountService.Application.Event;
 
 namespace AccountService.Application.Handler.CommandHandler
 {
     public class RegisterAccountCommandHandler : IRequestHandler<RegisterAccountCommand, Guid>
     {
         private readonly IAccountRepositoryWrite _accountRepositoryWrite;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public RegisterAccountCommandHandler(IAccountRepositoryWrite accountRepositoryWrite)
+
+        public RegisterAccountCommandHandler(IAccountRepositoryWrite accountRepositoryWrite, IPublishEndpoint publishEndpoint)
         {
             _accountRepositoryWrite = accountRepositoryWrite;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<Guid> Handle(RegisterAccountCommand request, CancellationToken cancellationToken)
@@ -45,8 +50,22 @@ namespace AccountService.Application.Handler.CommandHandler
                 AccountStatus = Status.ACTIVE.ToString(),
                 AccountTicketRequest = 0
             };
-
             await _accountRepositoryWrite.AddAsync(account);
+
+            var accountRegisteredEvent = new AccountRegisteredEvent
+            {
+                AccountId = account.AccountId,
+                AccountUsername = account.AccountUsername,
+                AccountEmail = account.AccountEmail,
+                AccountFullName = account.AccountFullName,
+                AccountGender = account.AccountGender,
+                AccountRole = account.AccountRole,
+                AccountStatus = account.AccountStatus,
+                AccountTicketRequest = account.AccountTicketRequest,
+                AccountPassword = request.AccountPassword
+            };
+
+            await _publishEndpoint.Publish(accountRegisteredEvent, cancellationToken);
 
             return account.AccountId;
         }
