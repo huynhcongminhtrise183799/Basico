@@ -30,6 +30,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AccountService.Application\AccountService.Application.csproj" />
     <ProjectReference Include="..\AccountService.Infrastructure.Read\AccountService.Infrastructure.Read.csproj" />
     <ProjectReference Include="..\AccountService.Infrastructure.Write\AccountService.Infrastructure.Write.csproj" />
   </ItemGroup>
