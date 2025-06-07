@@ -9,6 +9,7 @@ using AccountService.Application.Handler.CommandHandler;
 using AccountService.Domain.IRepositories;
 using AccountService.Infrastructure.Write.Repository;
 using Microsoft.AspNetCore.Mvc;
+using AccountService.Application.Consumers;
 
 
 namespace AccountService.API
@@ -43,6 +44,7 @@ namespace AccountService.API
 
             builder.Services.AddMassTransit(x =>
             {
+                x.AddConsumer<AccountRegisteredEventConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host("localhost", "/", h =>
