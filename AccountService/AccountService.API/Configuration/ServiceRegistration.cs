@@ -1,5 +1,7 @@
 ﻿using AccountService.API.OptionSetup;
 using AccountService.Application.Commands;
+using AccountService.Application.Consumers;
+using AccountService.Application.Handler.CommandHandler;
 using AccountService.Application.Handler.QueryHandler;
 using AccountService.Application.IService;
 using AccountService.Domain.IRepositories;
@@ -8,11 +10,13 @@ using AccountService.Infrastructure.Read.Repository;
 using AccountService.Infrastructure.Write;
 using AccountService.Infrastructure.Write.Authentication;
 using AccountService.Infrastructure.Write.Repository;
+using Example;
 using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -36,7 +40,14 @@ namespace AccountService.API.Configuration
 			{
 				cfg.RegisterServicesFromAssembly(typeof(GoogleLoginCommand).Assembly);
 			});
+			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RegisterAccountCommandHandler>());
 
+
+			// Behavior Options
+			builder.Services.Configure<ApiBehaviorOptions>(options =>
+			{
+				options.SuppressModelStateInvalidFilter = true;
+			});
 
 			//JWT Options
 			services.Configure<JwtOption>(configuration.GetSection("JwtOption"));
@@ -55,8 +66,10 @@ namespace AccountService.API.Configuration
 				opt.UseNpgsql(configuration.GetConnectionString("Postgres")));
 
 			// MassTransit
-			services.AddMassTransit(x =>
+			builder.Services.AddMassTransit(x =>
 			{
+				x.AddConsumers(typeof(GoogleAccountCreatedConsumers).Assembly);
+
 				x.UsingRabbitMq((context, cfg) =>
 				{
 					cfg.Host("localhost", "/", h =>
@@ -65,9 +78,10 @@ namespace AccountService.API.Configuration
 						h.Password("guest");
 					});
 
-					cfg.ConfigureEndpoints(context);
+					cfg.ConfigureEndpoints(context); 
 				});
 			});
+
 
 			// Swagger and Controllers
 			services.AddControllers();

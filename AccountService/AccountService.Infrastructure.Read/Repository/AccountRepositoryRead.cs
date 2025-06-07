@@ -20,12 +20,9 @@ namespace AccountService.Infrastructure.Read.Repository
 
 		public async Task AddAsync(Account account)
 		{
-			await _context.Accounts.AddAsync(account);
-		}
-
-		public async Task SaveChangesAsync()
-		{
+			_context.Accounts.Add(account);
 			await _context.SaveChangesAsync();
 		}
+
 	}
 }

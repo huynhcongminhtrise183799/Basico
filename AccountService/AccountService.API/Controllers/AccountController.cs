@@ -9,37 +9,66 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.SqlServer.Server;
 using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
-[Route("api/[controller]")]
-[ApiController]
-public class AccountController : ControllerBase
-{
-	private readonly IMediator _mediator;
+namespace AccountService.API.Controllers{
 
-	public AccountController(IMediator mediator)
+	[Route("api/[controller]")]
+	[ApiController]
+	public class AccountController : ControllerBase
 	{
-		_mediator = mediator;
-	}
+		private readonly IMediator _mediator;
 
-
-	[HttpPost("signin-google")]
-	public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleLoginRequest request)
-	{
-		try
+		public AccountController(IMediator mediator)
 		{
-			var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken);
-
-			var email = payload.Email;
-			var name = payload.Name;
-
-			var command = new GoogleLoginCommand(email, name);
-			var response = await _mediator.Send(command);
-
-			return Ok(response);
+			_mediator = mediator;
 		}
-		catch (InvalidJwtException)
+
+
+		[HttpPost("signin-google")]
+		public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleLoginRequest request)
 		{
-			return BadRequest(new { message = "Invalid Google token" });
+			try
+			{
+				var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken);
+
+				var email = payload.Email;
+				var name = payload.Name;
+
+				var command = new GoogleLoginCommand(email, name);
+				var response = await _mediator.Send(command);
+
+				return Ok(response);
+			}
+			catch (InvalidJwtException)
+			{
+				return BadRequest(new { message = "Invalid Google token" });
+			}
+		}
+
+		[HttpPost("register")]
+		public async Task<IActionResult> Register([FromBody] RegisterAccountCommand command)
+		{
+			if (!ModelState.IsValid)
+			{
+				var firstError = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault();
+
+				return BadRequest(new { message = firstError });
+			}
+
+			try
+			{
+				var accountId = await _mediator.Send(command);
+				return Ok(new { AccountId = accountId });
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new { message = ex.Message });
+			}
+
 		}
 	}
 }

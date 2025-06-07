@@ -1,0 +1,38 @@
+﻿using AccountService.Application.Event;
+using AccountService.Domain.Entity;
+using AccountService.Domain.IRepositories;
+using MassTransit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AccountService.Application.Consumers
+{
+	public class GoogleAccountCreatedConsumers : IConsumer<GoogleAccountCreatedEvent>
+	{
+		private readonly IAccountRepositoryRead _repo;
+
+		public GoogleAccountCreatedConsumers(IAccountRepositoryRead repo)
+		{
+			_repo = repo;
+		}
+		public async Task Consume(ConsumeContext<GoogleAccountCreatedEvent> context)
+		{
+			var message = context.Message;
+			Account account = new Account
+			{
+				AccountId = message.AccountId,
+				AccountFullName = message.AccountFullName,
+				AccountUsername = message.AccountUsername,
+				AccountEmail = message.AccountEmail,
+				AccountPassword = "GOOGLE_LOGIN",
+				AccountRole = Role.USER.ToString(),
+				AccountStatus = Status.ACTIVE.ToString(),
+			};
+			await _repo.AddAsync(account);
+			Console.WriteLine("Save Postgres successfully");
+		}
+	}
+}

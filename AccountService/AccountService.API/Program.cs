@@ -1,5 +1,10 @@
 ﻿using AccountService.API.Configuration;
 
+using AccountService.Infrastructure.Read;
+using AccountService.Infrastructure.Write;
+using MassTransit;
+using Microsoft.EntityFrameworkCore;
+
 namespace AccountService.API
 {
 	public class Program

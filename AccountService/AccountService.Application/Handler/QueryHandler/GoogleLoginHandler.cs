@@ -1,9 +1,11 @@
 ﻿
 using AccountService.Application.Commands;
 using AccountService.Application.DTOs.Response;
+using AccountService.Application.Event;
 using AccountService.Application.IService;
 using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
+using MassTransit;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -18,12 +20,15 @@ namespace AccountService.Application.Handler.QueryHandler
 		private readonly IAccountRepositoryRead _readRepo;
 		private readonly IAccountRepositoryWrite _writeRepo;
 		private readonly ITokenService _tokenService;
+		private readonly IPublishEndpoint _publishEndpoint;
 
-		public GoogleLoginHandler(IAccountRepositoryRead readRepo, IAccountRepositoryWrite writeRepo, ITokenService tokenService)
+
+		public GoogleLoginHandler(IAccountRepositoryRead readRepo, IAccountRepositoryWrite writeRepo, ITokenService tokenService, IPublishEndpoint publishEndpoint)
 		{
 			_readRepo = readRepo;
 			_writeRepo = writeRepo;
 			_tokenService = tokenService;
+			_publishEndpoint = publishEndpoint;
 		}
 
 		public async Task<GoogleLoginResponse> Handle(GoogleLoginCommand request, CancellationToken cancellationToken)
@@ -43,21 +48,7 @@ namespace AccountService.Application.Handler.QueryHandler
 				};
 
 				await _writeRepo.AddAsync(account);
-				await _writeRepo.SaveChangesAsync();
-
-				var accountCopy = new Account
-				{
-					AccountId = account.AccountId,
-					AccountFullName = account.AccountFullName,
-					AccountUsername = account.AccountUsername,
-					AccountEmail = account.AccountEmail,
-					AccountPassword = account.AccountPassword,
-					AccountRole = account.AccountRole,
-					AccountStatus = account.AccountStatus,
-				};
-
-				await _readRepo.AddAsync(accountCopy);
-				await _readRepo.SaveChangesAsync();
+			    await _publishEndpoint.Publish(new GoogleAccountCreatedEvent(account.AccountId,account.AccountFullName, account.AccountUsername, account.AccountEmail, account.AccountPassword, account.AccountRole, account.AccountStatus));
 			}
 
 			var token = _tokenService.GenerateToken(account);

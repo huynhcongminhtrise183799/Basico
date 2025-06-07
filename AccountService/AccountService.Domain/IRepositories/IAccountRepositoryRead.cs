@@ -11,6 +11,5 @@ namespace AccountService.Domain.IRepositories
     {
 		Task<Account?> GetByEmailAsync(string email);
 		Task AddAsync(Account account);
-		Task SaveChangesAsync();
 	}
 }
