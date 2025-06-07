@@ -9,14 +9,20 @@ using System.Threading.Tasks;
 
 namespace AccountService.Infrastructure.Write.Repository
 {
-    public class AccountRepositoryWrite : IAccountRepositoryWrite
-    {
-        private readonly AccountDbContextWrite _context;
+	public class AccountRepositoryWrite : IAccountRepositoryWrite
+	{
+		private readonly AccountDbContextWrite _context;
 
-        public AccountRepositoryWrite(AccountDbContextWrite context)
-        {
-            _context = context;
-        }
+		public AccountRepositoryWrite(AccountDbContextWrite context)
+		{
+			_context = context;
+		}
+
+		public async Task SaveChangesAsync()
+		{
+			await _context.SaveChangesAsync();
+		}
+ 
 
         public async Task AddAsync(Account account)
         {

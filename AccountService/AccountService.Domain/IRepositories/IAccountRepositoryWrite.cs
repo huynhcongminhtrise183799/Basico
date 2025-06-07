@@ -13,7 +13,5 @@ namespace AccountService.Domain.IRepositories
         Task AddAsync(Account account);
         Task<bool> ExistsByUsernameAsync(string username);
         Task<bool> ExistsByEmailAsync(string email);
-
-
-    }
+	}
 }
