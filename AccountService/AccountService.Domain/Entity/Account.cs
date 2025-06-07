@@ -16,19 +16,19 @@ namespace AccountService.Domain.Entity
     }
     public class Account
     {
-        public Guid AccountId { get; set; }
+        public Guid AccountId { get; set; } //
 
         public string AccountUsername { get; set; }
 
         public string AccountPassword { get; set; }
 
-        public string AccountEmail { get; set; }
+        public string AccountEmail { get; set; } //
 
-        public string AccountFullName { get; set; }
+        public string AccountFullName { get; set; } //
 
         public DateOnly? AccountDob { get; set; }
 
-        public int AccountGender { get; set; }
+        public int AccountGender { get; set; } //
 
         public string? AccountPhone { get; set; }
 
@@ -38,6 +38,6 @@ namespace AccountService.Domain.Entity
 
         public string AccountStatus { get; set; }
 
-        public int AccountTicketRequest { get; set; }
+        public int AccountTicketRequest { get; set; } // 
     }
 }

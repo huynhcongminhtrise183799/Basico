@@ -10,5 +10,6 @@ namespace AccountService.Application.IService
 	public interface ITokenService
 	{
 		string GenerateToken(Account account);
+
 	}
 }

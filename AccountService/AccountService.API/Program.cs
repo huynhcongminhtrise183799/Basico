@@ -1,9 +1,19 @@
 ﻿using AccountService.API.Configuration;
 
+using AccountService.API.OptionsSetup;
+using AccountService.Application.Handler.CommandHandler;
+using AccountService.Application.Handler.QueryHandler;
+using AccountService.Application.IService;
+using AccountService.Domain.IRepositories;
 using AccountService.Infrastructure.Read;
+using AccountService.Infrastructure.Read.Repository;
 using AccountService.Infrastructure.Write;
+using AccountService.Infrastructure.Write.Authenticate;
+using AccountService.Infrastructure.Write.Repository;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace AccountService.API
 {

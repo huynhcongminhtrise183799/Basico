@@ -62,7 +62,7 @@ namespace AccountService.Application.Handler.CommandHandler
                 AccountRole = account.AccountRole,
                 AccountStatus = account.AccountStatus,
                 AccountTicketRequest = account.AccountTicketRequest,
-                AccountPassword = request.AccountPassword
+                AccountPassword = account.AccountPassword
             };
 
             await _publishEndpoint.Publish(accountRegisteredEvent, cancellationToken);

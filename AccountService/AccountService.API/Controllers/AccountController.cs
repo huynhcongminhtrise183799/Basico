@@ -1,5 +1,6 @@
 ﻿using AccountService.Application.Commands;
 using AccountService.Application.DTOs.Request;
+using AccountService.Application.Queries;
 using Google.Apis.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -70,5 +71,45 @@ namespace AccountService.API.Controllers{
 			}
 
 		}
-	}
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+           var command = new LoginUserCommand(request.UserName, request.Password);
+           var result = await _mediator.Send(command);
+            if (result == null)
+            {
+                return BadRequest(new
+                {
+                    message = "Invalid username or password."
+                });
+            }
+            return Ok(new { Token = result });
+        }
+
+        [HttpGet]
+        [Route("profile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            var accountId = User.FindFirstValue(ClaimTypes.Sid);
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return Unauthorized(new
+                {
+                    message = "Unauthorized access. Please log in to view your profile."
+                });
+            }
+            var query = new ProfileQuery(Guid.Parse(accountId));
+            var result = await _mediator.Send(query);
+            if (result == null)
+            {
+                return BadRequest(new
+				{
+                    message = "Profile not found."
+                });
+            }
+            return Ok(result);
+        }
+    }
 }

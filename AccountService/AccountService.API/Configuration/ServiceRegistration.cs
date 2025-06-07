@@ -1,4 +1,5 @@
-﻿using AccountService.API.OptionSetup;
+﻿
+using AccountService.API.OptionsSetup;
 using AccountService.Application.Commands;
 using AccountService.Application.Consumers;
 using AccountService.Application.Handler.CommandHandler;
@@ -8,7 +9,7 @@ using AccountService.Domain.IRepositories;
 using AccountService.Infrastructure.Read;
 using AccountService.Infrastructure.Read.Repository;
 using AccountService.Infrastructure.Write;
-using AccountService.Infrastructure.Write.Authentication;
+using AccountService.Infrastructure.Write.Authenticate;
 using AccountService.Infrastructure.Write.Repository;
 using Example;
 using MassTransit;
@@ -42,7 +43,10 @@ namespace AccountService.API.Configuration
 			services.AddMediatR(cfg =>
 			{
 				cfg.RegisterServicesFromAssembly(typeof(GoogleLoginCommand).Assembly);
-			});
+                cfg.RegisterServicesFromAssembly(typeof(LoginUserCommandHandler).Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(ProfileQueryHandler).Assembly);
+
+            });
 			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RegisterAccountCommandHandler>());
 
 
@@ -52,14 +56,14 @@ namespace AccountService.API.Configuration
 				options.SuppressModelStateInvalidFilter = true;
 			});
 
-			//JWT Options
-			services.Configure<JwtOption>(configuration.GetSection("JwtOption"));
-			builder.Services.ConfigureOptions<JwtOptionsSetUp>();
-			builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
-			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+            //JWT Options
+            builder.Services.ConfigureOptions<JwtOptionsSetup>();
+            builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
-			// Token
-			services.AddScoped<ITokenService, JwtTokenService>();
+
+            // Token
+            services.AddScoped<ITokenService, TokenService>();
 
 			// DB
 			services.AddDbContext<AccountDbContextWrite>(opt =>
