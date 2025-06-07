@@ -24,6 +24,37 @@
       ],
       "UpstreamPathTemplate": "/api/profile",
       "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/Account/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/register",
+      "UpstreamHttpMethod": [ "POST" ],
+      "SwaggerKey": "accounts"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Account/signin-google",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/signin-google",
+      "UpstreamHttpMethod": [ "Post" ],
       "SwaggerKey": "accounts"
     }
   ],
