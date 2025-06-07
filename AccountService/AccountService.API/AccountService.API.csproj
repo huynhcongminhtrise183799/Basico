@@ -10,6 +10,7 @@
 
 
 	<ItemGroup>
+		<PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
 		<PackageReference Include="MassTransit" Version="8.4.1" />
 		<PackageReference Include="MassTransit.RabbitMQ" Version="8.4.1" />
 		<PackageReference Include="MediatR" Version="12.5.0" />
@@ -31,6 +32,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AccountService.Application\AccountService.Application.csproj" />
     <ProjectReference Include="..\AccountService.Infrastructure.Read\AccountService.Infrastructure.Read.csproj" />
     <ProjectReference Include="..\AccountService.Infrastructure.Write\AccountService.Infrastructure.Write.csproj" />
   </ItemGroup>
