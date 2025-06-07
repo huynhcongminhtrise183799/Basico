@@ -24,6 +24,10 @@ namespace AccountService.Application.Handler.CommandHandler
         public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
            var account = await _accountRepository.GetAccountByUserName(request.username);
+            if (account == null)
+            {
+                return null;
+            }
             PasswordHasher<string> passwordHasher = new PasswordHasher<string>();
 
             var passwordVerificationResult = passwordHasher.VerifyHashedPassword(null, account.AccountPassword, request.password);
@@ -31,10 +35,7 @@ namespace AccountService.Application.Handler.CommandHandler
             {
                 return null; // Invalid credentials
             }
-            if (account == null)
-            {
-                return null;
-            }
+            
 
             // Generate JWT token
             var token = _tokenService.GenerateToken(account);
