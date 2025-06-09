@@ -15,6 +15,15 @@ namespace AccountService.Infrastructure.Write
         }
 
         public DbSet<Account> Accounts { get; set; }
+
+        public DbSet<ForgotPassword> ForgotPasswords { get; set; }
+
+        public DbSet<Service> Services { get; set; }
+
+        public DbSet<LawyerSpecificService> LawyerSpecificServices { get; set; }
+
+       
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            modelBuilder.Entity<Account>(entity =>
@@ -35,6 +44,46 @@ namespace AccountService.Infrastructure.Write
                 entity.Property(e => e.AccountRole).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.AccountStatus).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.AccountTicketRequest).HasDefaultValue(0);
+                entity.Property(e => e.AboutLawyer).IsRequired(false);
+            });
+
+            modelBuilder.Entity<ForgotPassword>(entity =>
+            {
+                entity.ToTable("ForgotPassword");
+                entity.HasKey(e => e.ForgotPasswordId);
+                entity.Property(e => e.ForgotPasswordId).ValueGeneratedOnAdd();
+                entity.Property(e => e.OTP).IsRequired().HasMaxLength(6);
+                entity.Property(e => e.ExpirationDate).IsRequired();
+                entity.HasOne(e => e.Account)
+                      .WithMany(a => a.ForgotPasswords)
+                      .HasForeignKey(e => e.AccountId)
+                      .HasConstraintName("FK_ForgotPassword_Account");
+            });
+
+            modelBuilder.Entity<Service>(entity =>
+            {
+                entity.ToTable("Service");
+                entity.HasKey(e => e.ServiceId);
+                entity.Property(e => e.ServiceId).ValueGeneratedOnAdd();
+                entity.Property(e => e.ServiceName).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.ServiceDescription).IsRequired();
+            });
+
+            modelBuilder.Entity<LawyerSpecificService>(entity =>
+            {
+                entity.ToTable("LawyerSpecificService");
+
+                entity.HasKey(e => new { e.LawyerId, e.ServiceId });
+
+                entity.HasOne(e => e.Account)
+                      .WithMany(a => a.LawyerSpecificServices)
+                      .HasForeignKey(e => e.LawyerId)
+                      .HasConstraintName("FK_LawyerSpecificService_Account");
+
+                entity.HasOne(e => e.Service)
+                      .WithMany(s => s.LawyerSpecificServices)
+                      .HasForeignKey(e => e.ServiceId)
+                      .HasConstraintName("FK_LawyerSpecificService_Service");
             });
         }
 
