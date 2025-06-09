@@ -28,6 +28,9 @@ namespace AccountService.Infrastructure.Read.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("AboutLawyer")
+                        .HasColumnType("text");
+
                     b.Property<DateOnly?>("AccountDob")
                         .HasColumnType("date");
 
@@ -80,6 +83,113 @@ namespace AccountService.Infrastructure.Read.Migrations
                     b.HasKey("AccountId");
 
                     b.ToTable("Account", (string)null);
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.ForgotPassword", b =>
+                {
+                    b.Property<Guid>("ForgotPasswordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("OTP")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)");
+
+                    b.HasKey("ForgotPasswordId");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("ForgotPassword", (string)null);
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.LawyerSpecificService", b =>
+                {
+                    b.Property<Guid>("LawyerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("PricePerHour")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("LawyerId", "ServiceId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("LawyerSpecificService", (string)null);
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.Service", b =>
+                {
+                    b.Property<Guid>("ServiceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ServiceDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ServiceName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("ServiceId");
+
+                    b.ToTable("Service", (string)null);
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.ForgotPassword", b =>
+                {
+                    b.HasOne("AccountService.Domain.Entity.Account", "Account")
+                        .WithMany("ForgotPasswords")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_ForgotPassword_Account");
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.LawyerSpecificService", b =>
+                {
+                    b.HasOne("AccountService.Domain.Entity.Account", "Account")
+                        .WithMany("LawyerSpecificServices")
+                        .HasForeignKey("LawyerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_LawyerSpecificService_Account");
+
+                    b.HasOne("AccountService.Domain.Entity.Service", "Service")
+                        .WithMany("LawyerSpecificServices")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_LawyerSpecificService_Service");
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.Account", b =>
+                {
+                    b.Navigation("ForgotPasswords");
+
+                    b.Navigation("LawyerSpecificServices");
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.Service", b =>
+                {
+                    b.Navigation("LawyerSpecificServices");
                 });
 #pragma warning restore 612, 618
         }
