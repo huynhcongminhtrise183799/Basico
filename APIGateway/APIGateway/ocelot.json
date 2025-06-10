@@ -159,6 +159,110 @@
       "UpstreamPathTemplate": "/api/template",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "templates"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ticket-package",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ticket-package",
+      "UpstreamHttpMethod": [ "POST" ],
+      "SwaggerKey": "ticket-package",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/ticket-packages",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ticket-packages",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "ticket-package"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ticket-package-active",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ticket-package-active",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "ticket-package"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ticket-package/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ticket-package/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "ticket-package"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ticket-package",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ticket-package",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "ticket-package"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ticket-package/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ticket-package/{id}",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "SwaggerKey": "ticket-package",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/ticket-package/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ticket-package/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "SwaggerKey": "ticket-package",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     }
   ],
   "SwaggerEndPoints": [
@@ -179,6 +283,16 @@
           "Name": "Templates API",
           "Version": "v1",
           "Url": "http://localhost:5257/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "ticket-package",
+      "Config": [
+        {
+          "Name": "Ticket Package API",
+          "Version": "v1",
+          "Url": "http://localhost:5107/swagger/v1/swagger.json"
         }
       ]
     }

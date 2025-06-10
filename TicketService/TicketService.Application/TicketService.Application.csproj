@@ -11,10 +11,6 @@
 
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Handler\CommandHandler\" />
-	  <Folder Include="Handler\QueryHandler\" />
-	  <Folder Include="Event\" />
-	  <Folder Include="Consumer\" />
-	  <Folder Include="Queries\" />
+	  <ProjectReference Include="..\TicketService.Domain\TicketService.Domain.csproj" />
 	</ItemGroup>
 </Project>

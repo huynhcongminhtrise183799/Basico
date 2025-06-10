@@ -25,7 +25,7 @@ namespace TicketService.Infrastructure.Read.Repository
 
         public Task DeleteAsync(Guid ticketPackageId)
         {
-           var ticketPackage = _context.TicketPackages.Find(ticketPackageId);
+            var ticketPackage = _context.TicketPackages.Find(ticketPackageId);
             if (ticketPackage != null)
             {
                 ticketPackage.Status = Status.INACTIVE.ToString(); // Soft delete

@@ -7,6 +7,7 @@ using FormService.Infrastructure.Read.Repository;
 using FormService.Infrastructure.Write;
 using FormService.Infrastructure.Write.Repository;
 using MassTransit;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -27,7 +28,10 @@ namespace FormService.API
             {
                 c.EnableAnnotations();
             });
-
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblyContaining<CreateFormTemplateCommandHandler>()
                 );
