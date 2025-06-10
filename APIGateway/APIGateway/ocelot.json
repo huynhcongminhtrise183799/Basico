@@ -56,6 +56,109 @@
       "UpstreamPathTemplate": "/api/signin-google",
       "UpstreamHttpMethod": [ "Post" ],
       "SwaggerKey": "accounts"
+    },
+    {
+      "DownstreamPathTemplate": "/api/template",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5257
+        }
+      ],
+      "UpstreamPathTemplate": "/api/template",
+      "UpstreamHttpMethod": [ "POST" ],
+      "SwaggerKey": "templates",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/templates",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5257
+        }
+      ],
+      "UpstreamPathTemplate": "/api/templates",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "templates"
+    },
+    {
+      "DownstreamPathTemplate": "/api/templates-active",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5257
+        }
+      ],
+      "UpstreamPathTemplate": "/api/templates-active",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "templates"
+    },
+    {
+      "DownstreamPathTemplate": "/api/template/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5257
+        }
+      ],
+      "UpstreamPathTemplate": "/api/template/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "templates"
+    },
+    {
+      "DownstreamPathTemplate": "/api/template/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5257
+        }
+      ],
+      "UpstreamPathTemplate": "/api/template/{id}",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "SwaggerKey": "templates",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/template/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5257
+        }
+      ],
+      "UpstreamPathTemplate": "/api/template/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "SwaggerKey": "templates",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/template",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5257
+        }
+      ],
+      "UpstreamPathTemplate": "/api/template",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "templates"
     }
   ],
   "SwaggerEndPoints": [
@@ -66,6 +169,16 @@
           "Name": "Accounts API",
           "Version": "v1",
           "Url": "http://localhost:5073/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "templates",
+      "Config": [
+        {
+          "Name": "Templates API",
+          "Version": "v1",
+          "Url": "http://localhost:5257/swagger/v1/swagger.json"
         }
       ]
     }
