@@ -1,7 +1,7 @@
-﻿
-using AccountService.Application.Commands;
+﻿using AccountService.Application.Commands.AccountCommands;
 using AccountService.Application.DTOs.Response;
 using AccountService.Application.Event;
+using AccountService.Application.Event.AccountEvent;
 using AccountService.Application.IService;
 using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AccountService.Application.Handler.QueryHandler
+namespace AccountService.Application.Handler.CommandHandler.AccountHandler
 {
 	public class GoogleLoginHandler : IRequestHandler<GoogleLoginCommand, GoogleLoginResponse>
 	{

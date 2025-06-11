@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AccountService.Application.Event
+namespace AccountService.Application.Event.AccountEvent
 {
     public class AccountRegisteredEvent
     {

@@ -1,4 +1,4 @@
-﻿using AccountService.Application.Commands;
+﻿using AccountService.Application.Commands.AccountCommands;
 using AccountService.Application.IService;
 using AccountService.Domain.IRepositories;
 using MediatR;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AccountService.Application.Handler.CommandHandler
+namespace AccountService.Application.Handler.CommandHandler.AccountHandler
 {
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
     {

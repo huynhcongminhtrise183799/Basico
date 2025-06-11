@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using AccountService.Application.Commands;
 using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
 using System;
@@ -12,8 +11,10 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using MassTransit;
 using AccountService.Application.Event;
+using AccountService.Application.Commands.AccountCommands;
+using AccountService.Application.Event.AccountEvent;
 
-namespace AccountService.Application.Handler.CommandHandler
+namespace AccountService.Application.Handler.CommandHandler.AccountHandler
 {
     public class RegisterAccountCommandHandler : IRequestHandler<RegisterAccountCommand, Guid>
     {

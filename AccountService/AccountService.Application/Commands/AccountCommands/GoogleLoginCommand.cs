@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AccountService.Application.DTOs.Response;
 using MediatR;
 
-namespace AccountService.Application.Commands
+namespace AccountService.Application.Commands.AccountCommands
 {
 	public record GoogleLoginCommand(string Email, string FullName) : IRequest<GoogleLoginResponse>;
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AccountService.Application.Queries
+namespace AccountService.Application.Queries.AccountQuery
 {
 
     public record ProfileQuery(Guid accountId) : IRequest<ProfileResponse>;

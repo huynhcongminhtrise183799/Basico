@@ -1,6 +1,8 @@
 ﻿using AccountService.Application.Commands;
+using AccountService.Application.Commands.AccountCommands;
 using AccountService.Application.DTOs.Request;
 using AccountService.Application.Queries;
+using AccountService.Application.Queries.AccountQuery;
 using Google.Apis.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -111,5 +113,30 @@ namespace AccountService.API.Controllers{
             }
             return Ok(result);
         }
-    }
+
+
+		[HttpPut]
+		[Route("profile/update")]
+		public async Task<IActionResult> UpdateProfile([FromBody] ProfileUpdateRequest request)
+		{
+			var accountId = User.FindFirstValue(ClaimTypes.Sid);
+			if (string.IsNullOrEmpty(accountId))
+			{
+				return Unauthorized(new
+				{
+					message = "Unauthorized access. Please log in to update your profile."
+				});
+			}
+
+			var command = new UpdateProfileCommand(Guid.Parse(accountId), request.FullName, request.Gender);
+			var result = await _mediator.Send(command);
+
+			if (!result)
+			{
+				return BadRequest(new { message = "Profile update failed." });
+			}
+
+			return Ok(new { message = "Profile updated successfully." });
+		}
+	}
 }

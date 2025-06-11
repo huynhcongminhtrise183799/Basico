@@ -1,5 +1,5 @@
 ﻿using AccountService.Application.DTOs.Response;
-using AccountService.Application.Queries;
+using AccountService.Application.Queries.AccountQuery;
 using AccountService.Domain.IRepositories;
 using MediatR;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AccountService.Application.Handler.QueryHandler
+namespace AccountService.Application.Handler.QueryHandler.AccountQueryHandler
 {
     public class ProfileQueryHandler : IRequestHandler<ProfileQuery, ProfileResponse>
     {

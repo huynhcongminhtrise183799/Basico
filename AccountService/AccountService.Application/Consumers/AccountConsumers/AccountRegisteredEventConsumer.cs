@@ -1,4 +1,4 @@
-﻿using AccountService.Application.Event;
+﻿using AccountService.Application.Event.AccountEvent;
 using AccountService.Domain.Entity;
 using AccountService.Infrastructure.Read;
 using MassTransit;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AccountService.Application.Consumers
+namespace AccountService.Application.Consumers.AccountConsumers
 {
     public class AccountRegisteredEventConsumer : IConsumer<AccountRegisteredEvent>
     {

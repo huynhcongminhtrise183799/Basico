@@ -1,9 +1,12 @@
 ﻿
 using AccountService.API.OptionsSetup;
-using AccountService.Application.Commands;
-using AccountService.Application.Consumers;
-using AccountService.Application.Handler.CommandHandler;
-using AccountService.Application.Handler.QueryHandler;
+using AccountService.Application.Commands.AccountCommands;
+using AccountService.Application.Consumers.AccountConsumers;
+using AccountService.Application.Consumers.StaffConsumers;
+using AccountService.Application.Handler.CommandHandler.AccountHandler;
+using AccountService.Application.Handler.CommandHandler.StaffHandler;
+using AccountService.Application.Handler.QueryHandler.AccountQueryHandler;
+using AccountService.Application.Handler.QueryHandler.StaffQueryHandler;
 using AccountService.Application.IService;
 using AccountService.Domain.IRepositories;
 using AccountService.Infrastructure.Read;
@@ -45,8 +48,14 @@ namespace AccountService.API.Configuration
 				cfg.RegisterServicesFromAssembly(typeof(GoogleLoginCommand).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(LoginUserCommandHandler).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(ProfileQueryHandler).Assembly);
-
-            });
+				cfg.RegisterServicesFromAssembly(typeof(UpdateProfileCommand).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreateStaffCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(UpdateStaffCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(DeleteStaffCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllStaffQueryHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetStaffByIdQueryHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllActiveStaffQueryHandler).Assembly);
+			});
 			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RegisterAccountCommandHandler>());
 
 
@@ -77,6 +86,10 @@ namespace AccountService.API.Configuration
 			{
 				x.AddConsumers(typeof(GoogleAccountCreatedConsumers).Assembly);
 				x.AddConsumer<AccountRegisteredEventConsumer>();
+				x.AddConsumer<UpdateProfileEventConsumer>();
+				x.AddConsumer<StaffCreatedEventConsumers>();
+				x.AddConsumer<StaffUpdatedEventConsumer>();
+				x.AddConsumer<StaffDeletedEventConsumer>();
 				x.UsingRabbitMq((context, cfg) =>
 				{
 					cfg.Host("localhost", "/", h =>

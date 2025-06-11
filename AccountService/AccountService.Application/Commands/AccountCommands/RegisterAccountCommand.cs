@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AccountService.Application.Commands
+namespace AccountService.Application.Commands.AccountCommands
 {
     public class RegisterAccountCommand : IRequest<Guid>
     {

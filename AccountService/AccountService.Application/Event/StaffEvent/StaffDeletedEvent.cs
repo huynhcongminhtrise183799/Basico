@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AccountService.Application.Handler.QueryHandler
+namespace AccountService.Application.Event.StaffEvent
 {
-    internal class Class1
-    {
-    }
+	public record StaffDeletedEvent(Guid StaffId);
+
 }
