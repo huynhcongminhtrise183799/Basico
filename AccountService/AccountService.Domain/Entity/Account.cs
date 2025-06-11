@@ -39,5 +39,11 @@ namespace AccountService.Domain.Entity
         public string AccountStatus { get; set; }
 
         public int AccountTicketRequest { get; set; } // 
+
+        public string? AboutLawyer { get; set; }
+
+        public virtual ICollection<ForgotPassword> ForgotPasswords { get; set; } = new List<ForgotPassword>();
+
+        public virtual ICollection<LawyerSpecificService> LawyerSpecificServices { get; set; } = new List<LawyerSpecificService>();
     }
 }
