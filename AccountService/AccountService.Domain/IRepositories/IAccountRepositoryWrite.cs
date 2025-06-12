@@ -24,5 +24,12 @@ namespace AccountService.Domain.IRepositories
 		Task<bool> UpdateStaff(Account staff);
 		Task<bool> DeleteStaff(Guid staffId);
 		Task<Account?> GetStaffById(Guid staffId);
+
+		// Forgot password
+		Task<Account?> FindByEmailAsync(string email);
+		Task<ForgotPassword> SaveOtpAsync(Guid accountId, string otp, DateTime expirationDate);
+		Task<bool> VerifyOtpAsync(string email, string otp);
+		Task<bool> ResetPasswordAsync(string email, string newPassword);
+		Task<Guid?> GetAccountIdIfOtpValidAsync(string email, string otp);
 	}
 }

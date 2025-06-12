@@ -8,11 +8,15 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SqlServer.Server;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ForgotPasswordRequest = AccountService.Application.DTOs.Request.ForgotPasswordRequest;
+using LoginRequest = AccountService.Application.DTOs.Request.LoginRequest;
+using ResetPasswordRequest = AccountService.Application.DTOs.Request.ResetPasswordRequest;
 
 namespace AccountService.API.Controllers{
 

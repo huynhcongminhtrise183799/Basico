@@ -27,5 +27,9 @@ namespace AccountService.Domain.IRepositories
 		Task<IEnumerable<Account>> GetAllStaff();
 		Task<Account?> GetStaffById(Guid staffId);
 		Task<IEnumerable<Account>> GetAllActiveStaff();
+
+		// Fotgot password
+		Task SaveOtpAsync(Guid accountId, string otp, DateTime expirationDate, Guid forgotpasswordId);
+
 	}
 }

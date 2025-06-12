@@ -4,15 +4,18 @@ using AccountService.Application.Commands.AccountCommands;
 using AccountService.Application.Consumers.AccountConsumers;
 using AccountService.Application.Consumers.StaffConsumers;
 using AccountService.Application.Handler.CommandHandler.AccountHandler;
+using AccountService.Application.Handler.CommandHandler.ForgotPasswordCommandHandler;
 using AccountService.Application.Handler.CommandHandler.StaffHandler;
 using AccountService.Application.Handler.QueryHandler.AccountQueryHandler;
 using AccountService.Application.Handler.QueryHandler.StaffQueryHandler;
 using AccountService.Application.IService;
+using AccountService.Application.Settings;
 using AccountService.Domain.IRepositories;
 using AccountService.Infrastructure.Read;
 using AccountService.Infrastructure.Read.Repository;
 using AccountService.Infrastructure.Write;
 using AccountService.Infrastructure.Write.Authenticate;
+using AccountService.Infrastructure.Write.Email;
 using AccountService.Infrastructure.Write.Repository;
 using Example;
 using MassTransit;
@@ -36,6 +39,7 @@ namespace AccountService.API.Configuration
 			var configuration = builder.Configuration;
 
 			// Đăng ký Service
+			services.AddScoped<IEmailService, EmailService>();
 
 
 			// Đăng ký Repo
@@ -55,6 +59,9 @@ namespace AccountService.API.Configuration
 				cfg.RegisterServicesFromAssembly(typeof(GetAllStaffQueryHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetStaffByIdQueryHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetAllActiveStaffQueryHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(ResetPasswordCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(VerifyOtpCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(ForgotPasswordCommandHandler).Assembly);
 			});
 			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RegisterAccountCommandHandler>());
 
@@ -70,9 +77,11 @@ namespace AccountService.API.Configuration
             builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
+			// Bộ nhớ tạm thời
+			builder.Services.AddMemoryCache();
 
-            // Token
-            services.AddScoped<ITokenService, TokenService>();
+			// Token
+			services.AddScoped<ITokenService, TokenService>();
 
 			// DB
 			services.AddDbContext<AccountDbContextWrite>(opt =>
@@ -80,6 +89,12 @@ namespace AccountService.API.Configuration
 
 			services.AddDbContext<AccountDbContextRead>(opt =>
 				opt.UseNpgsql(configuration.GetConnectionString("Postgres")));
+
+			// Cấu hình Email
+
+			services.Configure<EmailSettings>
+				(builder.Configuration.GetSection("EmailSettings"));
+
 
 			// MassTransit
 			builder.Services.AddMassTransit(x =>

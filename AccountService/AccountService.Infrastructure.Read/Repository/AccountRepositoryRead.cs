@@ -109,5 +109,20 @@ namespace AccountService.Infrastructure.Read.Repository
 				.ToListAsync();
 		}
 
+		// Forgot password
+		public async Task SaveOtpAsync(Guid accountId, string otp, DateTime expiredAt, Guid forgetPasswordId)
+		{
+			var entity = new ForgotPassword
+			{
+				ForgotPasswordId = forgetPasswordId,
+				AccountId = accountId,
+				OTP = otp,
+				ExpirationDate = expiredAt
+			};
+
+			_context.ForgotPasswords.Add(entity);
+			await _context.SaveChangesAsync();
+		}
+
 	}
 }

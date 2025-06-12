@@ -1,5 +1,6 @@
 ﻿using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -86,10 +87,80 @@ namespace AccountService.Infrastructure.Write.Repository
 			return true;
 		}
 
-
 		public async Task<Account?> GetStaffById(Guid staffId)
 		{
 			return await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == staffId && a.AccountRole == "STAFF");
+		}
+
+		// Forgot password methods
+
+		public async Task<Account?> FindByEmailAsync(string email)
+		{
+			return await _context.Accounts.FirstOrDefaultAsync(a => a.AccountEmail == email);
+		}
+
+		public async Task<ForgotPassword> SaveOtpAsync(Guid accountId, string otp, DateTime expiredAt)
+		{
+			var entity = new ForgotPassword
+			{
+				ForgotPasswordId = Guid.NewGuid(),
+				AccountId = accountId,
+				OTP = otp,
+				ExpirationDate = expiredAt
+			};
+
+			_context.ForgotPasswords.Add(entity);
+			await _context.SaveChangesAsync();
+			return entity;
+		}
+
+		public async Task<bool> VerifyOtpAsync(string email, string otp)
+		{
+			var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountEmail == email);
+			if (account == null) return false;
+
+			var forgetPassword = await _context.ForgotPasswords
+				.Where(f => f.AccountId == account.AccountId && f.OTP == otp)
+				.OrderByDescending(f => f.ExpirationDate)
+				.FirstOrDefaultAsync();
+
+			if (forgetPassword == null || forgetPassword.ExpirationDate < DateTime.UtcNow)
+				return false;
+
+			return true;
+		}
+
+
+		public async Task<bool> ResetPasswordAsync(string email, string hashedPassword)
+		{
+			var account = await _context.Accounts
+				.FirstOrDefaultAsync(a => a.AccountEmail == email);
+
+			if (account == null) return false;
+
+			account.AccountPassword = hashedPassword; // mật khẩu đã được hash từ handler
+			await _context.SaveChangesAsync();
+
+			return true;
+		}
+
+		public async Task<Guid?> GetAccountIdIfOtpValidAsync(string email, string otp)
+		{
+			var now = DateTime.UtcNow.AddHours(7); // hoặc giữ UTC nếu hệ thống thống nhất
+
+			var result = await _context.Accounts
+				.Where(a => a.AccountEmail == email)
+				.Join(
+					_context.ForgotPasswords,
+					account => account.AccountId,
+					fp => fp.AccountId,
+					(account, fp) => new { account.AccountId, fp.OTP, fp.ExpirationDate }
+				)
+				.Where(x => x.OTP == otp && x.ExpirationDate > now)
+				.OrderByDescending(x => x.ExpirationDate)
+				.FirstOrDefaultAsync();
+
+			return result?.AccountId;
 		}
 	}
 }
