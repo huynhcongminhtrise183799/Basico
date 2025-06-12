@@ -6,7 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Cqrs" Version="5.2.3.70" />
 		<PackageReference Include="MediatR" Version="12.5.0" />
 
 	</ItemGroup>

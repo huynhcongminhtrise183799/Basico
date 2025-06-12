@@ -11,11 +11,17 @@ namespace AccountService.Application.Consumers
     public class LawyerCreatedEventConsumer : IConsumer<LawyerCreatedEvent>
     {
         private readonly IAccountRepositoryRead _accountRepository;
+        private readonly ILawyerSpecificServiceRepositoryRead _lawyerSpecificServiceRepository;
+
 
         // Fix for CS1520: Add return type 'void' to the constructor
         // Fix for IDE0290: Use primary constructor syntax
-        public LawyerCreatedEventConsumer(IAccountRepositoryRead accountRepository) => _accountRepository = accountRepository;
+        public LawyerCreatedEventConsumer(IAccountRepositoryRead accountRepository, ILawyerSpecificServiceRepositoryRead lawyerSpecificServiceRepositoryRead )
+        {
+            _accountRepository = accountRepository;
+            _lawyerSpecificServiceRepository = lawyerSpecificServiceRepositoryRead;
 
+        }
         public async Task Consume(ConsumeContext<LawyerCreatedEvent> context)
         {
             var e = context.Message;
@@ -37,7 +43,16 @@ namespace AccountService.Application.Consumers
                 AccountTicketRequest = 0
             };
 
+            var lawyerSpecificServices = e.ServiceForLawyerDTOs.Select(service => new LawyerSpecificService
+            {
+                LawyerId = e.AccountId,
+                ServiceId = service.ServiceId,
+                PricePerHour = service.PricePerHour
+            }).ToList();
+
+
             await _accountRepository.AddAsync(account);
+            await _lawyerSpecificServiceRepository.AddAsync(lawyerSpecificServices);
         }
     }
 }

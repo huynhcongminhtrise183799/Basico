@@ -1,4 +1,5 @@
 ﻿using AccountService.Application.Commands.Lawyer;
+using AccountService.Application.DTOs.Request;
 using AccountService.Application.Event.Lawyer;
 using AccountService.Domain.IRepositories;
 using MassTransit;
@@ -14,12 +15,14 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
     public class UpdateLawyerHandler : IRequestHandler<UpdateLawyerCommand, Unit>
     {
         private readonly IAccountRepositoryWrite _accountRepository;
+        private readonly ILawyerSpecificServiceRepositoryRead _lawyerSpecificServiceRepositoryRead;
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public UpdateLawyerHandler(IAccountRepositoryWrite accountRepository, IPublishEndpoint publishEndpoint)
+        public UpdateLawyerHandler(IAccountRepositoryWrite accountRepository, IPublishEndpoint publishEndpoint, ILawyerSpecificServiceRepositoryRead lawyerSpecificServiceRepositoryRead)
         {
             _accountRepository = accountRepository;
             _publishEndpoint = publishEndpoint;
+            _lawyerSpecificServiceRepositoryRead = lawyerSpecificServiceRepositoryRead;
         }
 
         public async Task<Unit> Handle(UpdateLawyerCommand request, CancellationToken cancellationToken)
@@ -39,6 +42,16 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
             await _accountRepository.UpdateLawyerAsync(account, cancellationToken);
             await _accountRepository.SaveChangesAsync(cancellationToken);
 
+            var newLawyerService =  dto.ServiceForLawyer.Select(service => new Domain.Entity.LawyerSpecificService
+            {
+                LawyerId = account.AccountId,
+                ServiceId = service.ServiceId,
+                PricePerHour = service.PricePerHour,
+            }).ToList();    
+            var lawyerSpecificServices = await _lawyerSpecificServiceRepositoryRead.GetLawyerSpecificServicesAsync(dto.AccountId, cancellationToken);
+            lawyerSpecificServices = newLawyerService;
+
+
             var @event = new LawyerUpdatedEvent
             {
                 AccountId = dto.AccountId,
@@ -47,7 +60,13 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
                 AccountGender = dto.AccountGender,
                 AccountPhone = dto.AccountPhone,
                 AccountImage = dto.AccountImage,
-                AboutLawyer = dto.AboutLawyer
+                AboutLawyer = dto.AboutLawyer,
+                ServiceForLawyerDTOs = request.Lawyer.ServiceForLawyer.Select(service => new LawyerSpecificServiceDTO
+                {
+                    LawyerId = account.AccountId,
+                    ServiceId = service.ServiceId,
+                    PricePerHour = service.PricePerHour
+                }).ToList()
             };
 
             await _publishEndpoint.Publish(@event, cancellationToken);

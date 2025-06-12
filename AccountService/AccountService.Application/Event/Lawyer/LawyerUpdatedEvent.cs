@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AccountService.Application.DTOs.Request;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,8 @@ namespace AccountService.Application.Event.Lawyer
         public string? AccountPhone { get; set; }
         public string? AccountImage { get; set; }
         public string? AboutLawyer { get; set; }
+
+        public List<LawyerSpecificServiceDTO> ServiceForLawyerDTOs { get; set; }
+
     }
 }

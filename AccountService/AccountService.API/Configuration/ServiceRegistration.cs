@@ -40,9 +40,11 @@ namespace AccountService.API.Configuration
 			// Đăng ký Repo
 			services.AddScoped<IAccountRepositoryRead, AccountRepositoryRead>();
 			services.AddScoped<IAccountRepositoryWrite, AccountRepositoryWrite>();
+			services.AddScoped<ILawyerSpecificServiceRepositoryRead, LawyerSpecificServiceRepositoryRead>();
+            services.AddScoped<ILawyerSpecificServiceRepositoryWrite, LawyerSpecificServiceRepositoryWrite>();
 
-			// Đăng ký MediatR
-			services.AddMediatR(cfg =>
+            // Đăng ký MediatR
+            services.AddMediatR(cfg =>
 			{
 				cfg.RegisterServicesFromAssembly(typeof(GoogleLoginCommand).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(LoginUserCommandHandler).Assembly);
