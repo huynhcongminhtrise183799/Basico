@@ -10,6 +10,7 @@ using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
 
 namespace FormService.API
 {
@@ -24,9 +25,39 @@ namespace FormService.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c =>
+            builder.Services.AddSwaggerGen(cfg =>
             {
-                c.EnableAnnotations();
+                cfg.EnableAnnotations();
+                cfg.AddSecurityDefinition(
+                    "Bearer",
+                    new OpenApiSecurityScheme
+                    {
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "Bearer",
+                        BearerFormat = "JWT",
+                        In = ParameterLocation.Header,
+                        Description =
+                            "Register a user, then authenticate using the respective endpoint, and add the token in the following input."
+                    }
+                );
+
+                cfg.AddSecurityRequirement(
+                    new OpenApiSecurityRequirement
+                    {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] { }
+            }
+                    }
+                );
             });
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
