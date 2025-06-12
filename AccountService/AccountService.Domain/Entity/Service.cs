@@ -8,11 +8,11 @@ namespace AccountService.Domain.Entity
 {
     public class Service
     {
-        public Guid ServiceId { get; set; } // Unique identifier for the service
+        public Guid ServiceId { get; set; }
 
-        public string ServiceName { get; set; } // Name of the service
+        public string ServiceName { get; set; } 
 
-        public string ServiceDescription { get; set; } // Description of the service
+        public string ServiceDescription { get; set; } 
 
         public virtual ICollection<LawyerSpecificService> LawyerSpecificServices { get; set; } = new List<LawyerSpecificService>();
     }

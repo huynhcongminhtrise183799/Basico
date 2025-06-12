@@ -31,5 +31,16 @@ namespace AccountService.Domain.IRepositories
 		Task<bool> VerifyOtpAsync(string email, string otp);
 		Task<bool> ResetPasswordAsync(string email, string newPassword);
 		Task<Guid?> GetAccountIdIfOtpValidAsync(string email, string otp);
-	}
+        //Lawyer
+        Task AddLawyerAsync(Account account, CancellationToken cancellationToken);
+        Task<Account?> GetLawyerByIdAsync(Guid id, CancellationToken cancellationToken);
+        Task UpdateLawyerAsync(Account account, CancellationToken cancellationToken);
+        Task DeleteLawyerAsync(Account account, CancellationToken cancellationToken);
+        Task SaveChangesAsync(CancellationToken cancellationToken);
+        //Service
+        Task<Service> AddServiceAsync(Service service);
+        Task UpdateServiceAsync(Service service);
+        Task DeleteServiceAsync(Guid serviceId);
+        Task<Service> GetServiceByIdAsync(Guid serviceId);
+    }
 }

@@ -1,13 +1,6 @@
 ﻿using MediatR;
 using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto.Generators;
-using DryIoc.ImTools;
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.AspNetCore.Identity;
 using MassTransit;
 using AccountService.Application.Event;

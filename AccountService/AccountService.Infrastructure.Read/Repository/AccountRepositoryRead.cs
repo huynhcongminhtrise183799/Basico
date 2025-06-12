@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AccountService.Infrastructure.Read.Repository
@@ -124,5 +125,71 @@ namespace AccountService.Infrastructure.Read.Repository
 			await _context.SaveChangesAsync();
 		}
 
-	}
+        //Lawyer
+        public async Task<Account?> GetLawyerByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.Accounts.FindAsync(new object[] { id }, cancellationToken);
+        }
+
+        public async Task<IEnumerable<Account>> GetAllLawyersAsync(CancellationToken cancellationToken)
+        {
+            return _context.Accounts
+                .Where(a => a.AccountRole == "LAWYER")
+                .ToList();
+        }
+        public async Task<List<Account>> GetAllActiveLawyerAccountsAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Accounts
+                .Where(a => a.AccountStatus == "ACTIVE" && a.AccountRole == "LAWYER")
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task AddLawyerAsync(Account account, CancellationToken cancellationToken = default)
+        {
+            await _context.Accounts.AddAsync(account, cancellationToken);
+        }
+
+        public async Task UpdateLawyerAsync(Account account, CancellationToken cancellationToken = default)
+        {
+            _context.Accounts.Update(account);
+            await Task.CompletedTask;
+        }
+
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        //Service
+        public async Task AddServiceAsync(Service service)
+        {
+            _context.Services.Add(service);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateServiceAsync(Service service)
+        {
+            _context.Services.Update(service);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteServiceAsync(Guid serviceId)
+        {
+            var entity = await _context.Services.FirstOrDefaultAsync(x => x.ServiceId == serviceId);
+            if (entity != null)
+            {
+                _context.Services.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Service> GetServiceByIdAsync(Guid serviceId)
+        {
+            return await _context.Services.FirstOrDefaultAsync(x => x.ServiceId == serviceId);
+        }
+
+        public async Task<IEnumerable<Service>> GetAllServiceAsync()
+        {
+            return await _context.Services.ToListAsync();
+        }
+    }
 }

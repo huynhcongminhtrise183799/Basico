@@ -12,7 +12,6 @@ namespace AccountService.Domain.IRepositories
     {
 		Task<Account?> GetByEmailAsync(string email);
 		Task AddAsync(Account account);
-       
         Task<Account?> GetAccountByUserNameAndPassword(string username, string password);
         Task<Account?> GetAccountById(Guid accountId);
         Task<Account?> GetAccountByUserName(string username);
@@ -31,5 +30,20 @@ namespace AccountService.Domain.IRepositories
 		// Fotgot password
 		Task SaveOtpAsync(Guid accountId, string otp, DateTime expirationDate, Guid forgotpasswordId);
 
-	}
+        //Lawyer
+        Task<Account?> GetLawyerByIdAsync(Guid id, CancellationToken cancellationToken);
+        Task<IEnumerable<Account>> GetAllLawyersAsync(CancellationToken cancellationToken);
+        Task<List<Account>> GetAllActiveLawyerAccountsAsync(CancellationToken cancellationToken);
+        Task AddLawyerAsync(Account account, CancellationToken cancellationToken = default);
+        Task UpdateLawyerAsync(Account account, CancellationToken cancellationToken = default);
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
+
+        //Service
+        Task AddServiceAsync(Service service);
+        Task UpdateServiceAsync(Service service);
+        Task DeleteServiceAsync(Guid serviceId);
+        Task<Service> GetServiceByIdAsync(Guid serviceId);
+        Task<IEnumerable<Service>> GetAllServiceAsync();
+
+    }
 }
