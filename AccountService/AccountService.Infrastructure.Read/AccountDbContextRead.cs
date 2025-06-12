@@ -23,6 +23,7 @@ namespace AccountService.Infrastructure.Read
         public DbSet<LawyerSpecificService> LawyerSpecificServices { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.ToTable("Account");

@@ -2,6 +2,8 @@
 using AccountService.API.OptionsSetup;
 using AccountService.Application.Commands;
 using AccountService.Application.Consumers;
+using AccountService.Application.Consumers.Lawyer;
+using AccountService.Application.Consumers.Service;
 using AccountService.Application.Handler.CommandHandler;
 using AccountService.Application.Handler.QueryHandler;
 using AccountService.Application.IService;
@@ -72,26 +74,54 @@ namespace AccountService.API.Configuration
 			services.AddDbContext<AccountDbContextRead>(opt =>
 				opt.UseNpgsql(configuration.GetConnectionString("Postgres")));
 
-			// MassTransit
-			builder.Services.AddMassTransit(x =>
-			{
-				x.AddConsumers(typeof(GoogleAccountCreatedConsumers).Assembly);
-				x.AddConsumer<AccountRegisteredEventConsumer>();
-				x.UsingRabbitMq((context, cfg) =>
-				{
-					cfg.Host("localhost", "/", h =>
-					{
-						h.Username("guest");
-						h.Password("guest");
-					});
+            // MassTransit
+            builder.Services.AddMassTransit(x =>
+            {
+                x.AddConsumer<AccountRegisteredEventConsumer>();
+                x.AddConsumer<LawyerCreatedEventConsumer>();
+                x.AddConsumer<LawyerUpdatedEventConsumer>();
+                x.AddConsumer<LawyerDeletedEventConsumer>();
+                x.AddConsumers(typeof(GoogleAccountCreatedConsumers).Assembly);
 
-					cfg.ConfigureEndpoints(context); 
-				});
-			});
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host("localhost", "/", h =>
+                    {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+                    cfg.ConfigureEndpoints(context);
+
+                    cfg.ReceiveEndpoint("lawyer-created-event-queue", e =>
+                    {
+                        e.ConfigureConsumer<LawyerCreatedEventConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint("lawyer-updated-event-queue", e =>
+                    {
+                        e.ConfigureConsumer<LawyerUpdatedEventConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint("lawyer-deleted-event-queue", e =>
+                    {
+                        e.ConfigureConsumer<LawyerDeletedEventConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint("service-created-event", e =>
+                    {
+                        e.ConfigureConsumer<ServiceCreatedConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint("service-updated-event", e =>
+                    {
+                        e.ConfigureConsumer<ServiceUpdatedConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint("service-deleted-event", e =>
+                    {
+                        e.ConfigureConsumer<ServiceDeletedConsumer>(context);
+                    });
+                });
+            });
 
 
-			// Swagger and Controllers
-			services.AddControllers();
+            // Swagger and Controllers
+            services.AddControllers();
 			services.AddEndpointsApiExplorer();
 
 			builder.Services.AddSwaggerGen(cfg =>
