@@ -27,5 +27,7 @@ namespace AccountService.Application.DTOs.LawyerDTO
         public string? AccountImage { get; set; }
 
         public string? AboutLawyer { get; set; }
+
+        public List<ServiceForLawyerDTO> ServiceForLawyer { get; set; }
     }
 }

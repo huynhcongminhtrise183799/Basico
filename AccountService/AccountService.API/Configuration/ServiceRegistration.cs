@@ -33,6 +33,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using AccountService.Application.Message;
+using AccountService.Infrastructure.Write.Message;
 
 
 namespace AccountService.API.Configuration
@@ -51,9 +53,13 @@ namespace AccountService.API.Configuration
 			// Đăng ký Repo
 			services.AddScoped<IAccountRepositoryRead, AccountRepositoryRead>();
 			services.AddScoped<IAccountRepositoryWrite, AccountRepositoryWrite>();
+			services.AddScoped<ILawyerSpecificServiceRepositoryRead, LawyerSpecificServiceRepositoryRead>();
+            services.AddScoped<ILawyerSpecificServiceRepositoryWrite, LawyerSpecificServiceRepositoryWrite>();
+            builder.Services.AddScoped<IEventPublisher, MassTransitEventPublisher>();
 
-			// Đăng ký MediatR
-			services.AddMediatR(cfg =>
+
+            // Đăng ký MediatR
+            services.AddMediatR(cfg =>
 			{
 				cfg.RegisterServicesFromAssembly(typeof(GoogleLoginCommand).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(LoginUserCommandHandler).Assembly);

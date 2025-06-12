@@ -1,8 +1,8 @@
 ﻿using AccountService.Application.Commands.Lawyer;
+using AccountService.Application.DTOs.Request;
 using AccountService.Application.Event.Lawyer;
 using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
-using Cqrs.Events;
 using MassTransit;
 using MediatR;
 using System;
@@ -16,12 +16,14 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
     public class CreateLawyerHandler : IRequestHandler<CreateLawyerCommand, Guid>
     {
         private readonly IAccountRepositoryWrite _accountRepository;
+        private readonly ILawyerSpecificServiceRepositoryWrite _lawyerSpecificService;
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public CreateLawyerHandler(IAccountRepositoryWrite accountRepository, IPublishEndpoint publishEndpoint)
+        public CreateLawyerHandler(IAccountRepositoryWrite accountRepository, IPublishEndpoint publishEndpoint, ILawyerSpecificServiceRepositoryWrite lawyerSpecificService)
         {
             _accountRepository = accountRepository;
             _publishEndpoint = publishEndpoint;
+            _lawyerSpecificService = lawyerSpecificService;
         }
 
         public async Task<Guid> Handle(CreateLawyerCommand request, CancellationToken cancellationToken)
@@ -40,12 +42,23 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
                 AccountImage = dto.AccountImage,
                 AboutLawyer = dto.AboutLawyer,
                 AccountRole = Role.LAWYER.ToString(),
-                AccountStatus = Status.ACTIVE.ToString(),
-                AccountTicketRequest = 0
+                AccountStatus = Status.ACTIVE.ToString()
             };
+
+                var draf = dto.serviceForLawyerDTOs.Select(service => new LawyerSpecificService
+                {
+                    LawyerId = account.AccountId,
+                    ServiceId = service.ServiceId,
+                    PricePerHour = service.PricePerHour,
+                }).ToList();
+                
+                
+
+
 
             await _accountRepository.AddLawyerAsync(account, cancellationToken);
             await _accountRepository.SaveChangesAsync(cancellationToken);
+            await _lawyerSpecificService.AddAsync(draf);
 
             var @event = new LawyerCreatedEvent
             {
@@ -58,7 +71,13 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
                 AccountGender = request.Lawyer.AccountGender,
                 AccountPhone = request.Lawyer.AccountPhone,
                 AccountImage = request.Lawyer.AccountImage,
-                AboutLawyer = request.Lawyer.AboutLawyer
+                AboutLawyer = request.Lawyer.AboutLawyer,
+                ServiceForLawyerDTOs = request.Lawyer.serviceForLawyerDTOs.Select(service => new LawyerSpecificServiceDTO
+                {
+                    LawyerId = account.AccountId,
+                    ServiceId = service.ServiceId,
+                    PricePerHour = service.PricePerHour
+                }).ToList()
             };
 
             await _publishEndpoint.Publish(@event, cancellationToken);
