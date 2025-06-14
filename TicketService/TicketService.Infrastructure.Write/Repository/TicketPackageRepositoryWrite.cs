@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TicketService.Domain.Entities;
+using TicketService.Domain.IRepositories;
+
+namespace TicketService.Infrastructure.Write.Repository
+{
+    public class TicketPackageRepositoryWrite : ITicketPackageRepositoryWrite
+    {
+        private readonly TicketDbContextWrite _context;
+        public TicketPackageRepositoryWrite(TicketDbContextWrite context)
+        {
+            _context = context;
+        }
+        public async Task AddAsync(TicketPackage ticketPackage)
+        {
+           await _context.TicketPackages.AddAsync(ticketPackage);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task DeleteAsync(Guid ticketPackageId)
+        {
+            var ticketPackage = _context.TicketPackages.Find(ticketPackageId);
+            if (ticketPackage != null)
+            {
+                ticketPackage.Status = Status.INACTIVE.ToString(); // Soft delete
+                return _context.SaveChangesAsync();
+            }
+            throw new KeyNotFoundException("Ticket package not found for deletion.");
+        }
+
+        public Task UpdateAsync(TicketPackage ticketPackage)
+        {
+           var existingPackage = _context.TicketPackages.Find(ticketPackage.TicketPackageId);
+            if (existingPackage != null)
+            {
+                existingPackage.TicketPackageName = ticketPackage.TicketPackageName;
+                existingPackage.RequestAmount = ticketPackage.RequestAmount;
+                existingPackage.Price = ticketPackage.Price;
+                existingPackage.Status = ticketPackage.Status;
+                return _context.SaveChangesAsync();
+            }
+            throw new KeyNotFoundException("Ticket package not found.");
+        }
+    }
+}

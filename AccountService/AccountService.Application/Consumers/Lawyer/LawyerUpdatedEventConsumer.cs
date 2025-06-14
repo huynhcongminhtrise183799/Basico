@@ -1,4 +1,6 @@
 ﻿using AccountService.Application.Event.Lawyer;
+using AccountService.Domain.Entity;
+using AccountService.Domain.IRepositories;
 using AccountService.Infrastructure.Read;
 using MassTransit;
 using System;
@@ -12,10 +14,12 @@ namespace AccountService.Application.Consumers.Lawyer
     public class LawyerUpdatedEventConsumer : IConsumer<LawyerUpdatedEvent>
     {
         private readonly AccountDbContextRead _dbContextRead;
+        private readonly ILawyerSpecificServiceRepositoryRead _lawyerSpecific;
 
-        public LawyerUpdatedEventConsumer(AccountDbContextRead dbContextRead)
+        public LawyerUpdatedEventConsumer(AccountDbContextRead dbContextRead, ILawyerSpecificServiceRepositoryRead lawyerSpecific)
         {
             _dbContextRead = dbContextRead;
+            _lawyerSpecific = lawyerSpecific;
         }
 
         public async Task Consume(ConsumeContext<LawyerUpdatedEvent> context)
@@ -33,6 +37,14 @@ namespace AccountService.Application.Consumers.Lawyer
 
             _dbContextRead.Accounts.Update(account);
             await _dbContextRead.SaveChangesAsync();
+
+            var newLawyerService = evt.ServiceForLawyerDTOs.Select(service => new LawyerSpecificService
+            {
+                LawyerId = account.AccountId,
+                ServiceId = service.ServiceId,
+                PricePerHour = service.PricePerHour,
+            }).ToList();
+           await _lawyerSpecific.UpdateAsync(newLawyerService,evt.AccountId);
         }
     }
 }
