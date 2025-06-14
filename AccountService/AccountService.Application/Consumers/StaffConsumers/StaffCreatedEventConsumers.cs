@@ -36,6 +36,7 @@ namespace AccountService.Application.Consumers.StaffConsumers
 				AccountPassword = message.Password,
 				AccountUsername = message.Username,
 				AccountGender = message.Gender,
+				AccountImage = message.ImageUrl,
 			};
 			await _repo.AddStaff(account);
 			Console.WriteLine("Save Postgres successfully");
