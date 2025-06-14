@@ -32,11 +32,12 @@ namespace AccountService.Application.Handler.CommandHandler.StaffHandler
                 AccountEmail = request.Email,
                 AccountGender = request.Gender,
 				AccountPassword = _passwordHasher.HashPassword(null, request.Password),
-                AccountUsername = request.Username
+                AccountUsername = request.Username,
+                AccountImage = request.ImageUrl,
 			};
             await _repoWrite.AddStaff(staff);
 			await _publishEndpoint.Publish(
-	                 new StaffCreatedEvent(staff.AccountId, staff.AccountFullName, staff.AccountEmail, staff.AccountPassword, staff.AccountUsername, staff.AccountGender));
+	                 new StaffCreatedEvent(staff.AccountId, staff.AccountFullName, staff.AccountEmail, staff.AccountPassword, staff.AccountUsername, staff.AccountGender, staff.AccountImage));
 			return staff.AccountId;
         }
     }

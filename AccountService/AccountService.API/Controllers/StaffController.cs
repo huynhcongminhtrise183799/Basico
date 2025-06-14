@@ -26,29 +26,22 @@ namespace AccountService.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] StaffCreateRequest request)
         {
-            var command = new CreateStaffCommand(request.FullName, request.Email, request.Gender, request.Password, request.Username);
+            var command = new CreateStaffCommand(request.FullName, request.Email, request.Gender, request.Password, request.Username, request.ImageUrl);
             var staffId = await _mediator.Send(command);
             return Ok(new { StaffId = staffId });
         }
+		[HttpPut]
+		public async Task<IActionResult> Update([FromBody] StaffUpdateRequest request)
+		{
+			// Admin đang update cho staff khác, nên dùng request.StaffId
+			var command = new UpdateStaffCommand(request.StaffId, request.FullName, request.Gender, request.ImageUrl);
+			var result = await _mediator.Send(command);
+			if (!result) return BadRequest(new { message = "Update failed" });
+			return Ok(new { message = "Update successful" });
+		}
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] StaffUpdateRequest request)
-        {
-			var accountId = User.FindFirstValue(ClaimTypes.Sid);
-			if (string.IsNullOrEmpty(accountId))
-			{
-				return Unauthorized(new
-				{
-					message = "Unauthorized access. Please log in to update your profile."
-				});
-			}
-			var command = new UpdateStaffCommand(Guid.Parse(accountId),request.FullName, request.Gender);
-            var result = await _mediator.Send(command);
-            if (!result) return BadRequest(new { message = "Update failed" });
-            return Ok(new { message = "Update successful" });
-        }
 
-        [HttpDelete("{id}")]
+		[HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var command = new DeleteStaffCommand(id);

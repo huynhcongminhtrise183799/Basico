@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace AccountService.Application.Event.StaffEvent
 {
-	public record StaffCreatedEvent(Guid StaffId, string FullName, string Email, string Password, string Username, int Gender);
+	public record StaffCreatedEvent(Guid StaffId, string FullName, string Email, string Password, string Username, int Gender, string ImageUrl);
 
 }
