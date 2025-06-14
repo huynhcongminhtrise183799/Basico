@@ -33,7 +33,6 @@ namespace AccountService.API.Controllers
 		[HttpPut]
 		public async Task<IActionResult> Update([FromBody] StaffUpdateRequest request)
 		{
-			// Admin đang update cho staff khác, nên dùng request.StaffId
 			var command = new UpdateStaffCommand(request.StaffId, request.FullName, request.Gender, request.ImageUrl);
 			var result = await _mediator.Send(command);
 			if (!result) return BadRequest(new { message = "Update failed" });
