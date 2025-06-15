@@ -12,13 +12,16 @@ namespace AccountService.Application.Commands.StaffCommands
 
         public string Username { get; } = string.Empty;
 
-		public CreateStaffCommand(string fullName, string email, int gender, string password, string username)
+        public string ImageUrl { get; set; } = string.Empty;
+
+		public CreateStaffCommand(string fullName, string email, int gender, string password, string username, string imageUrl)
         {
             FullName = fullName;
             Email = email;
             Gender = gender;
             Password = password;
             Username = username;
+            ImageUrl = imageUrl;
 		}
     }
 }

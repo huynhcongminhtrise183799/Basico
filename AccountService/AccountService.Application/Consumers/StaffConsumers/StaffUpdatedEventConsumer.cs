@@ -27,6 +27,7 @@ namespace AccountService.Application.Consumers.StaffConsumers
 				account.AccountFullName = message.FullName;
 				account.AccountGender = message.Gender;
 				account.AccountStatus = message.Status.ToString();
+				account.AccountImage = message.ImageUrl;
 				await _repo.UpdateStaff(account);
 				Console.WriteLine("Profile updated successfully");
 			}

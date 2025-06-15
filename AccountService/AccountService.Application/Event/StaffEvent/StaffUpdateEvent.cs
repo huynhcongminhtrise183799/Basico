@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace AccountService.Application.Event.StaffEvent
 {
-	public record StaffUpdateEvent (Guid AccountId, string FullName, int Gender, Status Status);
+	public record StaffUpdateEvent (Guid AccountId, string FullName, int Gender, Status Status, string ImageUrl);
 }

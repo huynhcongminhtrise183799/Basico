@@ -29,8 +29,9 @@ namespace AccountService.Application.Handler.CommandHandler.StaffHandler
             staff.AccountFullName = request.FullName;
             staff.AccountGender = request.Gender;
 			staff.AccountStatus = Status.ACTIVE.ToString();
+            staff.AccountImage = request.ImageUrl;
 			await _repoWrite.UpdateStaff(staff);
-            await _publishEndpoint.Publish(new StaffUpdateEvent(staff.AccountId, staff.AccountFullName, staff.AccountGender, Status.ACTIVE));
+            await _publishEndpoint.Publish(new StaffUpdateEvent(staff.AccountId, staff.AccountFullName, staff.AccountGender, Status.ACTIVE, staff.AccountImage));
 			return true;
         }
     }
