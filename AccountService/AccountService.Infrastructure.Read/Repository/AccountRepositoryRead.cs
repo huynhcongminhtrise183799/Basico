@@ -128,13 +128,16 @@ namespace AccountService.Infrastructure.Read.Repository
         //Lawyer
         public async Task<Account?> GetLawyerByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _context.Accounts.FindAsync(new object[] { id }, cancellationToken);
-        }
+			return await _context.Accounts
+			   .Include(a => a.LawyerSpecificServices)
+				.FirstAsync(a => a.AccountId == id && a.AccountRole == "LAWYER", cancellationToken);
+		}
 
         public async Task<IEnumerable<Account>> GetAllLawyersAsync(CancellationToken cancellationToken)
         {
             return _context.Accounts
-                .Where(a => a.AccountRole == "LAWYER")
+				.Include(a => a.LawyerSpecificServices)
+				.Where(a => a.AccountRole == "LAWYER")
                 .ToList();
         }
         public async Task<List<Account>> GetAllActiveLawyerAccountsAsync(CancellationToken cancellationToken)

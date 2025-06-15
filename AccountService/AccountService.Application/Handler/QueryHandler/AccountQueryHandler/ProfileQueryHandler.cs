@@ -31,8 +31,9 @@ namespace AccountService.Application.Handler.QueryHandler.AccountQueryHandler
                 Email = account.AccountEmail,
                 FullName = account.AccountFullName,
                 AccountTicketRequest = account.AccountTicketRequest,
-                Gender = account.AccountGender
-            };
+                Gender = account.AccountGender,
+				Username = account.AccountUsername
+			};
         }
     }
 }
