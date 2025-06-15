@@ -33,8 +33,13 @@ namespace AccountService.Application.Handler.QueryHandler.Lawyer
                 AccountPhone = account.AccountPhone,
                 AccountImage = account.AccountImage,
                 AboutLawyer = account.AboutLawyer,
-                AccountStatus = account.AccountStatus
-            });
+                AccountStatus = account.AccountStatus,
+				ServiceForLawyer = account.LawyerSpecificServices.Select(service => new ServiceForLawyerDTO
+				{
+					ServiceId = service.ServiceId,
+                    PricePerHour = service.PricePerHour,
+				}).ToList()
+			});
         }
     }
 }
