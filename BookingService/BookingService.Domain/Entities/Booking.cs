@@ -11,7 +11,8 @@ namespace BookingService.Domain.Entities
 		Pending,
 		Confirmed,
 		Cancelled,
-		Completed
+		Completed,
+		Paid
 	}				
 	public class Booking
 	{

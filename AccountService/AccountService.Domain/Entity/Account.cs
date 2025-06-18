@@ -45,5 +45,7 @@ namespace AccountService.Domain.Entity
         public virtual ICollection<ForgotPassword> ForgotPasswords { get; set; } = new List<ForgotPassword>();
 
         public virtual ICollection<LawyerSpecificService> LawyerSpecificServices { get; set; } = new List<LawyerSpecificService>();
-    }
+
+		public virtual ICollection<LawyerDayOffSchedule> LawyerDayOffSchedules { get; set; } = new List<LawyerDayOffSchedule>();
+	}
 }

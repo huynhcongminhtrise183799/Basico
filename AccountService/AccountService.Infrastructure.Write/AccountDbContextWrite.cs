@@ -22,9 +22,14 @@ namespace AccountService.Infrastructure.Write
 
         public DbSet<LawyerSpecificService> LawyerSpecificServices { get; set; }
 
-       
+       public DbSet<SpecificLawyerDayOffSchedule> SpecificLawyerDayOffSchedules { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		public DbSet<Shift> Shifts { get; set; }
+
+		public DbSet<LawyerDayOffSchedule> LawyerDayOffSchedules { get; set; }
+
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            modelBuilder.Entity<Account>(entity =>
             {
@@ -85,6 +90,45 @@ namespace AccountService.Infrastructure.Write
                       .HasForeignKey(e => e.ServiceId)
                       .HasConstraintName("FK_LawyerSpecificService_Service");
             });
+
+            modelBuilder.Entity<Shift>(entity =>
+            {
+                entity.ToTable("Shift");
+				entity.HasKey(e => e.ShiftId);
+                entity.Property(e => e.ShiftId).ValueGeneratedOnAdd();
+				entity.Property(e => e.StartTime).IsRequired();
+				entity.Property(e => e.EndTime).IsRequired();
+			});
+			modelBuilder.Entity<LawyerDayOffSchedule>(entity =>
+			{
+				entity.ToTable("LawyerDayOffSchedule");
+				entity.HasKey(e => e.LawyerDayOffScheduleId);
+				entity.Property(e => e.LawyerDayOffScheduleId).ValueGeneratedOnAdd();
+				entity.Property(e => e.OffDay).IsRequired();
+				entity.Property(e => e.LawyerId).IsRequired();
+
+				entity.HasOne(e => e.Lawyer)
+					  .WithMany(a => a.LawyerDayOffSchedules)
+					  .HasForeignKey(e => e.LawyerId)
+					  .HasConstraintName("FK_LawyerDayOffSchedule_Account");
+			});
+			modelBuilder.Entity<SpecificLawyerDayOffSchedule>(entity =>
+			{
+				entity.ToTable("SpecificLawyerDayOffSchedule");
+				entity.HasKey(e => new { e.LawyerDayOffScheduleId, e.ShiftId });
+
+				entity.HasOne(e => e.LawyerDayOffSchedule)
+					  .WithMany(l => l.SpecificLawyerDayOffSchedules)
+					  .HasForeignKey(e => e.LawyerDayOffScheduleId)
+					  .HasConstraintName("FK_SpecificLawyerDayOffSchedule_LawyerDayOffSchedule");
+
+				entity.HasOne(e => e.Shift)
+					  .WithMany(s => s.SpecificLawyerDayOffSchedules)
+					  .HasForeignKey(e => e.ShiftId)
+					  .HasConstraintName("FK_SpecificLawyerDayOffSchedule_Shift");
+			});
+
+			
         }
 
         // DbSet properties for your entities can be added here

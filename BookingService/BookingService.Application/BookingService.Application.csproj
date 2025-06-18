@@ -5,5 +5,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+<ItemGroup>
+		<PackageReference Include="MediatR" Version="12.5.0" />
+	<PackageReference Include="MassTransit" Version="8.4.1" />
 
-</Project>
+</ItemGroup>
+<ItemGroup>
+  <ProjectReference Include="..\..\Contracts\Contracts\Contracts.csproj" />
+  <ProjectReference Include="..\BookingService.Infrastructure.Read\BookingService.Infrastructure.Read.csproj" />
+</ItemGroup>
+
+</Project>  

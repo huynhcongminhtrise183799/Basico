@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace AccountService.Domain.Entity
 {
-    public class Service
+    public enum ServiceStatus
+	{
+		Active,
+		Inactive,
+	}
+	public class Service
     {
         public Guid ServiceId { get; set; }
 
@@ -14,6 +19,8 @@ namespace AccountService.Domain.Entity
 
         public string ServiceDescription { get; set; } 
 
-        public virtual ICollection<LawyerSpecificService> LawyerSpecificServices { get; set; } = new List<LawyerSpecificService>();
+        public string Status { get; set; }
+
+		public virtual ICollection<LawyerSpecificService> LawyerSpecificServices { get; set; } = new List<LawyerSpecificService>();
     }
 }

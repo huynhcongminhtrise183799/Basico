@@ -26,8 +26,9 @@ namespace AccountService.Application.Consumers.Service
             {
                 ServiceId = evt.ServiceId,
                 ServiceName = evt.ServiceName,
-                ServiceDescription = evt.ServiceDescription
-            };
+                ServiceDescription = evt.ServiceDescription,
+				Status = evt.Status,
+			};
 
             await _repository.AddServiceAsync(service);
         }
