@@ -22,6 +22,37 @@ namespace TicketService.Infrastructure.Read.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("TicketService.Domain.Entities.Ticket", b =>
+                {
+                    b.Property<Guid>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content_Response")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Content_Send")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("StaffId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("TicketId");
+
+                    b.ToTable("Ticket", (string)null);
+                });
+
             modelBuilder.Entity("TicketService.Domain.Entities.TicketPackage", b =>
                 {
                     b.Property<Guid>("TicketPackageId")

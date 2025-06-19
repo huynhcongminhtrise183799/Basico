@@ -20,7 +20,9 @@ namespace TicketService.Infrastructure.Read
 
         public DbSet<TicketPackage> TicketPackages { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		public DbSet<Ticket> Tickets { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TicketPackage>(entity =>
             {
@@ -31,8 +33,20 @@ namespace TicketService.Infrastructure.Read
                 entity.Property(e => e.RequestAmount).IsRequired();
                 entity.Property(e => e.Price).IsRequired().HasColumnType("decimal(18,2)");
             });
+			modelBuilder.Entity<Ticket>(entity =>
+			{
+				entity.ToTable("Ticket");
+				entity.HasKey(e => e.TicketId);
+				entity.Property(e => e.TicketId).ValueGeneratedOnAdd();
+				entity.Property(e => e.UserId).IsRequired();
+				entity.Property(e => e.StaffId).IsRequired(false);
+				entity.Property(e => e.ServiceId).IsRequired();
+				entity.Property(e => e.Content_Send).IsRequired();
+				entity.Property(e => e.Content_Response);
+				entity.Property(e => e.Status).IsRequired();
+			});
 
-        }
+		}
     }
 
 }
