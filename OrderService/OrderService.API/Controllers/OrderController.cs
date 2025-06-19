@@ -23,7 +23,7 @@ namespace OrderService.API.Controllers
                 return BadRequest(ModelState);
 
             var orderId = await _mediator.Send(request);
-            return CreatedAtAction(nameof(CreateOrder), new { id = orderId }, new { orderId });
+            return Ok(orderId);
         }
     }
 }

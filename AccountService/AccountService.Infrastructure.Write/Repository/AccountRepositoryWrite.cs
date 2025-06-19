@@ -209,7 +209,7 @@ namespace AccountService.Infrastructure.Write.Repository
             var entity = await _context.Services.FirstOrDefaultAsync(x => x.ServiceId == serviceId);
             if (entity != null)
             {
-                _context.Services.Remove(entity);
+				entity.Status = ServiceStatus.Inactive.ToString(); // Chuyển trạng thái sang Inactive
                 await _context.SaveChangesAsync();
             }
         }

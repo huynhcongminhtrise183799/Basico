@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -27,9 +27,12 @@
 		<PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="8.1.4" />
+
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\BookingService.Application\BookingService.Application.csproj" />
 	  <ProjectReference Include="..\BookingService.Infrastructure.Read\BookingService.Infrastructure.Read.csproj" />
 	  <ProjectReference Include="..\BookingService.Infrastructure.Write\BookingService.Infrastructure.Write.csproj" />
 	</ItemGroup>

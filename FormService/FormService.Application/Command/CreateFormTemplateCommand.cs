@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace FormService.Application.Command
 {
-    public record CreateFormTemplateCommand(Guid ServiceId, string FormTemplateName, string FormTemplateData) :IRequest<FormTemplateResponse>;
+    public record CreateFormTemplateCommand(Guid ServiceId, string FormTemplateName, string FormTemplateData, double Price) :IRequest<FormTemplateResponse>;
    
 }

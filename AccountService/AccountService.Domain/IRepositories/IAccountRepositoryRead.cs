@@ -38,6 +38,8 @@ namespace AccountService.Domain.IRepositories
         Task UpdateLawyerAsync(Account account, CancellationToken cancellationToken = default);
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
+        Task<List<Account>> GetLaywersByServiceId(Guid serviceId);
+
         //Service
         Task AddServiceAsync(Service service);
         Task UpdateServiceAsync(Service service);
@@ -45,5 +47,9 @@ namespace AccountService.Domain.IRepositories
         Task<Service> GetServiceByIdAsync(Guid serviceId);
         Task<IEnumerable<Service>> GetAllServiceAsync();
 
-    }
+        Task<string?> GetLaywerNameByLawyerId(Guid id);
+
+        Task<string?> GetCustomerNameByCustomerId(Guid? customerId);
+
+	}
 }

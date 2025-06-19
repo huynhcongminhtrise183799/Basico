@@ -16,6 +16,8 @@ namespace FormService.Application.DTOs.Response
 
         public string FormTemplateData { get; set; }
 
-        public string Status { get; set; } 
+		public double Price { get; set; }
+
+		public string Status { get; set; } 
     }
 }
