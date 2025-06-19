@@ -21,15 +21,14 @@ namespace TicketService.Infrastructure.Write.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Guid ticketPackageId)
+        public async Task DeleteAsync(Guid ticketPackageId)
         {
-            var ticketPackage = _context.TicketPackages.Find(ticketPackageId);
-            if (ticketPackage != null)
-            {
-                ticketPackage.Status = Status.INACTIVE.ToString(); // Soft delete
-                return _context.SaveChangesAsync();
-            }
-            throw new KeyNotFoundException("Ticket package not found for deletion.");
+            var ticketPackage = await _context.TicketPackages.FindAsync(ticketPackageId);
+            if (ticketPackage == null)
+                throw new KeyNotFoundException("Ticket package not found for deletion.");
+
+            ticketPackage.Status = Status.INACTIVE.ToString();
+            await _context.SaveChangesAsync();
         }
 
         public Task UpdateAsync(TicketPackage ticketPackage)

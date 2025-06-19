@@ -10,5 +10,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\TicketService.Domain\TicketService.Domain.csproj" />
+	  <ProjectReference Include="..\TicketService.Infrastructure.Write\TicketService.Infrastructure.Write.csproj" />
 	</ItemGroup>
 </Project>

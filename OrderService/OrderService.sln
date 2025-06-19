@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService.Infrastructure.Read", "OrderService.Infrastructure.Read\OrderService.Infrastructure.Read.csproj", "{32DB9BE2-B3E8-4F31-A3C2-5387912326EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "..\Contracts\Contracts\Contracts.csproj", "{DFE9835D-BFDE-0D0C-75EF-CA5F0CBE0DAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{32DB9BE2-B3E8-4F31-A3C2-5387912326EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32DB9BE2-B3E8-4F31-A3C2-5387912326EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32DB9BE2-B3E8-4F31-A3C2-5387912326EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE9835D-BFDE-0D0C-75EF-CA5F0CBE0DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE9835D-BFDE-0D0C-75EF-CA5F0CBE0DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE9835D-BFDE-0D0C-75EF-CA5F0CBE0DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE9835D-BFDE-0D0C-75EF-CA5F0CBE0DAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

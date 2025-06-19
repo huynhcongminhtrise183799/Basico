@@ -10,6 +10,7 @@ namespace AccountService.Infrastructure.Read
 {
     public class AccountDbContextRead : DbContext
     {
+
         public AccountDbContextRead(DbContextOptions<AccountDbContextRead> options) : base(options)
         {
         }

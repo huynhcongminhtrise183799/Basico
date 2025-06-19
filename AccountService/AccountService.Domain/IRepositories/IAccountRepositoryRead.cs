@@ -1,6 +1,5 @@
 ﻿using AccountService.Domain.Entity;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,27 +9,25 @@ namespace AccountService.Domain.IRepositories
 {
     public interface IAccountRepositoryRead
     {
-		Task<Account?> GetByEmailAsync(string email);
-		Task AddAsync(Account account);
+        Task<Account?> GetByEmailAsync(string email);
+        Task AddAsync(Account account);
         Task<Account?> GetAccountByUserNameAndPassword(string username, string password);
         Task<Account?> GetAccountById(Guid accountId);
         Task<Account?> GetAccountByUserName(string username);
+        Task UpdateAccount(Account account);
 
-		// Update profile
-		Task UpdateAccount(Account account);
+        // Staff
+        Task AddStaff(Account staff);
+        Task<bool> UpdateStaff(Account staff);
+        Task<bool> DeleteStaff(Guid staffId);
+        Task<IEnumerable<Account>> GetAllStaff();
+        Task<Account?> GetStaffById(Guid staffId);
+        Task<IEnumerable<Account>> GetAllActiveStaff();
 
-		// Staff management
-		Task AddStaff(Account staff);
-		Task<bool> UpdateStaff(Account staff);
-		Task<bool> DeleteStaff(Guid staffId);
-		Task<IEnumerable<Account>> GetAllStaff();
-		Task<Account?> GetStaffById(Guid staffId);
-		Task<IEnumerable<Account>> GetAllActiveStaff();
+        // Forgot password
+        Task SaveOtpAsync(Guid accountId, string otp, DateTime expiredAt, Guid forgetPasswordId);
 
-		// Fotgot password
-		Task SaveOtpAsync(Guid accountId, string otp, DateTime expirationDate, Guid forgotpasswordId);
-
-        //Lawyer
+        // Lawyer
         Task<Account?> GetLawyerByIdAsync(Guid id, CancellationToken cancellationToken);
         Task<IEnumerable<Account>> GetAllLawyersAsync(CancellationToken cancellationToken);
         Task<List<Account>> GetAllActiveLawyerAccountsAsync(CancellationToken cancellationToken);
@@ -38,12 +35,15 @@ namespace AccountService.Domain.IRepositories
         Task UpdateLawyerAsync(Account account, CancellationToken cancellationToken = default);
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
-        //Service
+        // Service
         Task AddServiceAsync(Service service);
         Task UpdateServiceAsync(Service service);
         Task DeleteServiceAsync(Guid serviceId);
         Task<Service> GetServiceByIdAsync(Guid serviceId);
         Task<IEnumerable<Service>> GetAllServiceAsync();
 
+        // Ticket request
+        Task UpdateAccountTicketRequestAsync(Guid userId, Guid ticketPackageId, int accountTicketRequest);
+        Task<Account?> GetByUserIdAsync(Guid userId);
     }
 }

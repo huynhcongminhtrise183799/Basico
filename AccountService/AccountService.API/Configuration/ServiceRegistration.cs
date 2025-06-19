@@ -35,6 +35,8 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using AccountService.Application.Message;
 using AccountService.Infrastructure.Write.Message;
+using AccountService.Application.Consumers.Ticket;
+
 
 
 namespace AccountService.API.Configuration
@@ -120,6 +122,9 @@ namespace AccountService.API.Configuration
                 x.AddConsumer<LawyerCreatedEventConsumer>();
                 x.AddConsumer<LawyerUpdatedEventConsumer>();
                 x.AddConsumer<LawyerDeletedEventConsumer>();
+				x.AddConsumer<UpdateAccountTicketRequestConsumer>();
+                x.AddConsumer<ValidatationRequestTicketConsumer>();
+				x.AddConsumer<DecreseTicketRequestConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -130,30 +135,7 @@ namespace AccountService.API.Configuration
                     });
                     cfg.ConfigureEndpoints(context);
 
-                    cfg.ReceiveEndpoint("lawyer-created-event-queue", e =>
-                    {
-                        e.ConfigureConsumer<LawyerCreatedEventConsumer>(context);
-                    });
-                    cfg.ReceiveEndpoint("lawyer-updated-event-queue", e =>
-                    {
-                        e.ConfigureConsumer<LawyerUpdatedEventConsumer>(context);
-                    });
-                    cfg.ReceiveEndpoint("lawyer-deleted-event-queue", e =>
-                    {
-                        e.ConfigureConsumer<LawyerDeletedEventConsumer>(context);
-                    });
-                    cfg.ReceiveEndpoint("service-created-event", e =>
-                    {
-                        e.ConfigureConsumer<ServiceCreatedConsumer>(context);
-                    });
-                    cfg.ReceiveEndpoint("service-updated-event", e =>
-                    {
-                        e.ConfigureConsumer<ServiceUpdatedConsumer>(context);
-                    });
-                    cfg.ReceiveEndpoint("service-deleted-event", e =>
-                    {
-                        e.ConfigureConsumer<ServiceDeletedConsumer>(context);
-                    });
+                    
                 });
             });
 

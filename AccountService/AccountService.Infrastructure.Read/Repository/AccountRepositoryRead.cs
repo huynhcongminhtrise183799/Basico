@@ -194,5 +194,25 @@ namespace AccountService.Infrastructure.Read.Repository
         {
             return await _context.Services.ToListAsync();
         }
+        public async Task UpdateAccountTicketRequestAsync(Guid userId, Guid ticketPackageId, int accountTicketRequest)
+        {
+            var account = await _context.Accounts
+      .FirstOrDefaultAsync(x => x.AccountId == userId);
+
+            if (account == null)
+            {
+                throw new Exception("Account not found");
+            }
+
+            account.AccountTicketRequest += accountTicketRequest;
+
+            _context.Accounts.Update(account);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<Account?> GetByUserIdAsync(Guid userId)
+        {
+            return await _context.Accounts
+                .FirstOrDefaultAsync(a => a.AccountId == userId);
+        }
     }
 }

@@ -9,7 +9,8 @@ namespace TicketService.Domain.Entities
 	public enum TicketStatus
 	{
 		InProgress,
-		ANSWERED
+		ANSWERED,
+		CANCELLED
 	}
 	public class Ticket
 	{

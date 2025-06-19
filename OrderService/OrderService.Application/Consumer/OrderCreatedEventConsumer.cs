@@ -1,0 +1,51 @@
+﻿using Contracts.Events;
+using MassTransit;
+using OrderService.Domain.Entities;
+using OrderService.Infrastructure.Read.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OrderService.Application.Consumer
+{
+    public class OrderCreatedEventConsumer : IConsumer<OrderCreatedEvent>
+    {
+        private readonly IOrderRepositoryRead _dbContextWrite;
+
+        public OrderCreatedEventConsumer(IOrderRepositoryRead dbContextWrite)
+        {
+            _dbContextWrite = dbContextWrite;
+        }
+
+        public async Task Consume(ConsumeContext<OrderCreatedEvent> context)
+        {
+            var evt = context.Message;
+
+            var order = new Order
+            {
+                OrderId = evt.OrderId,
+                UserId = evt.UserId,
+                Status = OrderStatus.Completed.ToString(),
+                TotalPrice = evt.Price * evt.Quantity,
+                OrderDetails = new List<OrderDetail>(),
+
+            };
+
+            var orderDetail = new OrderDetail
+            {
+                OrderDetailId = Guid.NewGuid(),
+                OrderId = evt.OrderId,
+                TicketPackageId = evt.TicketPackageId,
+                Quantity = evt.Quantity,
+                Price = evt.Price,
+                FormTemplateId = null,
+            };
+
+            await _dbContextWrite.AddOrderAsync(order, CancellationToken.None);
+            await _dbContextWrite.AddOrderDetailAsync(orderDetail, CancellationToken.None);
+            await _dbContextWrite.SaveChangesAsync(CancellationToken.None);
+        }
+    }
+}

@@ -219,5 +219,10 @@ namespace AccountService.Infrastructure.Write.Repository
             return await _context.Services.FirstOrDefaultAsync(x => x.ServiceId == serviceId);
         }
 
+        public async Task<Account> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+        {
+            return await _context.Accounts
+                .FirstOrDefaultAsync(a => a.AccountId == userId, cancellationToken);
+        }
     }
 }
