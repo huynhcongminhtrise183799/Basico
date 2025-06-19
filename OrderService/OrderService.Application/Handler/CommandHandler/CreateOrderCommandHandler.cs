@@ -16,6 +16,7 @@ namespace OrderService.Application.Handler.CommandHandler
     {
         private readonly IOrderRepositoryWrite _orderRepository;
 		private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IClientFactory _clientFactory;
 
 		public CreateOrderCommandHandler(IOrderRepositoryWrite orderRepository, IPublishEndpoint publishEndpoint)
         {

@@ -25,8 +25,8 @@ namespace AccountService.API
 
 			// Gọi service registration
 			ServiceRegistration.ConfigureServices(builder);
-
-			var app = builder.Build();
+  
+            var app = builder.Build();
 
 			if (app.Environment.IsDevelopment())
 			{

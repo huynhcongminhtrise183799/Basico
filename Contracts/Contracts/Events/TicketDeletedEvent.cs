@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrderService.Application.Handler.CommandHandler
+namespace Contracts.Events
 {
-	internal class Class1
-	{
-	}
+    public class TicketDeletedEvent
+    {
+        public Guid TicketId { get; set; }
+    }
 }

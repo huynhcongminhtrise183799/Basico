@@ -29,4 +29,8 @@
     <ProjectReference Include="..\AccountService.Infrastructure.Read\AccountService.Infrastructure.Read.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Ticket\" />
+  </ItemGroup>
+
 </Project>

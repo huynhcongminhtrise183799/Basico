@@ -9,6 +9,8 @@ namespace OrderService.Domain.IRepositories
 {
 	public interface IOrderRepositoryRead
 	{
-		Task AddOrderAsync(Order order);
+        Task AddOrderAsync(Order order, CancellationToken cancellationToken = default);
+        Task AddOrderDetailAsync(OrderDetail orderDetail, CancellationToken cancellationToken = default);
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
 	}
 }

@@ -38,6 +38,8 @@ using AccountService.Infrastructure.Write.Message;
 using AccountService.Application.Queries.Service;
 using AccountService.Application.Queries.Lawyer;
 using AccountService.Application.Consumers.LawyerDayOff;
+using AccountService.Application.Consumers.Ticket;
+
 
 
 namespace AccountService.API.Configuration
@@ -129,6 +131,10 @@ namespace AccountService.API.Configuration
                 x.AddConsumer<LawyerDeletedEventConsumer>();
 				x.AddConsumer<CheckLawyerDayOffConsumer>();
 				x.AddConsumer<GetLawyerNameConsumer>();
+				x.AddConsumer<UpdateAccountTicketRequestConsumer>();
+                x.AddConsumer<ValidatationRequestTicketConsumer>();
+				x.AddConsumer<DecreseTicketRequestConsumer>();
+
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host("localhost", "/", h =>
@@ -139,8 +145,6 @@ namespace AccountService.API.Configuration
                     cfg.ConfigureEndpoints(context);
 
                     
-
-
                 });
             });
 

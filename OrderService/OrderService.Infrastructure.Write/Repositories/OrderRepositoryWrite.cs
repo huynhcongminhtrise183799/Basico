@@ -10,15 +10,32 @@ namespace OrderService.Infrastructure.Write.Repositories
 {
 	public class OrderRepositoryWrite : IOrderRepositoryWrite
 	{
-		private readonly OrderDbContextWrite _context;
-		public OrderRepositoryWrite(OrderDbContextWrite context)
+        private readonly OrderDbContextWrite _dbContext;
+        public OrderRepositoryWrite(OrderDbContextWrite dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public async Task AddOrderAsync(Order order, CancellationToken cancellationToken = default)
+        {
+            await _dbContext.Orders.AddAsync(order, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task AddOrderAsync(Order order)
+        {
+            await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task AddOrderDetailAsync(OrderDetail orderDetail, CancellationToken cancellationToken = default)
 		{
-			_context = context;
+            await _dbContext.OrderDetails.AddAsync(orderDetail, cancellationToken);
 		}
-		public async Task AddOrderAsync(Order order)
+
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
-			await _context.Orders.AddAsync(order);
-			await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
 		}
 	}
 }

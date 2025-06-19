@@ -20,5 +20,20 @@ namespace OrderService.Infrastructure.Read.Repositories
 			await _context.Orders.AddAsync(order);
 			await _context.SaveChangesAsync();
 		}
-	}
+
+        public async Task AddOrderAsync(Order order, CancellationToken cancellationToken = default)
+        {
+            await _context.Orders.AddAsync(order, cancellationToken);
+        }
+
+        public async Task AddOrderDetailAsync(OrderDetail orderDetail, CancellationToken cancellationToken = default)
+        {
+            await _context.OrderDetails.AddAsync(orderDetail, cancellationToken);
+        }
+
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+    }
 }

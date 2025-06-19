@@ -1,9 +1,10 @@
-
+﻿
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TicketService.Application.Consumer;
+using TicketService.Application.Consumer.Ticket;
 using TicketService.Application.Handler.CommandHandler;
 using TicketService.Domain.IRepositories;
 using TicketService.Infrastructure.Read;
@@ -64,12 +65,18 @@ namespace TicketService.API
             });
 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateTicketPackageCommandHandler>());
+     
 
             builder.Services.AddMassTransit(x =>
             {
                 x.AddConsumer<TicketPackageCreatedConsumer>();
                 x.AddConsumer<TicketPackageUpdatedConsumer>();
                 x.AddConsumer<TicketPackageDeletedConsumer>();
+                x.AddConsumer<TicketCreatedConsumer>();
+                x.AddConsumer<TicketRepliedConsumer>();
+                x.AddConsumer<TicketDeletedConsumer>();
+                x.AddConsumer<GetRequestAmountConsumer>();
+
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host("localhost", "/", h =>
@@ -90,6 +97,11 @@ namespace TicketService.API
 
             builder.Services.AddScoped<ITicketPackageRepositoryRead, TicketPackageRepositoryRead>();
             builder.Services.AddScoped<ITicketPackageRepositoryWrite, TicketPackageRepositoryWrite>();
+            builder.Services.AddScoped<ITicketRepositoryWrite, TicketRepositoryWrite>();
+            builder.Services.AddScoped<ITicketRepositoryRead, TicketRepositoryRead>();
+
+
+
 
             var app = builder.Build();
 
