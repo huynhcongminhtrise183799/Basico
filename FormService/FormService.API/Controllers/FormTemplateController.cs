@@ -36,8 +36,9 @@ namespace FormService.API.Controllers
             var command = new CreateFormTemplateCommand(
                 request.ServiceId,
                 request.FormTemplateName,
-                request.FormTemplateData
-            );
+                request.FormTemplateData,
+				request.Price
+			);
             var result = await _mediator.Send(command);
             if (result == null)
             {
@@ -125,8 +126,10 @@ namespace FormService.API.Controllers
                 request.FormTemplateName,
                 request.FormTemplateData,
                  request.ServiceId,
-                request.Status
-            );
+
+                request.Status,
+				request.Price
+			);
             var result = await _mediator.Send(command);
             if (result == null)
             {

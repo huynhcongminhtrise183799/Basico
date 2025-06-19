@@ -31,5 +31,7 @@ namespace BookingService.Domain.IRepository
 		Task<List<Booking>> GetBookingsByStatusInDay(DateOnly bookingDate, string status);
 
 		Task<bool> CheckInBooking(Guid bookingId);
+		Task UpdateStatusBookingToPaid(Guid? bookingId);
+
 	}
 }

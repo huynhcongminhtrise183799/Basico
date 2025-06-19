@@ -31,7 +31,8 @@ namespace FormService.Application.Handler.CommandHandler
                 FormTemplateData = request.FormTemplateData,
                 FormTemplateName = request.FormTemplateName,
                 ServiceId = request.ServiceId,
-                Status = Status.ACTIVE.ToString()
+				Price = request.Price,
+				Status = Status.ACTIVE.ToString()
             };
             await _formTemplateRepositoryWrite.AddFormTemplateAsync(template);
             var formTemplateCreatedEvent = new FormTemplateCreatedEvent
@@ -40,7 +41,8 @@ namespace FormService.Application.Handler.CommandHandler
                 ServiceId = template.ServiceId,
                 FormTemplateName = template.FormTemplateName,
                 FormTemplateData = template.FormTemplateData,
-                Status = template.Status
+				Price = template.Price,
+				Status = template.Status
             };
             await _publishEndpoint.Publish(formTemplateCreatedEvent, cancellationToken);
             return new FormTemplateResponse
@@ -49,7 +51,8 @@ namespace FormService.Application.Handler.CommandHandler
                 ServiceId = template.ServiceId,
                 FormTemplateName = template.FormTemplateName,
                 FormTemplateData = template.FormTemplateData,
-                Status = template.Status
+				Price = template.Price,
+				Status = template.Status
             };
 
         }

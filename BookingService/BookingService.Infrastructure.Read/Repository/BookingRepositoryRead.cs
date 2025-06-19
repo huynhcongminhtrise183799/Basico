@@ -120,6 +120,20 @@ namespace BookingService.Infrastructure.Read.Repository
 			await _context.SaveChangesAsync();
 			return true;
 		}
+
+		public async Task UpdateStatusBookingToPaid(Guid? bookingId)
+		{
+			var booking = await _context.Bookings.FindAsync(bookingId);
+			if (booking != null)
+			{
+				booking.Status = BookingStatus.Paid.ToString();
+				await _context.SaveChangesAsync();
+			}
+			else
+			{
+				throw new KeyNotFoundException("Booking not found");
+			}
+		}
 	}
 
 }

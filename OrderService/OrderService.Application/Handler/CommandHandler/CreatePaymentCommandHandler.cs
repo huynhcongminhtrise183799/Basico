@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using Contracts;
+using MassTransit;
 using MediatR;
 using OrderService.Application.Command;
 using OrderService.Application.Event;
@@ -36,6 +37,7 @@ namespace OrderService.Application.Handler.CommandHandler
 				Status = model.Status.ToString(),
 				PaymentMethod = model.PaymentMethod.ToString()
 			};
+			
 
 			await _repoWrite.AddPaymentAsync(payment);
 
@@ -50,7 +52,16 @@ namespace OrderService.Application.Handler.CommandHandler
 				payment.Status,
 				payment.PaymentMethod
 			);
+			
 			await _publishEndpoint.Publish(createPaymentEvent, cancellationToken);
+			if (model.IsBooking)
+			{
+				var @event = new PaymentSuccessEvent
+				{
+					BookingId = payment.BookingId
+				};
+				await _publishEndpoint.Publish(@event, cancellationToken);
+			}
 			return payment.PaymentId.ToString();
 		}
 	}
