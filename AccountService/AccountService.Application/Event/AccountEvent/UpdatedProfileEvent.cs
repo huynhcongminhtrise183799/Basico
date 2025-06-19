@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace AccountService.Application.Event.AccountEvent
 {
-	public record UpdatedProfileEvent (Guid AccountId, string AccountFullName, int AccountGender);
+	public record UpdatedProfileEvent (Guid AccountId, string AccountFullName, int AccountGender, string AccountImage);
 }

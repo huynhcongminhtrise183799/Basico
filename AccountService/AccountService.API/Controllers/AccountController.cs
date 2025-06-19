@@ -132,7 +132,7 @@ namespace AccountService.API.Controllers{
 				});
 			}
 
-			var command = new UpdateProfileCommand(Guid.Parse(accountId), request.FullName, request.Gender);
+			var command = new UpdateProfileCommand(Guid.Parse(accountId), request.FullName, request.Gender, request.Image);
 			var result = await _mediator.Send(command);
 
 			if (!result)

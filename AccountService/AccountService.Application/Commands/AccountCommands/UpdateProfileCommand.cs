@@ -10,11 +10,14 @@ namespace AccountService.Application.Commands.AccountCommands
         public string FullName { get; }
         public int Gender { get; }
 
-		public UpdateProfileCommand(Guid accountId, string fullName, int gender)
+        public string Image { get; set; } = string.Empty;
+
+		public UpdateProfileCommand(Guid accountId, string fullName, int gender, string image)
         {
             AccountId = accountId;
             FullName = fullName;
             Gender = gender;
+			Image = image;
 		}
     }
 }

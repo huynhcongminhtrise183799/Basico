@@ -30,9 +30,10 @@ namespace AccountService.Application.Handler.CommandHandler.AccountHandler
 
             account.AccountFullName = request.FullName;
             account.AccountGender = request.Gender;
+			account.AccountImage = request.Image;
 
 			await _repoWrite.UpdateAccount(account);
-            await _publishEndpoint.Publish(new UpdatedProfileEvent(account.AccountId, account.AccountFullName, account.AccountGender));
+            await _publishEndpoint.Publish(new UpdatedProfileEvent(account.AccountId, account.AccountFullName, account.AccountGender, account.AccountImage));
 			return true;
         }
     }
