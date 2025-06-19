@@ -13,5 +13,7 @@ namespace OrderService.Domain.IRepositories
         Task AddOrderDetailAsync(OrderDetail orderDetail, CancellationToken cancellationToken = default);
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
 		Task AddOrderAsync(Order order);
+
+		Task UpdateOrderStatus(Order order);
 	}
 }

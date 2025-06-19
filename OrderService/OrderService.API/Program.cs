@@ -50,6 +50,7 @@ namespace OrderService.API
 				x.AddConsumers(typeof(CreatePaymentConsumer).Assembly);
 				x.AddConsumers(typeof(CreateOrderConsumer).Assembly);
 				x.AddConsumer<OrderCreatedEventConsumer>();
+				x.AddConsumer<UpdateOrderStatusConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
 				{

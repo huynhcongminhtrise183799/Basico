@@ -27,7 +27,7 @@ namespace OrderService.Application.Consumer
             {
                 OrderId = evt.OrderId,
                 UserId = evt.UserId,
-                Status = OrderStatus.Completed.ToString(),
+                Status = OrderStatus.Pending.ToString(),
                 TotalPrice = evt.Price * evt.Quantity,
                 OrderDetails = new List<OrderDetail>(),
 
