@@ -30,6 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\OrderService.Application\OrderService.Application.csproj" />
 	  <ProjectReference Include="..\OrderService.Infrastructure.Read\OrderService.Infrastructure.Read.csproj" />
 	  <ProjectReference Include="..\OrderService.Infrastructure.Write\OrderService.Infrastructure.Write.csproj" />
 	</ItemGroup>

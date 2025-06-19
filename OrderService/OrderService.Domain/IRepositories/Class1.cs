@@ -1,7 +1,8 @@
-﻿namespace OrderService.Domain.IRepositories
+﻿using OrderService.Domain.Entities;
+
+namespace OrderService.Domain.IRepositories
 {
     public class Class1
     {
-
-    }
+	}
 }
