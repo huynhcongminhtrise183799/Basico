@@ -14,5 +14,7 @@ namespace BookingService.Domain.IRepository
 		Task UpdateBookingAsync(Booking booking);
 
 		Task DeleteBookingAsync(Guid bookingId);
+
+		Task<bool> CheckInBookingAsync(Guid bookingId);
 	}
 }

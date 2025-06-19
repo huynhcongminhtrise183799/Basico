@@ -99,5 +99,19 @@ namespace BookingService.API.Controllers
 			var result = await _mediator.Send(query);
 			return Ok(result);
 		}
+
+		[HttpPut("check-in/{bookingId}")]
+		[SwaggerOperation(Summary = "Check in booking")]
+		public async Task<IActionResult> CheckInBooking(Guid bookingId)
+		{
+			var command = new CheckInBookingCommand(bookingId);
+			var result = await _mediator.Send(command);
+			if (!result)
+			{
+				return NotFound("Booking could not be checked in.");
+			}
+
+			return Ok("Booking checked in successfully.");
+		}
 	}
 }

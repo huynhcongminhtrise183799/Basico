@@ -108,6 +108,18 @@ namespace BookingService.Infrastructure.Read.Repository
 		{
 			return await _context.Bookings.Where(b => b.BookingDate == bookingDate && b.Status.ToUpper() == status.ToUpper()).ToListAsync();
 		}
+
+		public async Task<bool> CheckInBooking(Guid bookingId)
+		{
+			var booking = await _context.Bookings.FindAsync(bookingId);
+			if (booking == null)
+			{
+				throw new KeyNotFoundException("Booking not found");
+			}
+			booking.Status = BookingStatus.CheckedIn.ToString();
+			await _context.SaveChangesAsync();
+			return true;
+		}
 	}
 
 }

@@ -16,10 +16,10 @@ namespace BookingService.Application.Handler.QueryHandler
 	public class GetFreeSlotsForLawyerHandler : IRequestHandler<GetFreeSlotsForLawyerQuery, List<Slot>>
 	{
 		private readonly ISlotRepositoryRead _slotRepositoryRead;
-		private readonly IEventPublisher _publishEndpoint;
+		//private readonly IEventPublisher _publishEndpoint;
+		private readonly IClientFactory _publishEndpoint;
 
-
-		public GetFreeSlotsForLawyerHandler(ISlotRepositoryRead slotRepositoryRead, IEventPublisher publishEndpoint)
+		public GetFreeSlotsForLawyerHandler(ISlotRepositoryRead slotRepositoryRead, IClientFactory publishEndpoint)
 		{
 			_slotRepositoryRead = slotRepositoryRead;
 			_publishEndpoint = publishEndpoint;

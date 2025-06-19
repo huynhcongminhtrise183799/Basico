@@ -15,6 +15,19 @@ namespace BookingService.Infrastructure.Write.Repository
 		{
 			_context = context;
 		}
+
+		public async Task<bool> CheckInBookingAsync(Guid bookingId)
+		{
+			var booking = await _context.Bookings.FindAsync(bookingId);
+			if (booking == null)
+			{
+				throw new KeyNotFoundException("Booking not found");
+			}
+			booking.Status = BookingStatus.CheckedIn.ToString();
+			await _context.SaveChangesAsync();
+			return true;
+		}
+
 		public async Task CreateBookingAsync(Booking booking)
 		{
 			await _context.Bookings.AddAsync(booking);
