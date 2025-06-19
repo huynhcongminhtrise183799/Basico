@@ -1,7 +1,17 @@
-
+﻿
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using OrderService.Application.Command;
+using OrderService.Application.Consumer;
+using OrderService.Application.Event;
+using OrderService.Application.Handler.CommandHandler;
+using OrderService.Application.IService;
+using OrderService.Application.Service;
+using OrderService.Domain.IRepositories;
 using OrderService.Infrastructure.Read;
+using OrderService.Infrastructure.Read.Repositories;
 using OrderService.Infrastructure.Write;
+using OrderService.Infrastructure.Write.Repositories;
 
 namespace OrderService.API
 {
@@ -12,6 +22,40 @@ namespace OrderService.API
 			var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
+			builder.Services.AddScoped<IPaymentService, PaymentService>();
+			// Add Repo
+			builder.Services.AddScoped<IOrderRepositoryWrite, OrderRepositoryWrite>();
+			builder.Services.AddScoped<IOrderRepositoryRead, OrderRepositoryRead>();
+			builder.Services.AddScoped<IPaymentRepositoryRead, PaymentRepositoryRead >();
+			builder.Services.AddScoped<IPaymentRepositoryWrite, PaymentRepositoryWrite >();
+
+			// Đăng ký MediatR
+			builder.Services.AddMediatR(cfg =>
+			{
+				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentCommand).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentEvent).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentConsumer).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommandHandler).Assembly);
+			});
+
+			// MassTransit
+			builder.Services.AddMassTransit(x =>
+			{
+				x.AddConsumers(typeof(CreatePaymentConsumer).Assembly);
+				x.AddConsumers(typeof(CreateOrderConsumer).Assembly);
+
+				x.UsingRabbitMq((context, cfg) =>
+				{
+					cfg.Host("localhost", "/", h =>
+					{
+						h.Username("guest");
+						h.Password("guest");
+					});
+					cfg.ConfigureEndpoints(context);
+				});
+			});
 
 			builder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
