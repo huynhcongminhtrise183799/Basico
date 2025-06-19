@@ -32,7 +32,8 @@ namespace AccountService.Application.Handler.QueryHandler.AccountQueryHandler
                 FullName = account.AccountFullName,
                 AccountTicketRequest = account.AccountTicketRequest,
                 Gender = account.AccountGender,
-				Username = account.AccountUsername
+				Username = account.AccountUsername,
+				Image = account.AccountImage ?? string.Empty // Ensure Image is not null
 			};
         }
     }

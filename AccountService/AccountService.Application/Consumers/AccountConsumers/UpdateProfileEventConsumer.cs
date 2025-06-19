@@ -26,6 +26,7 @@ namespace AccountService.Application.Consumers.AccountConsumers
 			{
 				account.AccountFullName = message.AccountFullName;
 				account.AccountGender = message.AccountGender;
+				account.AccountImage = message.AccountImage;
 				await _repo.UpdateAccount(account);
 				Console.WriteLine("Profile updated successfully");
 			}
