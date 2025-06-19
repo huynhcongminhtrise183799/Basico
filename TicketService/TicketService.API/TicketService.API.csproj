@@ -37,4 +37,6 @@
 	  <ProjectReference Include="..\TicketService.Infrastructure.Write\TicketService.Infrastructure.Write.csproj" />
 	</ItemGroup>
 
+	<ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
 </Project>
