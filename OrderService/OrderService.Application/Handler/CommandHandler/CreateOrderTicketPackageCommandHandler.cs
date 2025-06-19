@@ -40,7 +40,7 @@ namespace OrderService.Application.Handler.CommandHandler
                 UserId = request.UserId,
                 OrderDetails = new List<OrderDetail>(),
                 TotalPrice = request.Price * request.Quantity,
-                Status = OrderStatus.Completed.ToString()
+                Status = OrderStatus.Pending.ToString()
             };
             await _orderRepository.AddOrderAsync(order, cancellationToken);
 

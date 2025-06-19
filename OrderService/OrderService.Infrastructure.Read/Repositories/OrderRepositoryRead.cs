@@ -1,4 +1,5 @@
-﻿using OrderService.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OrderService.Domain.Entities;
 using OrderService.Domain.IRepositories;
 using System;
 using System.Collections.Generic;
@@ -31,9 +32,24 @@ namespace OrderService.Infrastructure.Read.Repositories
             await _context.OrderDetails.AddAsync(orderDetail, cancellationToken);
         }
 
-        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+		public async Task<Order> GetOrderByIdAsync(Guid? orderId, CancellationToken cancellationToken = default)
+		{
+			return await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+		}
+
+		public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await _context.SaveChangesAsync(cancellationToken);
         }
-    }
+
+		public async Task UpdateOrderStatus(Order order)
+		{
+			var existOrder = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == order.OrderId);
+			if (existOrder != null)
+			{
+				existOrder.Status = order.Status;
+				await _context.SaveChangesAsync();
+			}
+		}
+	}
 }

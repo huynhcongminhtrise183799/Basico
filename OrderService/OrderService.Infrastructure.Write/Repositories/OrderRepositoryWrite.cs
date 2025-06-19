@@ -37,5 +37,16 @@ namespace OrderService.Infrastructure.Write.Repositories
 		{
             await _dbContext.SaveChangesAsync(cancellationToken);
 		}
+
+		public async Task UpdateOrderStatus(Order order)
+		{
+            var existingOrder = _dbContext.Orders.FirstOrDefault(o => o.OrderId == order.OrderId);
+			if (existingOrder != null)
+			{
+				existingOrder.Status = order.Status;
+				await _dbContext.SaveChangesAsync();
+			}
+
+		}
 	}
 }

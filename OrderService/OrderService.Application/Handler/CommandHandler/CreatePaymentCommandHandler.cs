@@ -62,6 +62,14 @@ namespace OrderService.Application.Handler.CommandHandler
 				};
 				await _publishEndpoint.Publish(@event, cancellationToken);
 			}
+			else
+			{
+				var @event = new UpdateOrderStatusEvent
+				{
+					OrderId = payment.OrderId
+				};
+				await _publishEndpoint.Publish(@event, cancellationToken);
+			}
 			return payment.PaymentId.ToString();
 		}
 	}
