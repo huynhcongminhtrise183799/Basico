@@ -1,4 +1,5 @@
 ﻿using AccountService.Application.Commands.Service;
+using AccountService.Application.Queries.Service;
 using Application.Services.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -48,5 +49,16 @@ namespace AccountService.API.Controllers
             if (service == null) return NotFound();
             return Ok(service);
         }
+
+        [HttpGet("/active-services")]
+        public async Task<IActionResult> GetAllActiveService()
+        {
+            var query = new GetAllServiceByStatusQuery
+            {
+                Status = "Active"
+            };
+			var services = await _mediator.Send(query);
+			return Ok(services);
+		}
     }
 }

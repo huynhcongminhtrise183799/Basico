@@ -9,9 +9,10 @@ namespace BookingService.Domain.Entities
 	public enum BookingStatus
 	{
 		Pending,
-		Confirmed,
+		CheckedIn,
 		Cancelled,
-		Completed
+		Completed,
+		Paid
 	}				
 	public class Booking
 	{

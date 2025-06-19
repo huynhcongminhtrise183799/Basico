@@ -61,6 +61,9 @@ namespace FormService.Infrastructure.Read.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
 

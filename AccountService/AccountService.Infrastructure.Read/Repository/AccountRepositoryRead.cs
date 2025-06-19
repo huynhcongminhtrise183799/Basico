@@ -180,7 +180,7 @@ namespace AccountService.Infrastructure.Read.Repository
             var entity = await _context.Services.FirstOrDefaultAsync(x => x.ServiceId == serviceId);
             if (entity != null)
             {
-                _context.Services.Remove(entity);
+				entity.Status = ServiceStatus.Inactive.ToString();
                 await _context.SaveChangesAsync();
             }
         }
@@ -194,6 +194,31 @@ namespace AccountService.Infrastructure.Read.Repository
         {
             return await _context.Services.ToListAsync();
         }
+
+		public async Task<List<Account>> GetLaywersByServiceId(Guid serviceId)
+		{
+			return await _context.Accounts
+				.Include(a => a.LawyerSpecificServices)
+				.Where(a => a.AccountRole == "LAWYER" && a.LawyerSpecificServices.Any(s => s.ServiceId == serviceId))
+				.ToListAsync();
+		}
+
+		public async Task<string?> GetLaywerNameByLawyerId(Guid id)
+		{
+			return await _context.Accounts
+				.Where(a => a.AccountId == id && a.AccountRole == "LAWYER")
+				.Select(a => a.AccountFullName)
+				.FirstOrDefaultAsync();
+		}
+
+		public async Task<string?> GetCustomerNameByCustomerId(Guid? customerId)
+		{
+			return await _context.Accounts
+				.Where(a => a.AccountId == customerId)
+				.Select(a => a.AccountFullName)
+				.FirstOrDefaultAsync();
+		}
+	
         public async Task UpdateAccountTicketRequestAsync(Guid userId, Guid ticketPackageId, int accountTicketRequest)
         {
             var account = await _context.Accounts

@@ -35,13 +35,20 @@ namespace AccountService.Domain.IRepositories
         Task UpdateLawyerAsync(Account account, CancellationToken cancellationToken = default);
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
-        // Service
+        Task<List<Account>> GetLaywersByServiceId(Guid serviceId);
+
+        //Service
         Task AddServiceAsync(Service service);
         Task UpdateServiceAsync(Service service);
         Task DeleteServiceAsync(Guid serviceId);
         Task<Service> GetServiceByIdAsync(Guid serviceId);
         Task<IEnumerable<Service>> GetAllServiceAsync();
 
+        Task<string?> GetLaywerNameByLawyerId(Guid id);
+
+        Task<string?> GetCustomerNameByCustomerId(Guid? customerId);
+
+	
         // Ticket request
         Task UpdateAccountTicketRequestAsync(Guid userId, Guid ticketPackageId, int accountTicketRequest);
         Task<Account?> GetByUserIdAsync(Guid userId);

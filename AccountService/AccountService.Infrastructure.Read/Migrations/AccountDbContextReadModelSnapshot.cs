@@ -109,6 +109,25 @@ namespace AccountService.Infrastructure.Read.Migrations
                     b.ToTable("ForgotPassword", (string)null);
                 });
 
+            modelBuilder.Entity("AccountService.Domain.Entity.LawyerDayOffSchedule", b =>
+                {
+                    b.Property<Guid>("LawyerDayOffScheduleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LawyerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("OffDay")
+                        .HasColumnType("date");
+
+                    b.HasKey("LawyerDayOffScheduleId");
+
+                    b.HasIndex("LawyerId");
+
+                    b.ToTable("LawyerDayOffSchedule", (string)null);
+                });
+
             modelBuilder.Entity("AccountService.Domain.Entity.LawyerSpecificService", b =>
                 {
                     b.Property<Guid>("LawyerId")
@@ -142,9 +161,49 @@ namespace AccountService.Infrastructure.Read.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("ServiceId");
 
                     b.ToTable("Service", (string)null);
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.Shift", b =>
+                {
+                    b.Property<Guid>("ShiftId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time without time zone");
+
+                    b.HasKey("ShiftId");
+
+                    b.ToTable("Shift", (string)null);
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.SpecificLawyerDayOffSchedule", b =>
+                {
+                    b.Property<Guid>("LawyerDayOffScheduleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ShiftId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("LawyerDayOffScheduleId", "ShiftId");
+
+                    b.HasIndex("ShiftId");
+
+                    b.ToTable("SpecificLawyerDayOffSchedule", (string)null);
                 });
 
             modelBuilder.Entity("AccountService.Domain.Entity.ForgotPassword", b =>
@@ -157,6 +216,18 @@ namespace AccountService.Infrastructure.Read.Migrations
                         .HasConstraintName("FK_ForgotPassword_Account");
 
                     b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.LawyerDayOffSchedule", b =>
+                {
+                    b.HasOne("AccountService.Domain.Entity.Account", "Lawyer")
+                        .WithMany("LawyerDayOffSchedules")
+                        .HasForeignKey("LawyerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_LawyerDayOffSchedule_Account");
+
+                    b.Navigation("Lawyer");
                 });
 
             modelBuilder.Entity("AccountService.Domain.Entity.LawyerSpecificService", b =>
@@ -180,16 +251,49 @@ namespace AccountService.Infrastructure.Read.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("AccountService.Domain.Entity.SpecificLawyerDayOffSchedule", b =>
+                {
+                    b.HasOne("AccountService.Domain.Entity.LawyerDayOffSchedule", "LawyerDayOffSchedule")
+                        .WithMany("SpecificLawyerDayOffSchedules")
+                        .HasForeignKey("LawyerDayOffScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_SpecificLawyerDayOffSchedule_LawyerDayOffSchedule");
+
+                    b.HasOne("AccountService.Domain.Entity.Shift", "Shift")
+                        .WithMany("SpecificLawyerDayOffSchedules")
+                        .HasForeignKey("ShiftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_SpecificLawyerDayOffSchedule_Shift");
+
+                    b.Navigation("LawyerDayOffSchedule");
+
+                    b.Navigation("Shift");
+                });
+
             modelBuilder.Entity("AccountService.Domain.Entity.Account", b =>
                 {
                     b.Navigation("ForgotPasswords");
 
+                    b.Navigation("LawyerDayOffSchedules");
+
                     b.Navigation("LawyerSpecificServices");
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.LawyerDayOffSchedule", b =>
+                {
+                    b.Navigation("SpecificLawyerDayOffSchedules");
                 });
 
             modelBuilder.Entity("AccountService.Domain.Entity.Service", b =>
                 {
                     b.Navigation("LawyerSpecificServices");
+                });
+
+            modelBuilder.Entity("AccountService.Domain.Entity.Shift", b =>
+                {
+                    b.Navigation("SpecificLawyerDayOffSchedules");
                 });
 #pragma warning restore 612, 618
         }

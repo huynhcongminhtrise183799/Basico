@@ -27,7 +27,8 @@ namespace FormService.Application.Consumer
                 ServiceId = mess.ServiceId,
                 FormTemplateName = mess.FormTemplateName,
                 FormTemplateData = mess.FormTemplateData,
-                Status = mess.Status
+				Price = mess.Price,
+				Status = mess.Status
             };
             await _repo.UpdateFormTemplateAsync(template);
         }

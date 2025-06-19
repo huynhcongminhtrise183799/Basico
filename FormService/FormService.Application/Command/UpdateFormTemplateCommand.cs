@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace FormService.Application.Command
 {
-    public record UpdateFormTemplateCommand(Guid id, string name, string data, Guid serviceId, string status) : IRequest<FormTemplateResponse>;
+    public record UpdateFormTemplateCommand(Guid id, string name, string data, Guid serviceId, string status, double Price) : IRequest<FormTemplateResponse>;
 
 }

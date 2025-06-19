@@ -4,6 +4,7 @@ using AccountService.Domain.IRepositories;
 using MassTransit;
 using MediatR;
 using AccountService.Application.Event.Service;
+using AccountService.Domain.Entity;
 
 
 namespace AccountService.Application.Handler.CommandHandler.Service
@@ -25,8 +26,9 @@ namespace AccountService.Application.Handler.CommandHandler.Service
             {
                 ServiceId = Guid.NewGuid(),
                 ServiceName = request.ServiceName,
-                ServiceDescription = request.ServiceDescription
-            };
+                ServiceDescription = request.ServiceDescription,
+				Status = ServiceStatus.Active.ToString()
+			};
 
             await _repository.AddServiceAsync(service);
 
@@ -34,8 +36,9 @@ namespace AccountService.Application.Handler.CommandHandler.Service
             {
                 ServiceId = service.ServiceId,
                 ServiceName = service.ServiceName,
-                ServiceDescription = service.ServiceDescription
-            }, cancellationToken);
+                ServiceDescription = service.ServiceDescription,
+				Status = service.Status
+			}, cancellationToken);
 
             return service.ServiceId;
         }

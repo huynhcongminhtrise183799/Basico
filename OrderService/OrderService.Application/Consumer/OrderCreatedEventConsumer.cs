@@ -1,7 +1,7 @@
 ﻿using Contracts.Events;
 using MassTransit;
 using OrderService.Domain.Entities;
-using OrderService.Infrastructure.Read.Repositories;
+using OrderService.Domain.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

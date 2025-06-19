@@ -15,5 +15,7 @@ namespace FormService.Application.DTOs.Request
         public string Status { get; set; }
 
         public Guid ServiceId { get; set; }
-    }
+
+		public double Price { get; set; }
+	}
 }

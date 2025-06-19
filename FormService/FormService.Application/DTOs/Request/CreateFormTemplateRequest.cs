@@ -17,5 +17,9 @@ namespace FormService.Application.DTOs.Request
 
         [Required(ErrorMessage = "FormTemplateData is required")]
         public string FormTemplateData { get; set; }
-    }
+
+		[Required(ErrorMessage = "Price is required")]
+		[Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than zero")]
+		public double Price { get; set; }
+	}
 }

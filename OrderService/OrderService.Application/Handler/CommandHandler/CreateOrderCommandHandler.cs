@@ -1,81 +1,64 @@
-﻿using Contracts.Events;
-using MassTransit;
+﻿using MassTransit;
 using MediatR;
 using OrderService.Application.Command;
+using OrderService.Application.Event;
 using OrderService.Domain.Entities;
-using OrderService.Infrastructure.Read.Repositories;
+using OrderService.Domain.IRepositories;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace OrderService.Application.Handler.CommandHandler
 {
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Guid>
     {
         private readonly IOrderRepositoryWrite _orderRepository;
-        private readonly IPublishEndpoint _publishEndpoint;
+		private readonly IPublishEndpoint _publishEndpoint;
         private readonly IClientFactory _clientFactory;
 
-        public CreateOrderCommandHandler(
-            IOrderRepositoryWrite orderRepository,
-            IPublishEndpoint publishEndpoint,
-            IClientFactory clientFactory
-            )
+		public CreateOrderCommandHandler(IOrderRepositoryWrite orderRepository, IPublishEndpoint publishEndpoint)
         {
             _orderRepository = orderRepository;
-            _publishEndpoint = publishEndpoint;
-            _clientFactory = clientFactory;
-        }
+			_publishEndpoint = publishEndpoint;
+		}
 
         public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            var getRequest = new GetRequestAmountEvent
-            {
-                TicketPackageId = request.TicketPackageId
-            };
-            var client = _clientFactory.CreateRequestClient<GetRequestAmountEvent>();
-            var response = await client.GetResponse<RequestAmountResponseEvent>(getRequest, cancellationToken);
-
             var order = new Order
             {
-                OrderId = Guid.NewGuid(),
                 UserId = request.UserId,
-                OrderDetails = new List<OrderDetail>(),
-                TotalPrice =request.Price * request.Quantity,
-                Status = OrderStatus.Completed.ToString()
+                TotalPrice = request.TotalPrice,
+                Status = OrderStatus.Pending.ToString(),
+                OrderDetails = request.OrderDetails?.Select(od => new OrderDetail
+                {
+                    TicketPackageId = null,
+                    FormTemplateId = od.FormTemplateId,
+                    Quantity = od.Quantity,
+                    Price = od.Price
+                }).ToList() ?? new List<OrderDetail>()
             };
-            await _orderRepository.AddOrderAsync(order, cancellationToken);
 
-            var orderDetail = new OrderDetail
-            {
-                OrderDetailId = Guid.NewGuid(),
-                OrderId = order.OrderId,
-                TicketPackageId = request.TicketPackageId,
-                Quantity = request.Quantity,
-                Price = request.Price
-            };
-            await _orderRepository.AddOrderDetailAsync(orderDetail, cancellationToken);
+            await _orderRepository.AddOrderAsync(order);
 
-            await _orderRepository.SaveChangesAsync(cancellationToken);
+            var eventDetails = order.OrderDetails.Select(od => new OrderCreatedEvent.OrderDetailDto(
+                od.OrderDetailId,
+                od.TicketPackageId,
+                od.FormTemplateId,
+                od.Quantity,
+                od.Price
+            )).ToList();
 
-            var evt = new OrderCreatedEvent
-            {
-                OrderId = order.OrderId,
-                UserId = request.UserId,
-                TicketPackageId = request.TicketPackageId,
-                Quantity = request.Quantity,
-                Price = request.Price
-            };
-            await _publishEndpoint.Publish(evt, cancellationToken);
-            
-            var ticketPackageUpdate = new UpdateAccountTicketRequestEvent
-            {
-                CustomerID = request.UserId,
-                TicketRequestAmount = request.Quantity * response.Message.RequestAmount,
-            };
-            await _publishEndpoint.Publish(ticketPackageUpdate, cancellationToken);
+            var orderCreatedEvent = new OrderCreatedEvent(
+                order.OrderId,
+                order.UserId,
+                order.TotalPrice,
+                order.Status,
+                eventDetails
+            );
+
+            await _publishEndpoint.Publish(orderCreatedEvent, cancellationToken);
 
             return order.OrderId;
         }

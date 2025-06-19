@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.API", "BookingService.API\BookingService.API.csproj", "{ACE47B36-3BDC-4A1B-AB4B-BB6F3174E7BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.API", "BookingService.API\BookingService.API.csproj", "{ACE47B36-3BDC-4A1B-AB4B-BB6F3174E7BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.Domain", "BookingService.Domain\BookingService.Domain.csproj", "{BA445350-0BE7-4494-8F21-7285B8C17B69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Domain", "BookingService.Domain\BookingService.Domain.csproj", "{BA445350-0BE7-4494-8F21-7285B8C17B69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.Application", "BookingService.Application\BookingService.Application.csproj", "{2A87F6C1-BD76-4ECB-BDB7-21148A54D838}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Application", "BookingService.Application\BookingService.Application.csproj", "{2A87F6C1-BD76-4ECB-BDB7-21148A54D838}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.Infrastructure.Write", "BookingService.Infrastructure.Write\BookingService.Infrastructure.Write.csproj", "{77EB68CB-B144-469D-9D54-4FA9BD23136D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Infrastructure.Write", "BookingService.Infrastructure.Write\BookingService.Infrastructure.Write.csproj", "{77EB68CB-B144-469D-9D54-4FA9BD23136D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.Infrastructure.Read", "BookingService.Infrastructure.Read\BookingService.Infrastructure.Read.csproj", "{C895D7F7-832C-44EB-A676-14FF75D56293}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Infrastructure.Read", "BookingService.Infrastructure.Read\BookingService.Infrastructure.Read.csproj", "{C895D7F7-832C-44EB-A676-14FF75D56293}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "..\Contracts\Contracts\Contracts.csproj", "{83199640-64F5-4E94-A4A1-58AF1F7013A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{C895D7F7-832C-44EB-A676-14FF75D56293}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C895D7F7-832C-44EB-A676-14FF75D56293}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C895D7F7-832C-44EB-A676-14FF75D56293}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83199640-64F5-4E94-A4A1-58AF1F7013A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83199640-64F5-4E94-A4A1-58AF1F7013A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83199640-64F5-4E94-A4A1-58AF1F7013A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83199640-64F5-4E94-A4A1-58AF1F7013A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -35,6 +35,9 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using AccountService.Application.Message;
 using AccountService.Infrastructure.Write.Message;
+using AccountService.Application.Queries.Service;
+using AccountService.Application.Queries.Lawyer;
+using AccountService.Application.Consumers.LawyerDayOff;
 using AccountService.Application.Consumers.Ticket;
 
 
@@ -57,7 +60,9 @@ namespace AccountService.API.Configuration
 			services.AddScoped<IAccountRepositoryWrite, AccountRepositoryWrite>();
 			services.AddScoped<ILawyerSpecificServiceRepositoryRead, LawyerSpecificServiceRepositoryRead>();
             services.AddScoped<ILawyerSpecificServiceRepositoryWrite, LawyerSpecificServiceRepositoryWrite>();
-            builder.Services.AddScoped<IEventPublisher, MassTransitEventPublisher>();
+			services.AddScoped<IServiceRepositoryRead, ServiceRepositoryRead>();
+			services.AddScoped<IShiftRepositoryRead, ShiftRepositoryRead>();
+			builder.Services.AddScoped<IEventPublisher, MassTransitEventPublisher>();
 
 
             // Đăng ký MediatR
@@ -76,6 +81,8 @@ namespace AccountService.API.Configuration
 				cfg.RegisterServicesFromAssembly(typeof(ResetPasswordCommandHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(VerifyOtpCommandHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(ForgotPasswordCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllServiceByStatusQuery).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetLawyersByServiceIdQuery).Assembly);
 			});
 			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RegisterAccountCommandHandler>());
 
@@ -122,6 +129,8 @@ namespace AccountService.API.Configuration
                 x.AddConsumer<LawyerCreatedEventConsumer>();
                 x.AddConsumer<LawyerUpdatedEventConsumer>();
                 x.AddConsumer<LawyerDeletedEventConsumer>();
+				x.AddConsumer<CheckLawyerDayOffConsumer>();
+				x.AddConsumer<GetLawyerNameConsumer>();
 				x.AddConsumer<UpdateAccountTicketRequestConsumer>();
                 x.AddConsumer<ValidatationRequestTicketConsumer>();
 				x.AddConsumer<DecreseTicketRequestConsumer>();
