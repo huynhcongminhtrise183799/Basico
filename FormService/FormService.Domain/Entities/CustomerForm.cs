@@ -14,6 +14,8 @@ namespace FormService.Domain.Entities
     {
         public Guid CustomerFormId { get; set; }
 
+        public Guid CustomerId { get; set; }
+
         public Guid FormTemplateId { get; set; }
 
         public string CustomerFormData { get; set; }

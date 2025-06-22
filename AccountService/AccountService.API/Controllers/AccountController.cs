@@ -25,6 +25,7 @@ namespace AccountService.API.Controllers{
 	public class AccountController : ControllerBase
 	{
 		private readonly IMediator _mediator;
+		private const string MESSAGE_ACCOUNT_BANNED = "Account are banned";
 
 		public AccountController(IMediator mediator)
 		{
@@ -91,7 +92,14 @@ namespace AccountService.API.Controllers{
                     message = "Invalid username or password."
                 });
             }
-            return Ok(new { Token = result });
+			if (result == MESSAGE_ACCOUNT_BANNED)
+			{
+				return BadRequest(new
+				{
+					message = "Account is banned."
+				});
+			}
+			return Ok(new { Token = result });
         }
 
         [HttpGet]
@@ -141,6 +149,43 @@ namespace AccountService.API.Controllers{
 			}
 
 			return Ok(new { message = "Profile updated successfully." });
+		}
+
+		[HttpGet]
+		[Route("all-user")]
+		public async Task<IActionResult> GetAllUserAccounts()
+		{
+			var query = new GetAllAccountQuery();
+			var accounts = await _mediator.Send(query);
+			if (accounts == null || accounts.Count == 0)
+			{
+				return NotFound(new { message = "No accounts found." });
+			}
+			return Ok(accounts);
+		}
+
+		[HttpDelete("user/{id}")]
+		public async Task<IActionResult> DeleteUserAccount(Guid id)
+		{
+			var command = new BanUserCommnad(id);
+			var result = await _mediator.Send(command);
+			if (!result)
+			{
+				return NotFound(new { message = "User account not found." });
+			}
+			return Ok(new { message = "User account deleted successfully." });
+		}
+
+		[HttpPut("active-user/{id}")]
+		public async Task<IActionResult> ActiveUserAccount(Guid id)
+		{
+			var command = new ActiveUserAccountCommand(id);
+			var result = await _mediator.Send(command);
+			if (!result)
+			{
+				return NotFound(new { message = "User account not found." });
+			}
+			return Ok(new { message = "User account activated successfully." });
 		}
 	}
 }

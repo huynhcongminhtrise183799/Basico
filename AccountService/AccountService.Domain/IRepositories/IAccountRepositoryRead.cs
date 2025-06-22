@@ -16,8 +16,14 @@ namespace AccountService.Domain.IRepositories
         Task<Account?> GetAccountByUserName(string username);
         Task UpdateAccount(Account account);
 
-        // Staff
-        Task AddStaff(Account staff);
+        Task<List<Account>> GetAllUserAccounts();
+
+		Task BanUserAccount(Guid accountId);
+
+        Task ActiveUserAccount(Guid accountId);
+
+		// Staff
+		Task AddStaff(Account staff);
         Task<bool> UpdateStaff(Account staff);
         Task<bool> DeleteStaff(Guid staffId);
         Task<IEnumerable<Account>> GetAllStaff();
