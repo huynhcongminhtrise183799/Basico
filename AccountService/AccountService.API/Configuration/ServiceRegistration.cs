@@ -40,6 +40,7 @@ using AccountService.Application.Queries.Lawyer;
 using AccountService.Application.Consumers.LawyerDayOff;
 using AccountService.Application.Consumers.Ticket;
 using AccountService.Application.Handler.QueryHandler.Shift;
+using AccountService.Application.Consumers.Form;
 
 
 
@@ -149,6 +150,7 @@ namespace AccountService.API.Configuration
 				x.AddConsumer<DayOffJustifiedConsumer>();
 				x.AddConsumer<DayOffUpdatedConsumer>();
 				x.AddConsumer<DayOffDeletedConsumer>();
+				x.AddConsumer<BuyFormSuccessConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -170,7 +172,7 @@ namespace AccountService.API.Configuration
 
 			builder.Services.AddSwaggerGen(cfg =>
 			{
-				cfg.EnableAnnotations();
+				cfg.EnableAnnotations();      
 				cfg.AddSecurityDefinition(
 					"Bearer",
 					new OpenApiSecurityScheme

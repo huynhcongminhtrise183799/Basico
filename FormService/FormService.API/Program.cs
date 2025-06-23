@@ -72,6 +72,7 @@ namespace FormService.API
                 x.AddConsumer<FormTemplateCreatedConsumer>();
                 x.AddConsumer<FormTemplateUpdatedConsumer>();
                 x.AddConsumer<FormTemplateDeletedConsumer>();
+                x.AddConsumer<CreateCustomerFormDataConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host("localhost", "/", h =>
@@ -93,8 +94,10 @@ namespace FormService.API
             // Register repositories
             builder.Services.AddScoped<IFormTemplateRepositoryWrite, FormTemplateRepositoryWrite>();
             builder.Services.AddScoped<IFormTemplateRepositoryRead, FormTemplateRepositoryRead>();
+            builder.Services.AddScoped<IFormDataRepositoryWrite, FormDataRepositoryWrite>();
+			builder.Services.AddScoped<IFormDataRepositoryRead, FormDataRepositoryRead>();
 
-            builder.Services.AddCors(options =>
+			builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", policy =>
                 {

@@ -14,7 +14,8 @@ namespace AccountService.Domain.IRepositories
         Task<Account?> GetAccountByUserNameAndPassword(string username, string password);
         Task<Account?> GetAccountById(Guid accountId);
         Task<Account?> GetAccountByUserName(string username);
-        Task UpdateAccount(Account account);
+		Task<Account?> GetByPhoneAsync(string phone);
+		Task UpdateAccount(Account account);
 
         Task<List<Account>> GetAllUserAccounts();
 

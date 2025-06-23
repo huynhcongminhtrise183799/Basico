@@ -3,6 +3,7 @@ using System;
 using FormService.Infrastructure.Read;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FormService.Infrastructure.Read.Migrations
 {
     [DbContext(typeof(FormDbContextRead))]
-    partial class FormDbContextReadModelSnapshot : ModelSnapshot
+    [Migration("20250623080454_UpdateTableCustomerForm")]
+    partial class UpdateTableCustomerForm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

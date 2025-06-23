@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Contracts.Events;
 
 namespace OrderService.Application.Handler.CommandHandler
 {
@@ -16,8 +17,6 @@ namespace OrderService.Application.Handler.CommandHandler
     {
         private readonly IOrderRepositoryWrite _orderRepository;
 		private readonly IPublishEndpoint _publishEndpoint;
-        private readonly IClientFactory _clientFactory;
-
 		public CreateOrderCommandHandler(IOrderRepositoryWrite orderRepository, IPublishEndpoint publishEndpoint)
         {
             _orderRepository = orderRepository;
@@ -30,7 +29,7 @@ namespace OrderService.Application.Handler.CommandHandler
             {
                 UserId = request.UserId,
                 TotalPrice = request.TotalPrice,
-                Status = OrderStatus.Pending.ToString(),
+                Status = OrderStatus.Completed.ToString(),
                 OrderDetails = request.OrderDetails?.Select(od => new OrderDetail
                 {
                     TicketPackageId = null,
@@ -58,9 +57,21 @@ namespace OrderService.Application.Handler.CommandHandler
                 eventDetails
             );
 
-            await _publishEndpoint.Publish(orderCreatedEvent, cancellationToken);
+            var @event = new BuyFormSuccessEvent
+            {
+                CustomerId = order.UserId,
+                Request = (int)request.TotalPrice
+            };
 
-            return order.OrderId;
+            var createCustomerFormDataEvent = new CreateCustomerFormDataEvent
+			{
+				CustomerId = order.UserId,
+				FormTemplateId = request.OrderDetails?.FirstOrDefault()?.FormTemplateId ?? Guid.Empty
+			};
+			await _publishEndpoint.Publish(orderCreatedEvent, cancellationToken);
+            await _publishEndpoint.Publish(@event, cancellationToken);
+			await _publishEndpoint.Publish(createCustomerFormDataEvent, cancellationToken);
+			return order.OrderId;
         }
     }
 }

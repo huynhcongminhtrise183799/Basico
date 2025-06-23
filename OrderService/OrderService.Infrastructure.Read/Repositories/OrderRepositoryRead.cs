@@ -25,7 +25,8 @@ namespace OrderService.Infrastructure.Read.Repositories
         public async Task AddOrderAsync(Order order, CancellationToken cancellationToken = default)
         {
             await _context.Orders.AddAsync(order, cancellationToken);
-        }
+			await _context.SaveChangesAsync(cancellationToken);
+		}
 
         public async Task AddOrderDetailAsync(OrderDetail orderDetail, CancellationToken cancellationToken = default)
         {

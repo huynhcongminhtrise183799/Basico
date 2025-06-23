@@ -12,6 +12,7 @@ namespace FormService.Infrastructure.Write
     {
         public FormDbContextWrite(DbContextOptions<FormDbContextWrite> options) : base(options)
         {
+        
         }
         public DbSet<FormTemplate> FormTemplates { get; set; }
 

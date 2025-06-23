@@ -15,5 +15,7 @@ namespace OrderService.Domain.IRepositories
 		Task<Order> GetOrderByIdAsync(Guid? orderId, CancellationToken cancellationToken = default);
 
 		Task UpdateOrderStatus(Order order);
+
+		
 	}
 }

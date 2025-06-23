@@ -30,7 +30,7 @@ namespace AccountService.Application.Consumers.Ticket
             var writeAccount = await _accountWriteRepo.GetByUserIdAsync(message.CustomerID, context.CancellationToken);
             if (writeAccount != null)
             {
-                writeAccount.AccountTicketRequest = message.TicketRequestAmount;
+                writeAccount.AccountTicketRequest += message.TicketRequestAmount;
                 await _accountWriteRepo.UpdateAccount(writeAccount);
                 await _accountWriteRepo.SaveChangesAsync(context.CancellationToken);
             }
@@ -38,7 +38,7 @@ namespace AccountService.Application.Consumers.Ticket
             var readAccount = await _accountReadRepo.GetByUserIdAsync(message.CustomerID);
             if (readAccount != null)
             {
-                readAccount.AccountTicketRequest = message.TicketRequestAmount;
+                readAccount.AccountTicketRequest += message.TicketRequestAmount;
                 await _accountReadRepo.UpdateAccount(readAccount);
                 await _accountReadRepo.SaveChangesAsync(context.CancellationToken);
             }

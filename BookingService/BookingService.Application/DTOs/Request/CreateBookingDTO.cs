@@ -12,7 +12,7 @@ namespace BookingService.Application.DTOs.Request
 
 		public double Price { get; set; }
 
-		public Guid CustomerId { get; set; }
+		public Guid? CustomerId { get; set; }
 
 		public Guid LawyerId { get; set; }
 

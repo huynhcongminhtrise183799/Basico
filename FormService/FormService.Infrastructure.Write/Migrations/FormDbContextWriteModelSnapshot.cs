@@ -32,6 +32,9 @@ namespace FormService.Infrastructure.Write.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("FormTemplateId")
                         .HasColumnType("uniqueidentifier");
 

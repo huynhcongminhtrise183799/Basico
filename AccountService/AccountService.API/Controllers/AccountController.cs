@@ -79,19 +79,19 @@ namespace AccountService.API.Controllers{
 
 		}
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
-        {
-           var command = new LoginUserCommand(request.UserName, request.Password);
-           var result = await _mediator.Send(command);
-            if (result == null)
-            {
-                return BadRequest(new
-                {
-                    message = "Invalid username or password."
-                });
-            }
+		[HttpPost]
+		[Route("login")]
+		public async Task<IActionResult> Login([FromBody] LoginRequest request)
+		{
+			var command = new LoginUserCommand(request.UserName, request.Password);
+			var result = await _mediator.Send(command);
+			if (result == null)
+			{
+				return BadRequest(new
+				{
+					message = "Invalid username or password."
+				});
+			}
 			if (result == MESSAGE_ACCOUNT_BANNED)
 			{
 				return BadRequest(new
@@ -100,31 +100,31 @@ namespace AccountService.API.Controllers{
 				});
 			}
 			return Ok(new { Token = result });
-        }
+		}
 
-        [HttpGet]
-        [Route("profile")]
-        public async Task<IActionResult> GetProfile()
-        {
-            var accountId = User.FindFirstValue(ClaimTypes.Sid);
-            if (string.IsNullOrEmpty(accountId))
-            {
-                return Unauthorized(new
-                {
-                    message = "Unauthorized access. Please log in to view your profile."
-                });
-            }
-            var query = new ProfileQuery(Guid.Parse(accountId));
-            var result = await _mediator.Send(query);
-            if (result == null)
-            {
-                return BadRequest(new
+		[HttpGet]
+		[Route("profile")]
+		public async Task<IActionResult> GetProfile()
+		{
+			var accountId = User.FindFirstValue(ClaimTypes.Sid);
+			if (string.IsNullOrEmpty(accountId))
+			{
+				return Unauthorized(new
 				{
-                    message = "Profile not found."
-                });
-            }
-            return Ok(result);
-        }
+					message = "Unauthorized access. Please log in to view your profile."
+				});
+			}
+			var query = new ProfileQuery(Guid.Parse(accountId));
+			var result = await _mediator.Send(query);
+			if (result == null)
+			{
+				return BadRequest(new
+				{
+					message = "Profile not found."
+				});
+			}
+			return Ok(result);
+		}
 
 
 		[HttpPut]
@@ -186,6 +186,18 @@ namespace AccountService.API.Controllers{
 				return NotFound(new { message = "User account not found." });
 			}
 			return Ok(new { message = "User account activated successfully." });
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetAccountByPhone([FromQuery] string phone)
+		{
+			var query = new GetAccountByPhoneQuery(phone);
+			var account = await _mediator.Send(query);
+			if (account == null)
+			{
+				return Ok(new { message = "Account not found." });
+			}
+			return Ok(account);
 		}
 	}
 }

@@ -56,7 +56,7 @@ namespace OrderService.Application.Handler.CommandHandler
 
             await _orderRepository.SaveChangesAsync(cancellationToken);
 
-            var evt = new OrderCreatedEvent
+            var evt = new OrderTicketPackageCreatedEvent
             {
                 OrderId = order.OrderId,
                 UserId = request.UserId,

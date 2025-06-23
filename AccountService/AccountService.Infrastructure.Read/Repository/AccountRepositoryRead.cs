@@ -268,5 +268,10 @@ namespace AccountService.Infrastructure.Read.Repository
 			account.AccountStatus = Status.ACTIVE.ToString(); // Chuyển trạng thái sang ACTIVE
 			await _context.SaveChangesAsync();
 		}
+
+		public async Task<Account?> GetByPhoneAsync(string phone)
+		{
+			return await _context.Accounts.FirstAsync(x => x.AccountPhone == phone);
+		}
 	}
 }
