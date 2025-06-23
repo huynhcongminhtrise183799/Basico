@@ -25,6 +25,7 @@ namespace AccountService.API.Controllers{
 	public class AccountController : ControllerBase
 	{
 		private readonly IMediator _mediator;
+		private const string MESSAGE_ACCOUNT_BANNED = "Account are banned";
 
 		public AccountController(IMediator mediator)
 		{
@@ -78,45 +79,52 @@ namespace AccountService.API.Controllers{
 
 		}
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
-        {
-           var command = new LoginUserCommand(request.UserName, request.Password);
-           var result = await _mediator.Send(command);
-            if (result == null)
-            {
-                return BadRequest(new
-                {
-                    message = "Invalid username or password."
-                });
-            }
-            return Ok(new { Token = result });
-        }
-
-        [HttpGet]
-        [Route("profile")]
-        public async Task<IActionResult> GetProfile()
-        {
-            var accountId = User.FindFirstValue(ClaimTypes.Sid);
-            if (string.IsNullOrEmpty(accountId))
-            {
-                return Unauthorized(new
-                {
-                    message = "Unauthorized access. Please log in to view your profile."
-                });
-            }
-            var query = new ProfileQuery(Guid.Parse(accountId));
-            var result = await _mediator.Send(query);
-            if (result == null)
-            {
-                return BadRequest(new
+		[HttpPost]
+		[Route("login")]
+		public async Task<IActionResult> Login([FromBody] LoginRequest request)
+		{
+			var command = new LoginUserCommand(request.UserName, request.Password);
+			var result = await _mediator.Send(command);
+			if (result == null)
+			{
+				return BadRequest(new
 				{
-                    message = "Profile not found."
-                });
-            }
-            return Ok(result);
-        }
+					message = "Invalid username or password."
+				});
+			}
+			if (result == MESSAGE_ACCOUNT_BANNED)
+			{
+				return BadRequest(new
+				{
+					message = "Account is banned."
+				});
+			}
+			return Ok(new { Token = result });
+		}
+
+		[HttpGet]
+		[Route("profile")]
+		public async Task<IActionResult> GetProfile()
+		{
+			var accountId = User.FindFirstValue(ClaimTypes.Sid);
+			if (string.IsNullOrEmpty(accountId))
+			{
+				return Unauthorized(new
+				{
+					message = "Unauthorized access. Please log in to view your profile."
+				});
+			}
+			var query = new ProfileQuery(Guid.Parse(accountId));
+			var result = await _mediator.Send(query);
+			if (result == null)
+			{
+				return BadRequest(new
+				{
+					message = "Profile not found."
+				});
+			}
+			return Ok(result);
+		}
 
 
 		[HttpPut]
@@ -141,6 +149,55 @@ namespace AccountService.API.Controllers{
 			}
 
 			return Ok(new { message = "Profile updated successfully." });
+		}
+
+		[HttpGet]
+		[Route("all-user")]
+		public async Task<IActionResult> GetAllUserAccounts()
+		{
+			var query = new GetAllAccountQuery();
+			var accounts = await _mediator.Send(query);
+			if (accounts == null || accounts.Count == 0)
+			{
+				return NotFound(new { message = "No accounts found." });
+			}
+			return Ok(accounts);
+		}
+
+		[HttpDelete("user/{id}")]
+		public async Task<IActionResult> DeleteUserAccount(Guid id)
+		{
+			var command = new BanUserCommnad(id);
+			var result = await _mediator.Send(command);
+			if (!result)
+			{
+				return NotFound(new { message = "User account not found." });
+			}
+			return Ok(new { message = "User account deleted successfully." });
+		}
+
+		[HttpPut("active-user/{id}")]
+		public async Task<IActionResult> ActiveUserAccount(Guid id)
+		{
+			var command = new ActiveUserAccountCommand(id);
+			var result = await _mediator.Send(command);
+			if (!result)
+			{
+				return NotFound(new { message = "User account not found." });
+			}
+			return Ok(new { message = "User account activated successfully." });
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetAccountByPhone([FromQuery] string phone)
+		{
+			var query = new GetAccountByPhoneQuery(phone);
+			var account = await _mediator.Send(query);
+			if (account == null)
+			{
+				return Ok(new { message = "Account not found." });
+			}
+			return Ok(account);
 		}
 	}
 }

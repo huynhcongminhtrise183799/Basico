@@ -61,6 +61,7 @@ namespace BookingService.API
 				x.AddConsumer<UpdateBookingConsumer>();
 				x.AddConsumer<CheckInBookingConsumer>();
 				x.AddConsumer<PaymentSuccessConsumer>();
+				x.AddConsumer<CheckOutBookingConsumer>();
 
 				x.UsingRabbitMq((context, cfg) =>
 				{

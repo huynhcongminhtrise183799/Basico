@@ -8,8 +8,9 @@ namespace AccountService.Domain.Entity
 {
 	public enum ShiftStatus
 	{
-		APPROVE,
-		REJECT
+		WAITING,
+		APPROVED,
+		REJECTED
 	}
 	public class SpecificLawyerDayOffSchedule
 	{

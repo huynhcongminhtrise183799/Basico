@@ -224,5 +224,33 @@ namespace AccountService.Infrastructure.Write.Repository
             return await _context.Accounts
                 .FirstOrDefaultAsync(a => a.AccountId == userId, cancellationToken);
         }
-    }
+
+		public async Task BanUserAccount(Guid accountId)
+		{
+			var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);
+			if (account != null)
+			{
+				account.AccountStatus = Status.INACTIVE.ToString(); // Cập nhật trạng thái tài khoản thành BANNED
+				await _context.SaveChangesAsync();
+			}
+			else
+			{
+				throw new Exception("Account not found");
+			}
+		}
+
+		public async Task ActiveUserAccount(Guid accountId)
+		{
+			var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);
+			if (account != null)
+			{
+				account.AccountStatus = Status.ACTIVE.ToString(); // Cập nhật trạng thái tài khoản thành ACTIVE
+				await _context.SaveChangesAsync();
+			}
+			else
+			{
+				throw new Exception("Account not found");
+			}
+		}
+	}
 }

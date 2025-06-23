@@ -26,6 +26,7 @@ namespace FormService.Application.Handler.QueriesHandler
                 ServiceId = template.ServiceId,
                 FormTemplateName = template.FormTemplateName,
                 FormTemplateData = template.FormTemplateData,
+                Price = template.Price,
                 Status = template.Status
             }).ToList();
             return formTemplateResponses;

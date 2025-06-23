@@ -31,7 +31,8 @@ namespace FormService.Application.Handler.QueriesHandler
                 ServiceId = formTemplate.ServiceId,
                 FormTemplateName = formTemplate.FormTemplateName,
                 FormTemplateData = formTemplate.FormTemplateData,
-                Status = formTemplate.Status
+                Price = formTemplate.Price,
+				Status = formTemplate.Status
             };
         }
     }

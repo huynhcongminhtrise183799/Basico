@@ -10,5 +10,6 @@ namespace AccountService.Domain.IRepositories
 	public interface IShiftRepositoryRead
 	{
 		Task<List<Shift>> GetShiftsOffByLawyerInDay(Guid lawyerId, DateOnly offDay);
+		Task<List<Shift>> GetAll();
 	}
 }

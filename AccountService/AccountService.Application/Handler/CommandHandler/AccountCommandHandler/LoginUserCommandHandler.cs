@@ -1,5 +1,6 @@
 ﻿using AccountService.Application.Commands.AccountCommands;
 using AccountService.Application.IService;
+using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -24,10 +25,15 @@ namespace AccountService.Application.Handler.CommandHandler.AccountHandler
         public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
            var account = await _accountRepository.GetAccountByUserName(request.username);
+
             if (account == null)
             {
                 return null;
             }
+            if(account.AccountStatus.ToUpper() == Status.INACTIVE.ToString())
+            {
+                return "Account are banned"; // Account is inactive
+			}
             PasswordHasher<string> passwordHasher = new PasswordHasher<string>();
 
             var passwordVerificationResult = passwordHasher.VerifyHashedPassword(null, account.AccountPassword, request.password);

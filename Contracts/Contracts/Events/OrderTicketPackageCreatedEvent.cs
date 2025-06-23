@@ -1,7 +1,7 @@
 ﻿
 namespace Contracts.Events
 {
-    public class OrderCreatedEvent
+    public class OrderTicketPackageCreatedEvent
     {
         public Guid OrderId { get; set; }
         public Guid UserId { get; set; }

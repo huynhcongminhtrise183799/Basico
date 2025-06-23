@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OrderService.Application.Consumer
 {
-    public class OrderCreatedEventConsumer : IConsumer<OrderCreatedEvent>
+    public class OrderCreatedEventConsumer : IConsumer<OrderTicketPackageCreatedEvent>
     {
         private readonly IOrderRepositoryRead _dbContextWrite;
 
@@ -19,7 +19,7 @@ namespace OrderService.Application.Consumer
             _dbContextWrite = dbContextWrite;
         }
 
-        public async Task Consume(ConsumeContext<OrderCreatedEvent> context)
+        public async Task Consume(ConsumeContext<OrderTicketPackageCreatedEvent> context)
         {
             var evt = context.Message;
 

@@ -15,13 +15,13 @@ namespace OrderService.Application.Handler.CommandHandler
 	{
 		private readonly IPaymentRepositoryWrite _repoWrite;
 		private readonly IPublishEndpoint _publishEndpoint;
-		private readonly IPaymentRepositoryRead _repoRead;
+		private readonly IOrderDetailRepositoryRead _orderDetailRepositoryRead;
 
-		public CreatePaymentCommandHandler(IPaymentRepositoryWrite repoWrite, IPublishEndpoint publishEndpoint, IPaymentRepositoryRead repoRead)
+		public CreatePaymentCommandHandler(IPaymentRepositoryWrite repoWrite, IPublishEndpoint publishEndpoint, IOrderDetailRepositoryRead orderRepositoryRead)
 		{
 			_publishEndpoint = publishEndpoint;
-			_repoRead = repoRead;
 			_repoWrite = repoWrite;
+			_orderDetailRepositoryRead = orderRepositoryRead;
 		}
 
 		public async Task<string> Handle(CreatePaymentCommand request, CancellationToken cancellationToken)
@@ -69,6 +69,7 @@ namespace OrderService.Application.Handler.CommandHandler
 					OrderId = payment.OrderId
 				};
 				await _publishEndpoint.Publish(@event, cancellationToken);
+				//var orderDetail = await _orderDetailRepositoryRead.GetOrderDetailsByOrderIdAndCustomerId(payment.OrderId, cancellationToken);
 			}
 			return payment.PaymentId.ToString();
 		}

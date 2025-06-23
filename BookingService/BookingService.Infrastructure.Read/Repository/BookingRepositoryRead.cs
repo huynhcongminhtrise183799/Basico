@@ -134,6 +134,20 @@ namespace BookingService.Infrastructure.Read.Repository
 				throw new KeyNotFoundException("Booking not found");
 			}
 		}
+
+		public async Task UpdateStatusBookingToCompleted(Guid? bookingId)
+		{
+			var booking = await _context.Bookings.FindAsync(bookingId);
+			if (booking != null)
+			{
+				booking.Status = BookingStatus.Completed.ToString();
+				await _context.SaveChangesAsync();
+			}
+			else
+			{
+				throw new KeyNotFoundException("Booking not found");
+			}
+		}
 	}
 
 }

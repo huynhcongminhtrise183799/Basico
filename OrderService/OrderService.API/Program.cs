@@ -32,6 +32,7 @@ namespace OrderService.API
 			builder.Services.AddScoped<IOrderRepositoryRead, OrderRepositoryRead>();
 			builder.Services.AddScoped<IPaymentRepositoryRead, PaymentRepositoryRead >();
 			builder.Services.AddScoped<IPaymentRepositoryWrite, PaymentRepositoryWrite >();
+			builder.Services.AddScoped<IOrderDetailRepositoryRead, OrderDetailRepositoryRead>();
 
 			// Đăng ký MediatR
 			builder.Services.AddMediatR(cfg =>

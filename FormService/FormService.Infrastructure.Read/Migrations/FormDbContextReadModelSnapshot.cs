@@ -32,6 +32,9 @@ namespace FormService.Infrastructure.Read.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("FormTemplateId")
                         .HasColumnType("uuid");
 

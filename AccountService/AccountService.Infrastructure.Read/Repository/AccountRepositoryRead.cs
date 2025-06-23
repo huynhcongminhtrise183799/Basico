@@ -239,5 +239,39 @@ namespace AccountService.Infrastructure.Read.Repository
             return await _context.Accounts
                 .FirstOrDefaultAsync(a => a.AccountId == userId);
         }
-    }
+
+		public async Task<List<Account>> GetAllUserAccounts()
+		{
+			return await _context.Accounts
+				.Where(a => a.AccountRole.ToUpper() == Role.USER.ToString().ToUpper())
+				.ToListAsync();
+		}
+
+		public async Task BanUserAccount(Guid accountId)
+		{
+			var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);
+			if (account == null)
+			{
+				throw new Exception("Account not found");
+			}
+			account.AccountStatus = Status.INACTIVE.ToString(); // Chuyển trạng thái sang INACTIVE
+			await _context.SaveChangesAsync();
+		}
+
+		public async Task ActiveUserAccount(Guid accountId)
+		{
+			var account = _context.Accounts.FirstOrDefault(a => a.AccountId == accountId);
+			if (account == null)
+			{
+				throw new Exception("Account not found");
+			}
+			account.AccountStatus = Status.ACTIVE.ToString(); // Chuyển trạng thái sang ACTIVE
+			await _context.SaveChangesAsync();
+		}
+
+		public async Task<Account?> GetByPhoneAsync(string phone)
+		{
+			return await _context.Accounts.FirstAsync(x => x.AccountPhone == phone);
+		}
+	}
 }

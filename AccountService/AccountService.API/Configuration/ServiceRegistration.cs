@@ -39,6 +39,8 @@ using AccountService.Application.Queries.Service;
 using AccountService.Application.Queries.Lawyer;
 using AccountService.Application.Consumers.LawyerDayOff;
 using AccountService.Application.Consumers.Ticket;
+using AccountService.Application.Handler.QueryHandler.Shift;
+using AccountService.Application.Consumers.Form;
 
 
 
@@ -63,10 +65,15 @@ namespace AccountService.API.Configuration
 			services.AddScoped<IServiceRepositoryRead, ServiceRepositoryRead>();
 			services.AddScoped<IShiftRepositoryRead, ShiftRepositoryRead>();
 			builder.Services.AddScoped<IEventPublisher, MassTransitEventPublisher>();
+			services.AddScoped<ILawyerDayOffScheduleRepositoryRead, LawyerDayOffScheduleRepositoryRead>();
+			services.AddScoped<ILawyerDayOffScheduleRepositoryWrite, LawyerDayOffScheduleRepositoryWrite>();
+			services.AddScoped<ISpecificDayOffRepositoryRead, SpecificDayOffRepositoryRead>();
+			services.AddScoped<ISpecificDayOffRepositoryWrite, SpecificDayOffRepositoryWrite>();
+			services.AddScoped<IShiftRepositoryRead, ShiftRepositoryRead>();
 
 
-            // Đăng ký MediatR
-            services.AddMediatR(cfg =>
+			// Đăng ký MediatR
+			services.AddMediatR(cfg =>
 			{
 				cfg.RegisterServicesFromAssembly(typeof(GoogleLoginCommand).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(LoginUserCommandHandler).Assembly);
@@ -83,6 +90,9 @@ namespace AccountService.API.Configuration
 				cfg.RegisterServicesFromAssembly(typeof(ForgotPasswordCommandHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetAllServiceByStatusQuery).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetLawyersByServiceIdQuery).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(RegisterAccountCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllShiftHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllAccountQueryHandler).Assembly);
 			});
 			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RegisterAccountCommandHandler>());
 
@@ -134,6 +144,13 @@ namespace AccountService.API.Configuration
 				x.AddConsumer<UpdateAccountTicketRequestConsumer>();
                 x.AddConsumer<ValidatationRequestTicketConsumer>();
 				x.AddConsumer<DecreseTicketRequestConsumer>();
+				x.AddConsumer<BanAccountConsumer>();
+				x.AddConsumer<ActiveAccountConsumer>();
+				x.AddConsumer<DayOffCreatedConsumer>();
+				x.AddConsumer<DayOffJustifiedConsumer>();
+				x.AddConsumer<DayOffUpdatedConsumer>();
+				x.AddConsumer<DayOffDeletedConsumer>();
+				x.AddConsumer<BuyFormSuccessConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -155,6 +172,7 @@ namespace AccountService.API.Configuration
 
 			builder.Services.AddSwaggerGen(cfg =>
 			{
+				cfg.EnableAnnotations();      
 				cfg.AddSecurityDefinition(
 					"Bearer",
 					new OpenApiSecurityScheme

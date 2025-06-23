@@ -16,10 +16,16 @@ namespace AccountService.Infrastructure.Read.Repository
 		{
 			_accountDbContextRead = accountRead;
 		}
+
+		public async Task<List<Shift>> GetAll()
+		{
+			return await _accountDbContextRead.Shifts.ToListAsync();
+		}
+
 		public Task<List<Shift>> GetShiftsOffByLawyerInDay(Guid lawyerId, DateOnly offDay)
 		{
 			return _accountDbContextRead.SpecificLawyerDayOffSchedules
-				.Where(s => s.LawyerDayOffSchedule.LawyerId == lawyerId && s.LawyerDayOffSchedule.OffDay == offDay && s.Status == ShiftStatus.APPROVE.ToString())
+				.Where(s => s.LawyerDayOffSchedule.LawyerId == lawyerId && s.LawyerDayOffSchedule.OffDay == offDay && s.Status == ShiftStatus.APPROVED.ToString())
 				.Select(s => s.Shift)
 				.ToListAsync();
 		}

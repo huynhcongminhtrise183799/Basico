@@ -19,9 +19,13 @@ namespace AccountService.Domain.IRepositories
         Task<bool> ExistsByUsernameAsync(string username);
         Task<Account?> GetAccountById(Guid accountId);
         Task UpdateAccount(Account account);
+        Task BanUserAccount(Guid accountId);
 
-        // Staff
-        Task AddStaff(Account staff);
+		Task ActiveUserAccount(Guid accountId);
+
+
+		// Staff
+		Task AddStaff(Account staff);
         Task<bool> UpdateStaff(Account staff);
         Task<bool> DeleteStaff(Guid staffId);
         Task<Account?> GetStaffById(Guid staffId);

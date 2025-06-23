@@ -84,15 +84,26 @@ namespace BookingService.API.Controllers
 			return Ok(result);
 		}
 		[HttpGet("lawyer/{lawyerId}")]
-		[SwaggerOperation(Summary = "Lấy ra những booking của lawyer theo ngày và status ")]
+		[SwaggerOperation(Summary = "Lấy ra những booking của lawyer theo ngày và status " +
+			"1. Paid" +
+			"2. CheckedIn" +
+			"Completed")]
+
+
+
 		public async Task<IActionResult> GetBookingByStatusByLawyer( Guid lawyerId, [FromQuery] string status, [FromQuery] DateOnly bookingDate)
 		{
 			var query = new GetBookingByLawyerAndStatusQuery(lawyerId, status, bookingDate);
 			var result = await _mediator.Send(query);
 			return Ok(result);
 		}
+
 		[HttpGet("staff")]
-		[SwaggerOperation(Summary = "Lấy tất cả booking theo ngày và status ")]
+		[SwaggerOperation(Summary = "Lấy tất cả booking theo ngày và status" +
+			"1. Paid" +
+			"2. CheckedIn" +
+			"Completed")]
+
 		public async Task<IActionResult> GetAllBookingByStatusInDay([FromQuery] string status, [FromQuery] DateOnly bookingDate)
 		{
 			var query = new GetAllBookingInDayQuery(bookingDate, status);
@@ -111,7 +122,26 @@ namespace BookingService.API.Controllers
 				return NotFound("Booking could not be checked in.");
 			}
 
-			return Ok("Booking checked in successfully.");
+			return Ok(new
+			{
+				message = "Booking checked in successfully."
+			});
+		}
+		[HttpPut("check-out/{bookingId}")]
+		[SwaggerOperation(Summary = "Check out booking")]
+		public async Task<IActionResult> CheckOutBooking(Guid bookingId)
+		{
+			var command = new CheckOutBookingCommand(bookingId);
+			var result = await _mediator.Send(command);
+			if (!result)
+			{
+				return NotFound("Booking could not be checked out.");
+			}
+
+			return Ok(new
+			{
+				message = "Booking checked out successfully."
+			});
 		}
 	}
 }
