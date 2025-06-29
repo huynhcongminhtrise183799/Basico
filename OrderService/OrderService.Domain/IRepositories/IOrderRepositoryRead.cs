@@ -17,5 +17,7 @@ namespace OrderService.Domain.IRepositories
 		Task UpdateOrderStatus(Order order);
 
 		Task<Order?> GetOrderByIdAndStatusAsync(Guid orderId, string status);
+
+		Task<List<Order>> GetAllOrdersAsync();
 	}
 }

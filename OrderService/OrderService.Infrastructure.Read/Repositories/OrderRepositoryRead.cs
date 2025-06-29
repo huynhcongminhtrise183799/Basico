@@ -33,6 +33,13 @@ namespace OrderService.Infrastructure.Read.Repositories
             await _context.OrderDetails.AddAsync(orderDetail, cancellationToken);
         }
 
+		public async Task<List<Order>> GetAllOrdersAsync()
+		{
+			return await _context.Orders
+				.Include(o => o.OrderDetails)
+				.ToListAsync();
+		}
+
 		public async Task<Order?> GetOrderByIdAndStatusAsync(Guid orderId, string status)
 		{
 			return await _context.Orders
