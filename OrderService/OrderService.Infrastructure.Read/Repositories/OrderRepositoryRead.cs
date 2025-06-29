@@ -33,6 +33,12 @@ namespace OrderService.Infrastructure.Read.Repositories
             await _context.OrderDetails.AddAsync(orderDetail, cancellationToken);
         }
 
+		public async Task<Order?> GetOrderByIdAndStatusAsync(Guid orderId, string status)
+		{
+			return await _context.Orders
+				.FirstOrDefaultAsync(o => o.OrderId == orderId && o.Status.ToUpper() == status.ToUpper());
+		}
+
 		public async Task<Order> GetOrderByIdAsync(Guid? orderId, CancellationToken cancellationToken = default)
 		{
 			return await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);

@@ -1,4 +1,4 @@
-
+﻿
 using APIGateway.OptionsSetup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
