@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.Application.Command;
 using Contracts.DTOs;
+using OrderService.Application.Queries;
 
 namespace OrderService.API.Controllers
 {
@@ -33,5 +34,13 @@ namespace OrderService.API.Controllers
             var orderId = await _mediator.Send(request);
             return Ok(new CreateOrderResponse { OrderId = orderId, Success = true });
         }
-    }
+
+        [HttpGet]
+		public async Task<IActionResult> GetOrders([FromQuery] Guid orderId, [FromQuery] string status)
+		{
+			var query = new GetOderByOderIdAndStatusQuery(orderId, status);
+            var result = await _mediator.Send(query);
+			return Ok(result);
+		}
+	}
 }
