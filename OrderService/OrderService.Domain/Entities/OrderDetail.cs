@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace OrderService.Domain.Entities
@@ -19,7 +20,7 @@ namespace OrderService.Domain.Entities
         public int Quantity { get; set; }
 
         public double Price { get; set; }
-
-        public Order Order { get; set; }
+		[JsonIgnore]
+		public Order Order { get; set; }
     }
 }
