@@ -11,6 +11,8 @@ namespace BookingService.Application.DTOs.Response
 		public Guid BookingId { get; set; }
 		public DateOnly BookingDate { get; set; }
 
+		public string Description { get; set; }
+
 		public double Price { get; set; }
 
 		public Guid? CustomerId { get; set; }

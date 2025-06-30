@@ -12,6 +12,7 @@ namespace BookingService.Application.DTOs.Response
 		public DateOnly BookingDate { get; set; }
 		public double Price { get; set; }
 
+		public string Description { get; set; }
 		public string LawyerName { get; set; }
 
 		public string? CustomerName { get; set; }

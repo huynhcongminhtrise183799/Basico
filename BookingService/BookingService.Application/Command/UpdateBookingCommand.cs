@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace BookingService.Application.Command
 {
-    public record UpdateBookingCommand(Guid bookingId, Guid lawyerId, Guid customerId, Guid serviceId, DateOnly bookingDate, List<string> slotId, double price) : IRequest<bool>;
+    public record UpdateBookingCommand(Guid bookingId, Guid lawyerId, Guid customerId, Guid serviceId, DateOnly bookingDate, List<string> slotId, double price, string Description) : IRequest<bool>;
 
 }

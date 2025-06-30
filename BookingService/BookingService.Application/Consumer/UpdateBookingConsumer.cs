@@ -32,7 +32,8 @@ namespace BookingService.Application.Consumer
 				BookingDate = message.BookingDate,
 				Status = message.Status,
 				ServiceId = message.ServiceId,
-				Price = message.Price
+				Price = message.Price,
+				Description = message.Description,
 			};
 			var bookingSlots = message.SlotId.Select(slotId => new BookingSlots
 			{
