@@ -34,6 +34,10 @@ namespace BookingService.Infrastructure.Write.Migrations
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("LawyerId")
                         .HasColumnType("uniqueidentifier");
 
@@ -65,6 +69,36 @@ namespace BookingService.Infrastructure.Write.Migrations
                     b.HasIndex("SlotId");
 
                     b.ToTable("BookingSlots", (string)null);
+                });
+
+            modelBuilder.Entity("BookingService.Domain.Entities.Feedback", b =>
+                {
+                    b.Property<Guid>("FeedbackId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BookingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FeedbackContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("FeedbackDay")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("FeedbackId");
+
+                    b.HasIndex("BookingId")
+                        .IsUnique();
+
+                    b.ToTable("Feedback", (string)null);
                 });
 
             modelBuilder.Entity("BookingService.Domain.Entities.Slot", b =>
@@ -105,9 +139,24 @@ namespace BookingService.Infrastructure.Write.Migrations
                     b.Navigation("Slot");
                 });
 
+            modelBuilder.Entity("BookingService.Domain.Entities.Feedback", b =>
+                {
+                    b.HasOne("BookingService.Domain.Entities.Booking", "Booking")
+                        .WithOne("Feedback")
+                        .HasForeignKey("BookingService.Domain.Entities.Feedback", "BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Feedback_Booking");
+
+                    b.Navigation("Booking");
+                });
+
             modelBuilder.Entity("BookingService.Domain.Entities.Booking", b =>
                 {
                     b.Navigation("BookingSlots");
+
+                    b.Navigation("Feedback")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BookingService.Domain.Entities.Slot", b =>

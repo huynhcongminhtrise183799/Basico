@@ -10,6 +10,8 @@ namespace BookingService.Application.DTOs.Request
 	{
 		public DateOnly BookingDate { get; set; }
 
+		public string Description { get; set; }
+
 		public double Price { get; set; }
 
 		public Guid CustomerId { get; set; }

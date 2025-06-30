@@ -36,18 +36,29 @@ namespace OrderService.API.Controllers
         }
 
         [HttpGet("order")]
-		public async Task<IActionResult> GetOrders([FromQuery] Guid orderId, [FromQuery] string status)
-		{
-			var query = new GetOderByOderIdAndStatusQuery(orderId, status);
+        public async Task<IActionResult> GetOrders([FromQuery] Guid orderId, [FromQuery] string status)
+        {
+            var query = new GetOderByOderIdAndStatusQuery(orderId, status);
             var result = await _mediator.Send(query);
-			return Ok(result);
-		}
+            return Ok(result);
+        }
 
         [HttpGet("orders")]
-		public async Task<IActionResult> GetAllOrders()
-		{
-			var result = await _mediator.Send(new GetAllOrderQuery());
+        public async Task<IActionResult> GetAllOrders()
+        {
+            var result = await _mediator.Send(new GetAllOrderQuery());
             return Ok(result);
-		}
-	}
+        }
+
+        [HttpDelete("order/{id}")]
+        public async Task<IActionResult> CancelOrder(Guid id)
+        {
+            var command = new CancelPaymentCommand(id);
+            var result = await _mediator.Send(command);
+            if (result)
+                return Ok(new { Success = true, Message = "Order cancelled successfully." });
+            else
+                return BadRequest(new { Success = false, Message = "Failed to cancel order." });
+        }
+    }
 }

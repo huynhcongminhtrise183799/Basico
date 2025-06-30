@@ -19,5 +19,7 @@ namespace OrderService.Domain.IRepositories
 		Task<Order?> GetOrderByIdAndStatusAsync(Guid orderId, string status);
 
 		Task<List<Order>> GetAllOrdersAsync();
+		Task CancelOrderAsync(Guid orderId);
+
 	}
 }

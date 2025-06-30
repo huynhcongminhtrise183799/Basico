@@ -18,6 +18,8 @@ namespace BookingService.Infrastructure.Read
 		public DbSet<Slot> Slots { get; set; }
 		public DbSet<BookingSlots> BookingSlots { get; set; }
 
+		public DbSet<Feedback> Feedbacks { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Booking>(entity =>
@@ -47,6 +49,16 @@ namespace BookingService.Infrastructure.Read
 					.HasForeignKey(e => e.SlotId)
 					.HasConstraintName("FK_BookingSlots_Slot");
 
+			});
+			modelBuilder.Entity<Feedback>(entity =>
+			{
+				entity.ToTable("Feedback");
+				entity.HasKey(e => e.FeedbackId);
+				entity.Property(e => e.FeedbackId).ValueGeneratedOnAdd();
+				entity.HasOne(e => e.Booking)
+					.WithOne(b => b.Feedback)
+					.HasForeignKey<Feedback>(f => f.BookingId)
+					.HasConstraintName("FK_Feedback_Booking");
 			});
 
 		}
