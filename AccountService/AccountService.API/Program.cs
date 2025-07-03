@@ -23,18 +23,29 @@ namespace AccountService.API
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
 			// Gọi service registration
 			ServiceRegistration.ConfigureServices(builder);
   
             var app = builder.Build();
 
-			if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())
 			{
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
 
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
+            app.UseCors("AllowAll");
 
 			// Bắt buộc: Authentication phải đặt trước Authorization
 			app.UseAuthentication();
