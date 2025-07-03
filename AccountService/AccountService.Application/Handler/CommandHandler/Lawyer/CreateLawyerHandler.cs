@@ -1,15 +1,16 @@
-﻿using AccountService.Application.Commands.Lawyer;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AccountService.Application.Commands.Lawyer;
 using AccountService.Application.DTOs.Request;
 using AccountService.Application.Event.Lawyer;
 using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
 using MassTransit;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace AccountService.Application.Handler.CommandHandler.Lawyer
 {
@@ -29,11 +30,13 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
         public async Task<Guid> Handle(CreateLawyerCommand request, CancellationToken cancellationToken)
         {
             var dto = request.Lawyer;
+            PasswordHasher<string> _passwordHasher = new PasswordHasher<string>();
+
             var account = new Account
             {
                 AccountId = Guid.NewGuid(),
                 AccountUsername = dto.AccountUsername,
-                AccountPassword = dto.AccountPassword,
+                AccountPassword = _passwordHasher.HashPassword(null, dto.AccountPassword),
                 AccountEmail = dto.AccountEmail,
                 AccountFullName = dto.AccountFullName,
                 AccountDob = dto.AccountDob,
@@ -64,7 +67,7 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
             {
                 AccountId = account.AccountId,
                 AccountUsername = request.Lawyer.AccountUsername,
-                AccountPassword = request.Lawyer.AccountPassword,
+                AccountPassword = _passwordHasher.HashPassword(null, dto.AccountPassword),
                 AccountEmail = request.Lawyer.AccountEmail,
                 AccountFullName = request.Lawyer.AccountFullName,
                 AccountDob = request.Lawyer.AccountDob,

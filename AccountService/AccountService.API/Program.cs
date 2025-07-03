@@ -22,9 +22,19 @@ namespace AccountService.API
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
 
-			// Gọi service registration
-			ServiceRegistration.ConfigureServices(builder);
+            // Gọi service registration
+            ServiceRegistration.ConfigureServices(builder);
   
             var app = builder.Build();
 
@@ -38,7 +48,12 @@ namespace AccountService.API
 
 			// Bắt buộc: Authentication phải đặt trước Authorization
 			app.UseAuthentication();
-			app.UseAuthorization();
+            app.UseCors(builder =>
+builder.WithOrigins("http://localhost:3000")
+       .AllowAnyHeader()
+       .AllowAnyMethod());
+            app.UseCors("AllowAll");
+            app.UseAuthorization();
 
 			app.MapControllers();
 
