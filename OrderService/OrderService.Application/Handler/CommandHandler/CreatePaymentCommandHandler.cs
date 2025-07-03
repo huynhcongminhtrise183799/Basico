@@ -1,5 +1,7 @@
 ﻿using Contracts;
+using Contracts.Events;
 using MassTransit;
+using MassTransit.Clients;
 using MediatR;
 using OrderService.Application.Command;
 using OrderService.Application.Event;
@@ -16,12 +18,16 @@ namespace OrderService.Application.Handler.CommandHandler
 		private readonly IPaymentRepositoryWrite _repoWrite;
 		private readonly IPublishEndpoint _publishEndpoint;
 		private readonly IOrderDetailRepositoryRead _orderDetailRepositoryRead;
+		private readonly IOrderRepositoryRead _orderRepositoryRead;
+		private readonly IClientFactory _clientFactory;
 
-		public CreatePaymentCommandHandler(IPaymentRepositoryWrite repoWrite, IPublishEndpoint publishEndpoint, IOrderDetailRepositoryRead orderRepositoryRead)
+		public CreatePaymentCommandHandler(IPaymentRepositoryWrite repoWrite, IPublishEndpoint publishEndpoint, IOrderDetailRepositoryRead orderRepositoryRead, IOrderRepositoryRead orderRepositoryRead1, IClientFactory clientFactory)
 		{
 			_publishEndpoint = publishEndpoint;
 			_repoWrite = repoWrite;
 			_orderDetailRepositoryRead = orderRepositoryRead;
+			_orderRepositoryRead = orderRepositoryRead1;
+			_clientFactory = clientFactory;
 		}
 
 		public async Task<string> Handle(CreatePaymentCommand request, CancellationToken cancellationToken)
@@ -64,11 +70,24 @@ namespace OrderService.Application.Handler.CommandHandler
 			}
 			else
 			{
+				var order = await _orderRepositoryRead.GetOrderByIdAsync(payment.OrderId, cancellationToken);
+				var getRequest = new GetRequestAmountEvent
+				{
+					TicketPackageId = order.OrderDetails.Select(od => od.TicketPackageId).FirstOrDefault() ?? Guid.Empty
+				};
+				var client = _clientFactory.CreateRequestClient<GetRequestAmountEvent>();
+				var response = await client.GetResponse<RequestAmountResponseEvent>(getRequest, cancellationToken);
+				var ticketPackageUpdate = new UpdateAccountTicketRequestEvent
+				{
+					CustomerID = order.UserId,
+					TicketRequestAmount  = order.OrderDetails.Sum(od => od.Quantity * response.Message.RequestAmount)
+				};
 				var @event = new UpdateOrderStatusEvent
 				{
 					OrderId = payment.OrderId
 				};
 				await _publishEndpoint.Publish(@event, cancellationToken);
+				await _publishEndpoint.Publish(ticketPackageUpdate, cancellationToken);
 				//var orderDetail = await _orderDetailRepositoryRead.GetOrderDetailsByOrderIdAndCustomerId(payment.OrderId, cancellationToken);
 			}
 			return payment.PaymentId.ToString();

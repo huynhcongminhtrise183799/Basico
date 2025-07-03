@@ -5,6 +5,7 @@ using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
 using MassTransit;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,11 +30,14 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
         public async Task<Guid> Handle(CreateLawyerCommand request, CancellationToken cancellationToken)
         {
             var dto = request.Lawyer;
-            var account = new Account
+			PasswordHasher<string> _passwordHasher = new PasswordHasher<string>();
+
+			var account = new Account
             {
                 AccountId = Guid.NewGuid(),
                 AccountUsername = dto.AccountUsername,
-                AccountPassword = dto.AccountPassword,
+				
+				AccountPassword = _passwordHasher.HashPassword(null, dto.AccountPassword),
                 AccountEmail = dto.AccountEmail,
                 AccountFullName = dto.AccountFullName,
                 AccountDob = dto.AccountDob,
@@ -64,7 +68,7 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
             {
                 AccountId = account.AccountId,
                 AccountUsername = request.Lawyer.AccountUsername,
-                AccountPassword = request.Lawyer.AccountPassword,
+                AccountPassword = _passwordHasher.HashPassword(null, dto.AccountPassword),
                 AccountEmail = request.Lawyer.AccountEmail,
                 AccountFullName = request.Lawyer.AccountFullName,
                 AccountDob = request.Lawyer.AccountDob,

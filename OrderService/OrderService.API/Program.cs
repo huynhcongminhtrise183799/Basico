@@ -52,8 +52,9 @@ namespace OrderService.API
 				x.AddConsumers(typeof(CreateOrderConsumer).Assembly);
 				x.AddConsumer<OrderCreatedEventConsumer>();
 				x.AddConsumer<UpdateOrderStatusConsumer>();
+				x.AddConsumer<OrderCancelledConsumer>();
 
-                x.UsingRabbitMq((context, cfg) =>
+				x.UsingRabbitMq((context, cfg) =>
 				{
 					cfg.Host("localhost", "/", h =>
 					{

@@ -29,7 +29,7 @@ namespace OrderService.Application.Handler.CommandHandler
             {
                 UserId = request.UserId,
                 TotalPrice = request.TotalPrice,
-                Status = OrderStatus.Completed.ToString(),
+                Status = OrderStatus.Pending.ToString(),
                 OrderDetails = request.OrderDetails?.Select(od => new OrderDetail
                 {
                     TicketPackageId = null,

@@ -33,9 +33,33 @@ namespace OrderService.Infrastructure.Read.Repositories
             await _context.OrderDetails.AddAsync(orderDetail, cancellationToken);
         }
 
+		public async Task CancelOrderAsync(Guid orderId)
+		{
+			var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
+			if (order != null)
+			{
+				order.Status = OrderStatus.Cancelled.ToString();
+				await _context.SaveChangesAsync();
+			}
+		}
+
+		public async Task<List<Order>> GetAllOrdersAsync()
+		{
+			return await _context.Orders
+				.Include(o => o.OrderDetails)
+				.ToListAsync();
+		}
+
+		public async Task<Order?> GetOrderByIdAndStatusAsync(Guid orderId, string status)
+		{
+			return await _context.Orders
+				.FirstOrDefaultAsync(o => o.OrderId == orderId && o.Status.ToUpper() == status.ToUpper());
+		}
+
 		public async Task<Order> GetOrderByIdAsync(Guid? orderId, CancellationToken cancellationToken = default)
 		{
-			return await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+			return await _context.Orders.Include(o => o.OrderDetails)
+				.FirstOrDefaultAsync(o => o.OrderId == orderId);
 		}
 
 		public async Task SaveChangesAsync(CancellationToken cancellationToken = default)

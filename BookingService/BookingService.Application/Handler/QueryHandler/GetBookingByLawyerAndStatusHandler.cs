@@ -52,6 +52,7 @@ namespace BookingService.Application.Handler.QueryHandler
 						CustomerName = response.Message.CustomerName,
 						LawyerId = b.LawyerId,
 						ServiceId = b.ServiceId,
+						Description = b.Description,
 						CustomerId = b.CustomerId,
 						Status = b.Status,
 						StartTime = slots.Min(slot => slot.SlotStartTime),

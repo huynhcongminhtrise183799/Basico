@@ -19,5 +19,7 @@ namespace AccountService.Application.DTOs.Response
 		public int Gender { get; set; }
 
         public int AccountTicketRequest { get; set; } // 
-    }
+
+        public string Role { get; set; } = string.Empty;
+	}
 }

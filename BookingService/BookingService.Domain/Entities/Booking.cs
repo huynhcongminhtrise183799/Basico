@@ -28,9 +28,13 @@ namespace BookingService.Domain.Entities
 
 		public double Price { get; set; }
 
+		public string Description { get; set; }	
+
 		public string Status { get; set; }
 
 		public virtual ICollection<BookingSlots> BookingSlots { get; set; } = new List<BookingSlots>();
+
+		public virtual Feedback Feedback { get; set; }
 
 
 	}
