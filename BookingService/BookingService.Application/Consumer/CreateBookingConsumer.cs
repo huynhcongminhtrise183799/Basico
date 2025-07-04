@@ -33,15 +33,20 @@ namespace BookingService.Application.Consumer
 				BookingDate = bookingEvent.BookingDate,
 				Price = bookingEvent.Price,
 				Status = bookingEvent.Status,
-				Description = bookingEvent.Description
-			};
-			var bookingSlots = bookingEvent.SlotId.Select(slotId => new BookingSlots
-			{
-				SlotId = Guid.Parse(slotId),
-				BookingId = booking.BookingId
-			}).ToList();
+				Description = bookingEvent.Description,
+				BookingSlots = bookingEvent.SlotId.Select(slotId => new BookingSlots
+                {
+                    SlotId = Guid.Parse(slotId),
+                    BookingId = bookingEvent.BookingId
+                }).ToList()
+            };
+			//var bookingSlots = bookingEvent.SlotId.Select(slotId => new BookingSlots
+			//{
+			//	SlotId = Guid.Parse(slotId),
+			//	BookingId = booking.BookingId
+			//}).ToList();
 			await _repo.CreateBookingAsync(booking);
-			await _bookingSlotRepositoryRead.AddBookedSlotAsync(bookingSlots);
+			//await _bookingSlotRepositoryRead.AddBookedSlotAsync(bookingSlots);
 		}
 	}
 }

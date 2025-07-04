@@ -28,52 +28,64 @@ namespace BookingService.Application.Handler.CommandHandler
 
         public async Task<BookingResponse> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
         {
+            var bookingId = Guid.NewGuid();
             var booking = new Booking
             {
-                BookingId = Guid.NewGuid(),
+                BookingId = bookingId,
                 BookingDate = request.bookingDate,
                 Price = request.Price,
 				Description = request.Description,
 				CustomerId = request.CustomerId,
                 LawyerId = request.lawyerId,
                 ServiceId = request.ServiceId,
-                Status = BookingStatus.Pending.ToString()
+                Status = BookingStatus.Pending.ToString(),
+                BookingSlots = request.SlotId.Select(slotId => new BookingSlots
+                {
+                    SlotId = Guid.Parse(slotId),
+                    BookingId = bookingId
+                }).ToList()
             };
 
-            var bookingSlots = request.SlotId.Select(slotId => new BookingSlots
-            {
-                SlotId = Guid.Parse(slotId),
-                BookingId = booking.BookingId
-            }).ToList();
+            //var bookingSlots = request.SlotId.Select(slotId => new BookingSlots
+            //{
+            //    SlotId = Guid.Parse(slotId),
+            //    BookingId = booking.BookingId
+            //}).ToList();
 
-            await _bookingRepo.CreateBookingAsync(booking);
-            await _bookingSlotsRepo.AddBookedSlotAsync(bookingSlots);
-
-            var @event = new CreateBookingEvent
+            var result =  await _bookingRepo.CreateBookingAsync(booking);
+            if (result)
             {
-                BookingId = booking.BookingId,
-                BookingDate = booking.BookingDate,
-                Price = booking.Price,
-				Description = booking.Description,
-				CustomerId = booking.CustomerId,
-                LawyerId = booking.LawyerId,
-                ServiceId = booking.ServiceId,
-                SlotId = request.SlotId,
-                Status = booking.Status
-            };
-            await _publish.Publish(@event, cancellationToken);
-            var response = new BookingResponse
+                var @event = new CreateBookingEvent
+                {
+                    BookingId = booking.BookingId,
+                    BookingDate = booking.BookingDate,
+                    Price = booking.Price,
+                    Description = booking.Description,
+                    CustomerId = booking.CustomerId,
+                    LawyerId = booking.LawyerId,
+                    ServiceId = booking.ServiceId,
+                    SlotId = request.SlotId,
+                    Status = booking.Status
+                };
+                await _publish.Publish(@event, cancellationToken);
+                var response = new BookingResponse
+                {
+                    BookingId = booking.BookingId,
+                    BookingDate = booking.BookingDate,
+                    Price = booking.Price,
+                    Description = booking.Description,
+                    CustomerId = booking.CustomerId,
+                    LawyerId = booking.LawyerId,
+                    ServiceId = booking.ServiceId,
+                    SlotId = request.SlotId
+                };
+                return response;
+            }
+            else
             {
-                BookingId = booking.BookingId,
-                BookingDate = booking.BookingDate,
-                Price = booking.Price,
-				Description = booking.Description,
-				CustomerId = booking.CustomerId,
-                LawyerId = booking.LawyerId,
-                ServiceId = booking.ServiceId,
-                SlotId = request.SlotId
-            };
-            return response;
+                return null;
+            }
+           
         }
     }
 }
