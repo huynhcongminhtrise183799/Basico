@@ -24,13 +24,17 @@ namespace BookingService.Application.Handler.CommandHandler
 		public async Task<bool> Handle(CancelBookingCommand request, CancellationToken cancellationToken)
 		{
 			// Delete the booking
-			await _bookingRepositoryWrite.DeleteBookingAsync(request.bookingId);
-			await _publish.Publish(new CancelBookingEvent
+			var result = await _bookingRepositoryWrite.DeleteBookingAsync(request.bookingId);
+			if (result)
 			{
-				BookingId = request.bookingId
-			}, cancellationToken);
-			// Return true to indicate success
-			return true;
+                await _publish.Publish(new CancelBookingEvent
+                {
+                    BookingId = request.bookingId
+                }, cancellationToken);
+                // Return true to indicate success
+                return true;
+            }
+			return false;
 		}
 	}
 }

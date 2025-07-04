@@ -88,7 +88,7 @@ namespace OrderService.Application.Handler.CommandHandler
 				};
 				await _publishEndpoint.Publish(@event, cancellationToken);
 				await _publishEndpoint.Publish(ticketPackageUpdate, cancellationToken);
-				//var orderDetail = await _orderDetailRepositoryRead.GetOrderDetailsByOrderIdAndCustomerId(payment.OrderId, cancellationToken);
+
 			}
 			return payment.PaymentId.ToString();
 		}

@@ -9,11 +9,11 @@ namespace BookingService.Domain.IRepository
 {
 	public interface IBookingRepositoryWrite
 	{
-		Task CreateBookingAsync(Booking booking);
+		Task<bool> CreateBookingAsync(Booking booking);
 
-		Task UpdateBookingAsync(Booking booking);
+		Task<bool> UpdateBookingAsync(Booking booking);
 
-		Task DeleteBookingAsync(Guid bookingId);
+		Task<bool> DeleteBookingAsync(Guid bookingId);
 
 		Task<bool> CheckInBookingAsync(Guid bookingId);
 

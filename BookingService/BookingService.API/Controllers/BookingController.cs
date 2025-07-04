@@ -28,7 +28,7 @@ namespace BookingService.API.Controllers
 			var result = await _mediator.Send(command);
 			if (result == null)
 			{
-				return NotFound("Booking could not be created.");
+				return BadRequest("Booking could not be created.");
 			}
 
 			return Ok(result);
@@ -53,9 +53,9 @@ namespace BookingService.API.Controllers
 		{
 			var command = new CancelBookingCommand(bookingId);
 			var result = await _mediator.Send(command);
-			if (result == null)
+			if (result == false)
 			{
-				return NotFound("Booking could not be deleted.");
+				return BadRequest("Booking could not be deleted.");
 			}
 
 			return Ok(result);

@@ -28,27 +28,37 @@ namespace BookingService.Infrastructure.Write.Repository
 			return true;
 		}
 
-		public async Task CreateBookingAsync(Booking booking)
+		public async Task<bool> CreateBookingAsync(Booking booking)
 		{
-			await _context.Bookings.AddAsync(booking);
-			await _context.SaveChangesAsync();
+			try
+			{
+                await _context.Bookings.AddAsync(booking);
+                await _context.SaveChangesAsync();
+				return true;
+            }
+			catch (Exception)
+			{
+
+				return false;
+			}
 		}
 
-		public Task DeleteBookingAsync(Guid bookingId)
+		public async Task<bool> DeleteBookingAsync(Guid bookingId)
 		{
 			var booking = _context.Bookings.Find(bookingId);
 			if (booking != null)
 			{
 				booking.Status = BookingStatus.Cancelled.ToString();
-				return _context.SaveChangesAsync();
+				await _context.SaveChangesAsync();
+				return true;
 			}
 			else
 			{
-				throw new KeyNotFoundException("Booking not found");
+				return false;
 			}
 		}
 
-		public async Task UpdateBookingAsync(Booking booking)
+		public async Task<bool> UpdateBookingAsync(Booking booking)
 		{
 			var existingBooking = await _context.Bookings.FindAsync(booking.BookingId);
 			if (existingBooking != null)
@@ -63,10 +73,11 @@ namespace BookingService.Infrastructure.Write.Repository
 				// Update other properties as needed
 
 				await _context.SaveChangesAsync();
+				return true;
 			}
 			else
 			{
-				throw new KeyNotFoundException("Booking not found");
+				return false;
 			}
 		}
 
