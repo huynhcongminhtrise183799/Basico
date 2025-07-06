@@ -18,24 +18,42 @@ namespace BookingService.Infrastructure.Write.Repository
 			_context = context;
 		}
 
-		public async Task AddAsync(Feedback feedback)
+		public async Task<bool> AddAsync(Feedback feedback)
 		{
-			await _context.Feedbacks.AddAsync(feedback);
-			await _context.SaveChangesAsync();
+			try
+			{
+                await _context.Feedbacks.AddAsync(feedback);
+                await _context.SaveChangesAsync();
+				return true;
+            }
+			catch (Exception)
+			{
+				return false;
+			}
 		}
 
-		public async Task UpdateAsync(Feedback feedback)
+		public async Task<bool> UpdateAsync(Feedback feedback)
 		{
-			var existing = await _context.Feedbacks.FirstOrDefaultAsync(f => f.FeedbackId == feedback.FeedbackId);
-			if (existing != null)
+			try
 			{
-				existing.FeedbackContent = feedback.FeedbackContent;
-				existing.Rating = feedback.Rating;
-				await _context.SaveChangesAsync();
-			}
-			else
+                var existing = await _context.Feedbacks.FirstOrDefaultAsync(f => f.FeedbackId == feedback.FeedbackId);
+                if (existing != null)
+                {
+                    existing.FeedbackContent = feedback.FeedbackContent;
+                    existing.Rating = feedback.Rating;
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+					return false;
+                }
+				
+            }
+			catch (Exception)
 			{
-				throw new InvalidOperationException("Feedback not found.");
+
+				return false;
 			}
 		}
 

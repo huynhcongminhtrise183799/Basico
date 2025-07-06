@@ -59,7 +59,8 @@ namespace BookingService.API
 				cfg.RegisterServicesFromAssembly(typeof(GetAllFeedbackHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetDetailFeedbackHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetFeedbackByBookingIdHandler).Assembly);
-			});
+
+            });
 
 			builder.Services.AddMassTransit(x =>
 			{

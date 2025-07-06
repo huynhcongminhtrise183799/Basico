@@ -32,15 +32,19 @@ namespace BookingService.Application.Handler.CommandHandler
 				FeedbackContent = request.FeedbackContent,
 				Rating = request.Rating
 			};
-			await _repo.UpdateAsync(feedback);
-			var @event = new FeedbackUpdatedEvent
+			var result =  await _repo.UpdateAsync(feedback);
+			if (result)
 			{
-				FeedbackId = request.FeedbackId,
-				FeedbackContent = request.FeedbackContent,
-				Rating = request.Rating
-			};
-			await _publish.Publish(@event);
-			return true;
+                var @event = new FeedbackUpdatedEvent
+                {
+                    FeedbackId = request.FeedbackId,
+                    FeedbackContent = request.FeedbackContent,
+                    Rating = request.Rating
+                };
+                await _publish.Publish(@event);
+                return true;
+            }
+			return false;
 		}
 	}
 }

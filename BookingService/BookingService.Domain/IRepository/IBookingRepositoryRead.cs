@@ -26,9 +26,10 @@ namespace BookingService.Domain.IRepository
 
 		Task<List<Booking>> GetBookingsByCusomterIdAndStatus(Guid id, string status);
 
-		Task<List<Booking>> GetBookingsByLawyerIdAndStatus(Guid id, string status, DateOnly bookingDate);
+		Task<List<Booking>> GetBookingsByLawyerIdAndStatusAndDate(Guid id, string status, DateOnly bookingDate);
+        Task<List<Booking>> GetBookingsByLawyerIdAndStatus(Guid id, string status);
 
-		Task<List<Booking>> GetBookingsByStatusInDay(DateOnly bookingDate, string status);
+        Task<List<Booking>> GetBookingsByStatusInDay(DateOnly bookingDate, string status);
 
 		Task<bool> CheckInBooking(Guid bookingId);
 		Task UpdateStatusBookingToPaid(Guid? bookingId);

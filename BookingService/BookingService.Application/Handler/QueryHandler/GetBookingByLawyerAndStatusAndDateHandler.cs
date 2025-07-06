@@ -13,22 +13,21 @@ using System.Threading.Tasks;
 
 namespace BookingService.Application.Handler.QueryHandler
 {
-	public class GetAllBookingInDayHandler : IRequestHandler<GetAllBookingInDayQuery, List<BookingDetailResponse>>
+	public class GetBookingByLawyerAndStatusAndDateHandler : IRequestHandler<GetBookingByLawyerAndStatusAndDateQuery, List<BookingDetailResponse>>
 	{
 		private readonly IBookingRepositoryRead _bookingRepository;
 		private readonly ISlotRepositoryRead _slot;
-		private readonly IEventPublisher _eventPublisher;
-
-		public GetAllBookingInDayHandler(IBookingRepositoryRead bookingRepository, ISlotRepositoryRead slot, IEventPublisher eventPublisher)
+		//private readonly IEventPublisher _eventPublisher;
+		private readonly IClientFactory _clientFactory;
+		public GetBookingByLawyerAndStatusAndDateHandler(IBookingRepositoryRead bookingRepository, ISlotRepositoryRead slot, IClientFactory clientFactory)
 		{
 			_bookingRepository = bookingRepository;
 			_slot = slot;
-			_eventPublisher = eventPublisher;
+            _clientFactory = clientFactory;
 		}
-
-		public async Task<List<BookingDetailResponse>> Handle(GetAllBookingInDayQuery request, CancellationToken cancellationToken)
+		public async Task<List<BookingDetailResponse>> Handle(GetBookingByLawyerAndStatusAndDateQuery request, CancellationToken cancellationToken)
 		{
-			var bookings = await _bookingRepository.GetBookingsByStatusInDay(request.bookingDate, request.status);
+			var bookings = await _bookingRepository.GetBookingsByLawyerIdAndStatusAndDate(request.LawyerId, request.Status,request.BookingDate);
 			var bookingDetailResponses = new List<BookingDetailResponse>();
 			if (bookings.Count > 0)
 			{
@@ -42,7 +41,7 @@ namespace BookingService.Application.Handler.QueryHandler
 						ServiceId = b.ServiceId,
 						CustomerId = b.CustomerId
 					};
-					var client = _eventPublisher.CreateRequestClient<GetDetailBookingInformation>();
+					var client = _clientFactory.CreateRequestClient<GetDetailBookingInformation>();
 					var response = await client.GetResponse<GetDetailBookingInformation>(findLawyerName, cancellationToken, timeout: RequestTimeout.After(s: 60));
 					var bookingDetailResponse = new BookingDetailResponse
 					{
@@ -53,13 +52,12 @@ namespace BookingService.Application.Handler.QueryHandler
 						ServiceName = response.Message.ServiceName,
 						CustomerName = response.Message.CustomerName,
 						LawyerId = b.LawyerId,
-						Description = b.Description,
 						ServiceId = b.ServiceId,
+						Description = b.Description,
 						CustomerId = b.CustomerId,
 						Status = b.Status,
 						StartTime = slots.Min(slot => slot.SlotStartTime),
-						EndTime = slots.Max(slot => slot.SlotEndTime),
-
+						EndTime = slots.Max(slot => slot.SlotEndTime)
 					};
 					bookingDetailResponses.Add(bookingDetailResponse);
 

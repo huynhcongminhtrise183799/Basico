@@ -140,7 +140,7 @@ namespace AccountService.API.Configuration
                 x.AddConsumer<LawyerUpdatedEventConsumer>();
                 x.AddConsumer<LawyerDeletedEventConsumer>();
 				x.AddConsumer<CheckLawyerDayOffConsumer>();
-				x.AddConsumer<GetLawyerNameConsumer>();
+				x.AddConsumer<GetDetailBookingInformationConsumer>();
 				x.AddConsumer<UpdateAccountTicketRequestConsumer>();
                 x.AddConsumer<ValidatationRequestTicketConsumer>();
 				x.AddConsumer<DecreseTicketRequestConsumer>();

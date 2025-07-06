@@ -16,13 +16,11 @@ namespace BookingService.Application.Handler.CommandHandler
     public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, BookingResponse>
     {
         private readonly IBookingRepositoryWrite _bookingRepo;
-        private readonly IBookingSlotsRepositoryWrite _bookingSlotsRepo;
         private readonly IPublishEndpoint _publish;
 
-        public CreateBookingHandler(IBookingRepositoryWrite bookingRepo, IBookingSlotsRepositoryWrite bookingSlotsRepo, IPublishEndpoint publishEndpoint)
+        public CreateBookingHandler(IBookingRepositoryWrite bookingRepo, IPublishEndpoint publishEndpoint)
         {
             _bookingRepo = bookingRepo;
-            _bookingSlotsRepo = bookingSlotsRepo;
             _publish = publishEndpoint;
         }
 

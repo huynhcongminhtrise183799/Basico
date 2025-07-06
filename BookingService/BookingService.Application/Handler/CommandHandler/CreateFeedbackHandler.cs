@@ -36,27 +36,31 @@ namespace BookingService.Application.Handler.CommandHandler
 				Rating = request.Rating
 			};
 
-			await _repo.AddAsync(feedback);
-			var @event = new FeedbackCreatedEvent
+			 var result = await _repo.AddAsync(feedback);
+			if (result)
 			{
-				FeedbackId = feedback.FeedbackId,
-				BookingId = feedback.BookingId,
-				CustomerId = feedback.CustomerId,
-				FeedbackContent = feedback.FeedbackContent,
-				FeedbackDay = feedback.FeedbackDay,
-				Rating = feedback.Rating
-			};
-			await _publish.Publish(@event);
+                var @event = new FeedbackCreatedEvent
+                {
+                    FeedbackId = feedback.FeedbackId,
+                    BookingId = feedback.BookingId,
+                    CustomerId = feedback.CustomerId,
+                    FeedbackContent = feedback.FeedbackContent,
+                    FeedbackDay = feedback.FeedbackDay,
+                    Rating = feedback.Rating
+                };
+                await _publish.Publish(@event);
 
-			return new FeedbackResponse
-			{
-				FeedbackId = feedback.FeedbackId,
-				BookingId = feedback.BookingId,
-				CustomerId = feedback.CustomerId,
-				FeedbackContent = feedback.FeedbackContent,
-				FeedbackDay = feedback.FeedbackDay,
-				Rating = feedback.Rating
-			};
+                return new FeedbackResponse
+                {
+                    FeedbackId = feedback.FeedbackId,
+                    BookingId = feedback.BookingId,
+                    CustomerId = feedback.CustomerId,
+                    FeedbackContent = feedback.FeedbackContent,
+                    FeedbackDay = feedback.FeedbackDay,
+                    Rating = feedback.Rating
+                };
+            }
+			return null;
 		}
 	}
 }
