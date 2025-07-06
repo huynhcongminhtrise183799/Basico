@@ -9,9 +9,9 @@ namespace BookingService.Domain.IRepository
 {
 	public interface IFeedbackRepositoryWrite
 	{
-		Task AddAsync(Feedback feedback);
+		Task<bool> AddAsync(Feedback feedback);
 
-		Task UpdateAsync(Feedback feedback);
+		Task<bool> UpdateAsync(Feedback feedback);
 
 
 	}

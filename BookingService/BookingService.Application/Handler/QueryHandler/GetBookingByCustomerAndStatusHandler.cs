@@ -18,12 +18,12 @@ namespace BookingService.Application.Handler.QueryHandler
 	{
 		private readonly IBookingRepositoryRead _bookingRepository;
 		private readonly ISlotRepositoryRead _slot;
-		private readonly IEventPublisher _eventPublisher;
-		public GetBookingByCustomerAndStatusHandler(IBookingRepositoryRead bookingRepository, ISlotRepositoryRead slot, IEventPublisher eventPublisher)
+        private readonly IClientFactory _clientFactory;
+        public GetBookingByCustomerAndStatusHandler(IBookingRepositoryRead bookingRepository, ISlotRepositoryRead slot, IClientFactory clientFactory)
 		{
 			_bookingRepository = bookingRepository;
 			_slot = slot;
-			_eventPublisher = eventPublisher;
+            _clientFactory = clientFactory;
 		}
 		public async Task<List<BookingDetailResponse>> Handle(GetBookingByCustomerAndStatusQuery request, CancellationToken cancellationToken)
 		{
@@ -34,15 +34,15 @@ namespace BookingService.Application.Handler.QueryHandler
 				foreach(var b in bookings)
 				{
 					var slots = await _slot.GetSlotsByBookingId(b.BookingId);
-					var findLawyerName = new GetLawyerName
+					var findLawyerName = new GetDetailBookingInformation
 					{
 						CorrelationId = Guid.NewGuid(),
 						LawyerId = b.LawyerId,
 						ServiceId = b.ServiceId,
 						CustomerId = b.CustomerId
 					};
-					var client = _eventPublisher.CreateRequestClient<GetLawyerName>();
-					var response = await client.GetResponse<GetLawyerName>(findLawyerName, cancellationToken, timeout: RequestTimeout.After(s: 60));
+					var client = _clientFactory.CreateRequestClient<GetDetailBookingInformation>();
+					var response = await client.GetResponse<GetDetailBookingInformation>(findLawyerName, cancellationToken, timeout: RequestTimeout.After(s: 60));
 					var bookingDetailResponse = new BookingDetailResponse
 					{
 						BookingId = b.BookingId,

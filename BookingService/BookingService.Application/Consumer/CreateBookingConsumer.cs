@@ -13,12 +13,10 @@ namespace BookingService.Application.Consumer
 	public class CreateBookingConsumer : IConsumer<CreateBookingEvent>
 	{
 		private readonly IBookingRepositoryRead _repo;
-		private readonly IBookingSlotRepositoryRead _bookingSlotRepositoryRead;
 
-		public CreateBookingConsumer(IBookingRepositoryRead repo, IBookingSlotRepositoryRead bookingSlotRepositoryRead)
+		public CreateBookingConsumer(IBookingRepositoryRead repo)
 		{
 			_repo = repo;
-			_bookingSlotRepositoryRead = bookingSlotRepositoryRead;
 		}
 
 		public async Task Consume(ConsumeContext<CreateBookingEvent> context)

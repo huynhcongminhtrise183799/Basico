@@ -9,25 +9,25 @@ using System.Threading.Tasks;
 
 namespace AccountService.Application.Consumers.Lawyer
 {
-	public class GetLawyerNameConsumer : IConsumer<GetLawyerName>
+	public class GetDetailBookingInformationConsumer : IConsumer<GetDetailBookingInformation>
 	{
 		private readonly IAccountRepositoryRead _accountRead;
 		private readonly IServiceRepositoryRead _serviceRead;
 
-		public GetLawyerNameConsumer(IAccountRepositoryRead accountRead, IServiceRepositoryRead serviceRead)
+		public GetDetailBookingInformationConsumer(IAccountRepositoryRead accountRead, IServiceRepositoryRead serviceRead)
 		{
 			_accountRead = accountRead;
 			_serviceRead = serviceRead;
 		}
 
-		public async Task Consume(ConsumeContext<GetLawyerName> context)
+		public async Task Consume(ConsumeContext<GetDetailBookingInformation> context)
 		{
 			var message = context.Message;
 			var lawyerName = await _accountRead.GetLaywerNameByLawyerId(message.LawyerId);
 			var serviceName = await _serviceRead.GetServiceNameByServiceId(message.ServiceId);
 			var customerName = await _accountRead.GetCustomerNameByCustomerId(message.CustomerId);
-			await context.RespondAsync(new GetLawyerName
-			{
+			await context.RespondAsync(new GetDetailBookingInformation
+            {
 				CorrelationId = message.CorrelationId,
 				LawyerId = message.LawyerId,
 				ServiceId = message.ServiceId,
