@@ -86,9 +86,13 @@ namespace BookingService.API
 			app.UseHttpsRedirection();
 
 			app.UseAuthorization();
+            app.UseCors(builder =>
+builder.WithOrigins("http://localhost:3000")
+       .AllowAnyHeader()
+       .AllowAnyMethod());
 
 
-			app.MapControllers();
+            app.MapControllers();
 
 			app.Run();
 		}
