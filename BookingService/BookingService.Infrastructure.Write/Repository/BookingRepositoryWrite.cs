@@ -59,6 +59,7 @@ namespace BookingService.Infrastructure.Write.Repository
 				existingBooking.BookingDate = booking.BookingDate;
 				existingBooking.Status = booking.Status;
 				existingBooking.Price = booking.Price;
+				existingBooking.Description = booking.Description;
 				// Update other properties as needed
 
 				await _context.SaveChangesAsync();

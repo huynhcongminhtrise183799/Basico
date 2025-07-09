@@ -34,7 +34,10 @@ namespace BookingService.Application.Handler.CommandHandler
 				BookingDate = request.bookingDate,
 				LawyerId = request.lawyerId,
 				CustomerId = request.customerId,
+				Description = request.Description,
 				Status = BookingStatus.Paid.ToString(),
+				ServiceId = request.serviceId,
+				Price = request.price
 			};
 			var bookingSlots = request.slotId.Select(slotId => new BookingSlots
 			{
@@ -51,8 +54,11 @@ namespace BookingService.Application.Handler.CommandHandler
 				BookingDate = request.bookingDate,
 				LawyerId = request.lawyerId,
 				CustomerId = request.customerId,
+				Description = request.Description,
 				Status = BookingStatus.Paid.ToString(),
 				SlotId = request.slotId,
+				Price = request.price,
+				ServiceId = request.serviceId
 			};
 			await _publish.Publish(@event, cancellationToken);
 

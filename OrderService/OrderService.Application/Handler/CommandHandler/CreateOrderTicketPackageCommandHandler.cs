@@ -27,12 +27,12 @@ namespace OrderService.Application.Handler.CommandHandler
 
         public async Task<Guid> Handle(CreateOrderTicketPackageCommand request, CancellationToken cancellationToken)
         {
-            var getRequest = new GetRequestAmountEvent
-            {
-                TicketPackageId = request.TicketPackageId
-            };
-            var client = _clientFactory.CreateRequestClient<GetRequestAmountEvent>();
-            var response = await client.GetResponse<RequestAmountResponseEvent>(getRequest, cancellationToken);
+            //var getRequest = new GetRequestAmountEvent
+            //{
+            //    TicketPackageId = request.TicketPackageId
+            //};
+            //var client = _clientFactory.CreateRequestClient<GetRequestAmountEvent>();
+            //var response = await client.GetResponse<RequestAmountResponseEvent>(getRequest, cancellationToken);
 
             var order = new Order
             {
@@ -66,12 +66,12 @@ namespace OrderService.Application.Handler.CommandHandler
             };
             await _publishEndpoint.Publish(evt, cancellationToken);
 
-            var ticketPackageUpdate = new UpdateAccountTicketRequestEvent
-            {
-                CustomerID = request.UserId,
-                TicketRequestAmount = request.Quantity * response.Message.RequestAmount,
-            };
-            await _publishEndpoint.Publish(ticketPackageUpdate, cancellationToken);
+            //var ticketPackageUpdate = new UpdateAccountTicketRequestEvent
+            //{
+            //    CustomerID = request.UserId,
+            //    TicketRequestAmount = request.Quantity * response.Message.RequestAmount,
+            //};
+            //await _publishEndpoint.Publish(ticketPackageUpdate, cancellationToken);
 
             return order.OrderId;
         }

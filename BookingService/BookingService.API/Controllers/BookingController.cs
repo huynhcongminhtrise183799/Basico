@@ -23,7 +23,7 @@ namespace BookingService.API.Controllers
 		[SwaggerOperation(Summary = "Tạo booking")]
 		public async Task<IActionResult> CreateBooking([FromBody] CreateBookingDTO request)
 		{
-			var command = new CreateBookingCommand(request.BookingDate,request.Price,request.CustomerId,request.LawyerId,request.ServiceId, request.SlotId);
+			var command = new CreateBookingCommand(request.BookingDate,request.Description,request.Price,request.CustomerId,request.LawyerId,request.ServiceId, request.SlotId);
 
 			var result = await _mediator.Send(command);
 			if (result == null)
@@ -37,7 +37,7 @@ namespace BookingService.API.Controllers
 		[SwaggerOperation(Summary = "Update booking")]
 		public async Task<IActionResult> UpdateBooking(Guid bookingId,[FromBody] UpdateBookingDTO request)
 		{
-			var command = new UpdateBookingCommand(bookingId,request.LawyerId,request.CustomerId,request.ServiceId,request.BookingDate,request.SlotId,request.Price);
+			var command = new UpdateBookingCommand(bookingId,request.LawyerId,request.CustomerId,request.ServiceId,request.BookingDate,request.SlotId,request.Price, request.Description);
 
 			var result = await _mediator.Send(command);
 			if (result == null)

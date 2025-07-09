@@ -51,6 +51,7 @@ namespace BookingService.Application.Handler.QueryHandler
 						LawyerName = response.Message.LawyerName,
 						ServiceName = response.Message.ServiceName,
 						CustomerName = response.Message.CustomerName,
+						Description = b.Description,
 						LawyerId = b.LawyerId,
 						ServiceId = b.ServiceId,
 						CustomerId = b.CustomerId,

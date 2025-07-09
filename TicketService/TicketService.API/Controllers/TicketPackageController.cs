@@ -46,10 +46,10 @@ namespace TicketService.API.Controllers
         public async Task<IActionResult> GetAllTicketPackage()
         {
             var result = await _mediator.Send(new GetAllTicketPackageQuery());
-            if (result == null || !result.Any())
+/*            if (result == null || !result.Any())
             {
                 return NotFound(new { message = "No ticket packages found." });
-            }
+            }*/
             return Ok(result);
         }
         [HttpGet("ticket-packages-active")]
@@ -58,10 +58,10 @@ namespace TicketService.API.Controllers
         public async Task<IActionResult> GetAllActiveTicketPackage()
         {
             var result = await _mediator.Send(new GetAllTicketPackageActiveQuery());
-            if (result == null || !result.Any())
+/*            if (result == null || !result.Any())
             {
                 return NotFound(new { message = "No active ticket packages found." });
-            }
+            }*/
             return Ok(result);
         }
         [HttpGet("ticket-package/{id}")]
@@ -70,10 +70,10 @@ namespace TicketService.API.Controllers
         public async Task<IActionResult> GetTicketPackageById(string id)
         {
             var result = await _mediator.Send(new GetTicketPackageByIdQuery(Guid.Parse(id)));
-            if (result == null)
+/*            if (result == null)
             {
                 return NotFound(new { message = "Ticket package not found." });
-            }
+            }*/
             return Ok(result);
         }
 
@@ -83,10 +83,10 @@ namespace TicketService.API.Controllers
         public async Task<IActionResult> GetTicketPackagesPagition([FromQuery] int page)
         {
             var result = await _mediator.Send(new GetTicketPackagesPagitionQuery(page));
-            if (result == null || !result.Any())
+/*            if (result == null || !result.Any())
             {
                 return NotFound(new { message = "No ticket packages found." });
-            }
+            }*/
             return Ok(result);
         }
 

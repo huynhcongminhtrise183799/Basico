@@ -74,6 +74,7 @@ namespace FormService.Infrastructure.Read.Repository
                 existingTemplate.ServiceId = formTemplate.ServiceId;
                 existingTemplate.FormTemplateName = formTemplate.FormTemplateName;
                 existingTemplate.FormTemplateData = formTemplate.FormTemplateData;
+                existingTemplate.Price = formTemplate.Price;
                 existingTemplate.Status = formTemplate.Status;
                 return _context.SaveChangesAsync();
             }

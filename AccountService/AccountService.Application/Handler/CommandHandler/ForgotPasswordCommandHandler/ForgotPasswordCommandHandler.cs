@@ -15,7 +15,7 @@ namespace AccountService.Application.Handler.CommandHandler.ForgotPasswordComman
 		private readonly IAccountRepositoryWrite _repoWrite;
 		private readonly IEmailService _emailService;
 		private readonly IPublishEndpoint _publishEndpoint;
-		IAccountRepositoryRead _repoRead;
+		private readonly IAccountRepositoryRead _repoRead;
 
 		public ForgotPasswordCommandHandler(IAccountRepositoryWrite repoWrite, IEmailService emailService, IPublishEndpoint publishEndpoint, IAccountRepositoryRead repoRead)
 		{

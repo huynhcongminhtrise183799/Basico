@@ -33,7 +33,18 @@ namespace OrderService.Infrastructure.Write.Repositories
             await _dbContext.OrderDetails.AddAsync(orderDetail, cancellationToken);
 		}
 
-        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+		public async Task CancelOrderAsync(Guid orderId)
+		{
+			var order = _dbContext.Orders.FirstOrDefault(o => o.OrderId == orderId);
+			if (order != null)
+			{
+				order.Status = OrderStatus.Cancelled.ToString();
+				await _dbContext.SaveChangesAsync();
+			}
+			
+		}
+
+		public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
             await _dbContext.SaveChangesAsync(cancellationToken);
 		}

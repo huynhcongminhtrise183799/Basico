@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrderService.Application.Handler.QueryHandler
+namespace OrderService.Application.Event
 {
-	internal class Class1
+	public class OrderCancelledEvent
 	{
+		public Guid OrderId { get; set; }
 	}
 }
