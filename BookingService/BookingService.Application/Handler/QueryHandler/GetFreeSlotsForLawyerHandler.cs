@@ -17,12 +17,12 @@ namespace BookingService.Application.Handler.QueryHandler
 	{
 		private readonly ISlotRepositoryRead _slotRepositoryRead;
 		//private readonly IEventPublisher _publishEndpoint;
-		private readonly IClientFactory _publishEndpoint;
+		private readonly IClientFactory _clientFactory;
 
 		public GetFreeSlotsForLawyerHandler(ISlotRepositoryRead slotRepositoryRead, IClientFactory publishEndpoint)
 		{
 			_slotRepositoryRead = slotRepositoryRead;
-			_publishEndpoint = publishEndpoint;
+            _clientFactory = publishEndpoint;
 		}
 		public async Task<List<Slot>> Handle(GetFreeSlotsForLawyerQuery request, CancellationToken cancellationToken)
 		{
@@ -32,11 +32,9 @@ namespace BookingService.Application.Handler.QueryHandler
 				LawyerId = request.lawyerId,
 				DayOffDate = request.DateOnly
 			};
-			var client = _publishEndpoint.CreateRequestClient<CheckLawyerDayOff>();
+			var client = _clientFactory.CreateRequestClient<CheckLawyerDayOff>();
 			// Send the request and wait for the response
-			Console.WriteLine($"Requesting day off for lawyer {request.lawyerId} on {request.DateOnly}");
 			var response = await client.GetResponse<CheckLawyerDayOff>(checkDayOff, cancellationToken, timeout: RequestTimeout.After(s: 60));
-			Console.WriteLine($"Received response for day off: {response.Message.CorrelationId} - {response.Message.ShiftOffs?.Count ?? 0} shifts off");
 			var allSlots = await _slotRepositoryRead.GetAllSlots();
 			var currentTime = TimeOnly.FromDateTime(DateTime.Now);
 			var currentDay = DateOnly.FromDateTime(DateTime.Now);

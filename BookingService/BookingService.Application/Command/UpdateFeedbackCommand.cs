@@ -6,10 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookingService.Application.Query
+namespace BookingService.Application.Command
 {
-    public record GetBookingByLawyerAndStatusQuery(Guid LawyerId, string Status) : IRequest<List<BookingDetailResponse>>;
-
-
+	public record UpdateFeedbackCommand(Guid FeedbackId, string FeedbackContent, int Rating): IRequest<bool>;
 
 }

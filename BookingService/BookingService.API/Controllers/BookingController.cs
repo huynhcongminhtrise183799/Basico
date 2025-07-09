@@ -28,7 +28,7 @@ namespace BookingService.API.Controllers
 			var result = await _mediator.Send(command);
 			if (result == null)
 			{
-				return NotFound("Booking could not be created.");
+				return BadRequest("Booking could not be created.");
 			}
 
 			return Ok(result);
@@ -53,9 +53,9 @@ namespace BookingService.API.Controllers
 		{
 			var command = new CancelBookingCommand(bookingId);
 			var result = await _mediator.Send(command);
-			if (result == null)
+			if (result == false)
 			{
-				return NotFound("Booking could not be deleted.");
+				return BadRequest("Booking could not be deleted.");
 			}
 
 			return Ok(result);
@@ -88,17 +88,28 @@ namespace BookingService.API.Controllers
 			"1. Paid" +
 			"2. CheckedIn" +
 			"Completed")]
-
-
-
-		public async Task<IActionResult> GetBookingByStatusByLawyer( Guid lawyerId, [FromQuery] string status, [FromQuery] DateOnly bookingDate)
+		public async Task<IActionResult> GetBookingByStatusByLawyerAndDate( Guid lawyerId, [FromQuery] string status, [FromQuery] DateOnly bookingDate)
 		{
-			var query = new GetBookingByLawyerAndStatusQuery(lawyerId, status, bookingDate);
+			var query = new GetBookingByLawyerAndStatusAndDateQuery(lawyerId, status, bookingDate);
 			var result = await _mediator.Send(query);
 			return Ok(result);
 		}
 
-		[HttpGet("staff")]
+
+        [HttpGet("lawyer-all/{lawyerId}")]
+        [SwaggerOperation(Summary = "Lấy ra những booking của lawyer và status " +
+            "1. Paid" +
+            "2. CheckedIn" +
+            "Completed")]
+        public async Task<IActionResult> GetBookingByStatusByLawyer(Guid lawyerId, [FromQuery] string status)
+        {
+            var query = new GetBookingByLawyerAndStatusQuery(lawyerId, status);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+
+        [HttpGet("staff")]
 		[SwaggerOperation(Summary = "Lấy tất cả booking theo ngày và status" +
 			"1. Paid" +
 			"2. CheckedIn" +

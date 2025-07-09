@@ -44,6 +44,8 @@ namespace BookingService.API
 			builder.Services.AddScoped<IBookingSlotRepositoryRead, BookingSlotRepositoryRead>();
 			builder.Services.AddScoped<IBookingSlotsRepositoryWrite, BookingSlotRepositoryWrite>();
 			builder.Services.AddScoped<IEventPublisher, MassTransitEventPublisher>();
+			builder.Services.AddScoped<IFeedbackRepositoryRead , FeedbackRepositoryRead>();
+			builder.Services.AddScoped<IFeedbackRepositoryWrite , FeedbackRepositoryWrite>();
 
 			builder.Services.AddMediatR(cfg =>
 			{
@@ -52,7 +54,13 @@ namespace BookingService.API
 				cfg.RegisterServicesFromAssembly(typeof(UpdateBookingHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(CancelBookingHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetFreeSlotsForUpdateHandler).Assembly);
-			});
+				cfg.RegisterServicesFromAssembly(typeof(CreateFeedbackHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(UpdateFeedbackHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllFeedbackHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetDetailFeedbackHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetFeedbackByBookingIdHandler).Assembly);
+
+            });
 
 			builder.Services.AddMassTransit(x =>
 			{
@@ -62,6 +70,8 @@ namespace BookingService.API
 				x.AddConsumer<CheckInBookingConsumer>();
 				x.AddConsumer<PaymentSuccessConsumer>();
 				x.AddConsumer<CheckOutBookingConsumer>();
+				x.AddConsumer<FeedbackCreatedConsumer>();
+				x.AddConsumer<FeedbackUpdatedConsumer>();
 
 				x.UsingRabbitMq((context, cfg) =>
 				{

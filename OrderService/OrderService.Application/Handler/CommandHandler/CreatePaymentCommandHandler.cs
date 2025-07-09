@@ -17,15 +17,13 @@ namespace OrderService.Application.Handler.CommandHandler
 	{
 		private readonly IPaymentRepositoryWrite _repoWrite;
 		private readonly IPublishEndpoint _publishEndpoint;
-		private readonly IOrderDetailRepositoryRead _orderDetailRepositoryRead;
 		private readonly IOrderRepositoryRead _orderRepositoryRead;
 		private readonly IClientFactory _clientFactory;
 
-		public CreatePaymentCommandHandler(IPaymentRepositoryWrite repoWrite, IPublishEndpoint publishEndpoint, IOrderDetailRepositoryRead orderRepositoryRead, IOrderRepositoryRead orderRepositoryRead1, IClientFactory clientFactory)
+		public CreatePaymentCommandHandler(IPaymentRepositoryWrite repoWrite, IPublishEndpoint publishEndpoint, IOrderRepositoryRead orderRepositoryRead1, IClientFactory clientFactory)
 		{
 			_publishEndpoint = publishEndpoint;
 			_repoWrite = repoWrite;
-			_orderDetailRepositoryRead = orderRepositoryRead;
 			_orderRepositoryRead = orderRepositoryRead1;
 			_clientFactory = clientFactory;
 		}
@@ -88,7 +86,7 @@ namespace OrderService.Application.Handler.CommandHandler
 				};
 				await _publishEndpoint.Publish(@event, cancellationToken);
 				await _publishEndpoint.Publish(ticketPackageUpdate, cancellationToken);
-				//var orderDetail = await _orderDetailRepositoryRead.GetOrderDetailsByOrderIdAndCustomerId(payment.OrderId, cancellationToken);
+
 			}
 			return payment.PaymentId.ToString();
 		}

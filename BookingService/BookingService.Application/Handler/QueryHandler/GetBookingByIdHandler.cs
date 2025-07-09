@@ -28,15 +28,15 @@ namespace BookingService.Application.Handler.QueryHandler
 		{
 			var booking = await _bookingRepository.GetBookingByIdAsync(request.bookingId);
 			var slots = await _slot.GetSlotsByBookingId(request.bookingId);
-			var findLawyerName = new GetLawyerName
+			var findLawyerName = new GetDetailBookingInformation
 			{
 				CorrelationId = Guid.NewGuid(),
 				LawyerId = booking.LawyerId,
 				ServiceId = booking.ServiceId,
 				CustomerId = booking.CustomerId
 			};
-			var client = _eventPublisher.CreateRequestClient<GetLawyerName>();
-			var response = await client.GetResponse<GetLawyerName>(findLawyerName, cancellationToken, timeout: RequestTimeout.After(s: 60));
+			var client = _eventPublisher.CreateRequestClient<GetDetailBookingInformation>();
+			var response = await client.GetResponse<GetDetailBookingInformation>(findLawyerName, cancellationToken, timeout: RequestTimeout.After(s: 60));
 			var bookingDetailResponse = new BookingDetailResponse
 			{
 				BookingId = booking.BookingId,
