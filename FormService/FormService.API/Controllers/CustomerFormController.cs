@@ -1,4 +1,5 @@
 ﻿using FormService.Application.Command;
+using FormService.Application.DTOs.Request;
 using FormService.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -40,10 +41,10 @@ namespace FormService.API.Controllers
 			return Ok(result);
 		}
 		[HttpPut("customer-form/{customerFormId}")]
-		public async Task<IActionResult> UpdateCustomerForm(Guid customerFormId, [FromBody] string formData)
+		public async Task<IActionResult> UpdateCustomerForm(Guid customerFormId, [FromBody] UpdateCustomerFormRequest request)
 		{
 
-			var command = new UpdateCustomerFormCommand(customerFormId, formData);
+			var command = new UpdateCustomerFormCommand(customerFormId, request.FormData);
 			try
 			{
 			 var result = 	await _mediator.Send(command);

@@ -11,18 +11,18 @@ namespace AccountService.Application.Consumers.LawyerDayOff
 {
 	public class CheckLawyerDayOffConsumer : IConsumer<CheckLawyerDayOff>
 	{
-		private readonly IShiftRepositoryRead _repo;
+		private readonly IShiftRepositoryRead _repository;
 
-		public CheckLawyerDayOffConsumer(IShiftRepositoryRead repo)
+		public CheckLawyerDayOffConsumer(IShiftRepositoryRead repository)
 		{
-			_repo = repo;
+            _repository = repository;
 		}
 
 		public async Task Consume(ConsumeContext<CheckLawyerDayOff> context)
 		{
 			Console.WriteLine("CheckLawyerDayOffConsumer: Checking lawyer's day off...");
 			var message = context.Message;
-			var shiftsOff = await _repo.GetShiftsOffByLawyerInDay(message.LawyerId, message.DayOffDate);
+			var shiftsOff = await _repository.GetShiftsOffByLawyerInDay(message.LawyerId, message.DayOffDate);
 			await context.RespondAsync(new CheckLawyerDayOff
 			{
 				CorrelationId = message.CorrelationId,

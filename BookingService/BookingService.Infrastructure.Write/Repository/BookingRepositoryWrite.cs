@@ -70,6 +70,7 @@ namespace BookingService.Infrastructure.Write.Repository
 				existingBooking.Status = booking.Status;
 				existingBooking.Price = booking.Price;
 				existingBooking.Description = booking.Description;
+				existingBooking.BookingSlots = booking.BookingSlots;
 				// Update other properties as needed
 
 				await _context.SaveChangesAsync();

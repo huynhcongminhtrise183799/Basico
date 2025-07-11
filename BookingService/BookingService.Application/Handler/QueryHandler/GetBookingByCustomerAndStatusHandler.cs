@@ -17,12 +17,12 @@ namespace BookingService.Application.Handler.QueryHandler
 	public class GetBookingByCustomerAndStatusHandler : IRequestHandler<GetBookingByCustomerAndStatusQuery, List<BookingDetailResponse>>
 	{
 		private readonly IBookingRepositoryRead _bookingRepository;
-		private readonly ISlotRepositoryRead _slot;
+		private readonly ISlotRepositoryRead _slotRepository;
         private readonly IClientFactory _clientFactory;
-        public GetBookingByCustomerAndStatusHandler(IBookingRepositoryRead bookingRepository, ISlotRepositoryRead slot, IClientFactory clientFactory)
+        public GetBookingByCustomerAndStatusHandler(IBookingRepositoryRead bookingRepository, ISlotRepositoryRead slotRepository, IClientFactory clientFactory)
 		{
 			_bookingRepository = bookingRepository;
-			_slot = slot;
+            _slotRepository = slotRepository;
             _clientFactory = clientFactory;
 		}
 		public async Task<List<BookingDetailResponse>> Handle(GetBookingByCustomerAndStatusQuery request, CancellationToken cancellationToken)
@@ -33,7 +33,7 @@ namespace BookingService.Application.Handler.QueryHandler
 			{
 				foreach(var b in bookings)
 				{
-					var slots = await _slot.GetSlotsByBookingId(b.BookingId);
+					var slots = await _slotRepository.GetSlotsByBookingId(b.BookingId);
 					var findLawyerName = new GetDetailBookingInformation
 					{
 						CorrelationId = Guid.NewGuid(),

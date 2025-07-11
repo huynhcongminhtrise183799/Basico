@@ -27,15 +27,24 @@ namespace BookingService.Infrastructure.Write.Repository
 			throw new NotImplementedException();
 		}
 
-		public async Task UpdateBookedSlotAsync(List<BookingSlots> bookingSlot)
+		public async Task<bool> UpdateBookedSlotAsync(List<BookingSlots> bookingSlot)
 		{
-			var existingSlots = await _context.BookingSlots
-				.Where(slot => bookingSlot.Select(b => b.BookingId).Contains(slot.BookingId))
-				.ToListAsync();
+			try
+			{
+                var existingSlots = await _context.BookingSlots
+                .Where(slot => bookingSlot.Select(b => b.BookingId).Contains(slot.BookingId))
+                .ToListAsync();
 
-			 _context.BookingSlots.RemoveRange(existingSlots);
-			await _context.BookingSlots.AddRangeAsync(bookingSlot);
-			await _context.SaveChangesAsync();
+                _context.BookingSlots.RemoveRange(existingSlots);
+                await _context.BookingSlots.AddRangeAsync(bookingSlot);
+                await _context.SaveChangesAsync();
+				return true;
+            }
+			catch (Exception)
+			{
+
+				return false;
+			}
 
 		}
 	}

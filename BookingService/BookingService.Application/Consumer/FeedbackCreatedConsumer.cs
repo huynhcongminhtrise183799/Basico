@@ -12,11 +12,11 @@ namespace BookingService.Application.Consumer
 {
 	public class FeedbackCreatedConsumer : IConsumer<FeedbackCreatedEvent>
 	{
-		private readonly IFeedbackRepositoryRead _repo;
+		private readonly IFeedbackRepositoryRead _repository;
 
-		public FeedbackCreatedConsumer(IFeedbackRepositoryRead repo)
+		public FeedbackCreatedConsumer(IFeedbackRepositoryRead repository)
 		{
-			_repo = repo;
+            _repository = repository;
 		}
 
 		public async Task Consume(ConsumeContext<FeedbackCreatedEvent> context)
@@ -31,7 +31,7 @@ namespace BookingService.Application.Consumer
 				FeedbackDay = message.FeedbackDay,
 				Rating = message.Rating
 			};
-			await _repo.AddAsync(feedback);
+			await _repository.AddAsync(feedback);
 		}
 	}
 }

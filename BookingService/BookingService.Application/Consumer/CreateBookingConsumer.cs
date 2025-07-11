@@ -12,11 +12,11 @@ namespace BookingService.Application.Consumer
 {
 	public class CreateBookingConsumer : IConsumer<CreateBookingEvent>
 	{
-		private readonly IBookingRepositoryRead _repo;
+		private readonly IBookingRepositoryRead _repository;
 
-		public CreateBookingConsumer(IBookingRepositoryRead repo)
+		public CreateBookingConsumer(IBookingRepositoryRead repository)
 		{
-			_repo = repo;
+            _repository = repository;
 		}
 
 		public async Task Consume(ConsumeContext<CreateBookingEvent> context)
@@ -43,7 +43,7 @@ namespace BookingService.Application.Consumer
 			//	SlotId = Guid.Parse(slotId),
 			//	BookingId = booking.BookingId
 			//}).ToList();
-			await _repo.CreateBookingAsync(booking);
+			await _repository.CreateBookingAsync(booking);
 			//await _bookingSlotRepositoryRead.AddBookedSlotAsync(bookingSlots);
 		}
 	}

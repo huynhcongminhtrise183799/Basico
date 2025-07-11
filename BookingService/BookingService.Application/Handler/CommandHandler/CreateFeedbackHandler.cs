@@ -15,12 +15,12 @@ namespace BookingService.Application.Handler.CommandHandler
 {
 	public class CreateFeedbackHandler : IRequestHandler<CreateFeedbackCommand, FeedbackResponse>
 	{
-		private readonly IFeedbackRepositoryWrite _repo;
+		private readonly IFeedbackRepositoryWrite _repository;
 		private readonly IPublishEndpoint _publish;
 
-		public CreateFeedbackHandler(IFeedbackRepositoryWrite repo, IPublishEndpoint publish)
+		public CreateFeedbackHandler(IFeedbackRepositoryWrite repository, IPublishEndpoint publish)
 		{
-			_repo = repo;
+            _repository = repository;
 			_publish = publish;
 		}
 
@@ -36,7 +36,7 @@ namespace BookingService.Application.Handler.CommandHandler
 				Rating = request.Rating
 			};
 
-			 var result = await _repo.AddAsync(feedback);
+			 var result = await _repository.AddAsync(feedback);
 			if (result)
 			{
                 var @event = new FeedbackCreatedEvent

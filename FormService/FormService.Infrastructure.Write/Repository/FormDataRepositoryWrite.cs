@@ -29,7 +29,6 @@ namespace FormService.Infrastructure.Write.Repository
 			{
 				existingForm.CustomerFormData = customerForm.CustomerFormData;
 				existingForm.Status = customerForm.Status;
-
 				await _context.SaveChangesAsync();
 			}
 			else
