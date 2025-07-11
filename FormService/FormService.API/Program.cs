@@ -119,6 +119,10 @@ namespace FormService.API
             app.UseCors("AllowAll");
 
             app.UseAuthorization();
+            app.UseCors(builder =>
+builder.WithOrigins("http://localhost:3000")
+       .AllowAnyHeader()
+       .AllowAnyMethod());
 
 
             app.MapControllers();
