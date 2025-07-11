@@ -19,10 +19,10 @@ namespace BookingService.Application.Handler.QueryHandler
 		//private readonly IEventPublisher _publishEndpoint;
 		private readonly IClientFactory _clientFactory;
 
-		public GetFreeSlotsForLawyerHandler(ISlotRepositoryRead slotRepositoryRead, IClientFactory publishEndpoint)
+		public GetFreeSlotsForLawyerHandler(ISlotRepositoryRead slotRepositoryRead, IClientFactory clientFactory)
 		{
 			_slotRepositoryRead = slotRepositoryRead;
-            _clientFactory = publishEndpoint;
+            _clientFactory = clientFactory;
 		}
 		public async Task<List<Slot>> Handle(GetFreeSlotsForLawyerQuery request, CancellationToken cancellationToken)
 		{

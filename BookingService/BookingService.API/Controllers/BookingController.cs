@@ -40,7 +40,7 @@ namespace BookingService.API.Controllers
 			var command = new UpdateBookingCommand(bookingId,request.LawyerId,request.CustomerId,request.ServiceId,request.BookingDate,request.SlotId,request.Price, request.Description);
 
 			var result = await _mediator.Send(command);
-			if (result == null)
+			if (result == false)
 			{
 				return NotFound("Booking could not be updated.");
 			}
@@ -83,6 +83,8 @@ namespace BookingService.API.Controllers
 			var result = await _mediator.Send(query);
 			return Ok(result);
 		}
+
+
 		[HttpGet("lawyer/{lawyerId}")]
 		[SwaggerOperation(Summary = "Lấy ra những booking của lawyer theo ngày và status " +
 			"1. Paid" +

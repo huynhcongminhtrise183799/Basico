@@ -22,9 +22,9 @@ namespace AccountService.Infrastructure.Read.Repository
 			return await _accountDbContextRead.Shifts.ToListAsync();
 		}
 
-		public Task<List<Shift>> GetShiftsOffByLawyerInDay(Guid lawyerId, DateOnly offDay)
+		public async Task<List<Shift>> GetShiftsOffByLawyerInDay(Guid lawyerId, DateOnly offDay)
 		{
-			return _accountDbContextRead.SpecificLawyerDayOffSchedules
+			return await _accountDbContextRead.SpecificLawyerDayOffSchedules
 				.Where(s => s.LawyerDayOffSchedule.LawyerId == lawyerId && s.LawyerDayOffSchedule.OffDay == offDay && s.Status == ShiftStatus.APPROVED.ToString())
 				.Select(s => s.Shift)
 				.ToListAsync();

@@ -15,12 +15,12 @@ namespace BookingService.Application.Handler.CommandHandler
 {
     public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, BookingResponse>
     {
-        private readonly IBookingRepositoryWrite _bookingRepo;
+        private readonly IBookingRepositoryWrite _bookingRepository;
         private readonly IPublishEndpoint _publish;
 
-        public CreateBookingHandler(IBookingRepositoryWrite bookingRepo, IPublishEndpoint publishEndpoint)
+        public CreateBookingHandler(IBookingRepositoryWrite bookingRepository, IPublishEndpoint publishEndpoint)
         {
-            _bookingRepo = bookingRepo;
+            _bookingRepository = bookingRepository;
             _publish = publishEndpoint;
         }
 
@@ -50,7 +50,7 @@ namespace BookingService.Application.Handler.CommandHandler
             //    BookingId = booking.BookingId
             //}).ToList();
 
-            var result =  await _bookingRepo.CreateBookingAsync(booking);
+            var result =  await _bookingRepository.CreateBookingAsync(booking);
             if (result)
             {
                 var @event = new CreateBookingEvent
