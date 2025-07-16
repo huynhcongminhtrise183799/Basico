@@ -33,21 +33,23 @@ namespace OrderService.Application.Handler.CommandHandler
             //};
             //var client = _clientFactory.CreateRequestClient<GetRequestAmountEvent>();
             //var response = await client.GetResponse<RequestAmountResponseEvent>(getRequest, cancellationToken);
+            var orderId  = Guid.NewGuid();
 
-            var order = new Order
+			var order = new Order
             {
-                OrderId = Guid.NewGuid(),
+                OrderId = orderId,
                 UserId = request.UserId,
                 OrderDetails = new List<OrderDetail>(),
                 TotalPrice = request.Price * request.Quantity,
-                Status = OrderStatus.Pending.ToString()
+				CreatedAt = DateTime.Now,
+				Status = OrderStatus.Pending.ToString()
             };
             await _orderRepository.AddOrderAsync(order, cancellationToken);
 
             var orderDetail = new OrderDetail
             {
                 OrderDetailId = Guid.NewGuid(),
-                OrderId = order.OrderId,
+                OrderId = orderId,
                 TicketPackageId = request.TicketPackageId,
                 Quantity = request.Quantity,
                 Price = request.Price
@@ -58,7 +60,7 @@ namespace OrderService.Application.Handler.CommandHandler
 
             var evt = new OrderTicketPackageCreatedEvent
             {
-                OrderId = order.OrderId,
+                OrderId = orderId,
                 UserId = request.UserId,
                 TicketPackageId = request.TicketPackageId,
                 Quantity = request.Quantity,

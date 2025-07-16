@@ -17,7 +17,9 @@ namespace AccountService.Domain.IRepositories
 		Task<Account?> GetByPhoneAsync(string phone);
 		Task UpdateAccount(Account account);
 
-        Task<List<Account>> GetAllUserAccounts();
+
+		Task<List<Account>> GetAllAccounts();
+		Task<List<Account>> GetAllUserAccounts();
 
 		Task BanUserAccount(Guid accountId);
 

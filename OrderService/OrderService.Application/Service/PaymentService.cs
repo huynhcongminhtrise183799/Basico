@@ -39,7 +39,8 @@ namespace OrderService.Application.Service
 			pay.AddRequestData("vnp_IpAddr", pay.GetIpAddress(context));
 			pay.AddRequestData("vnp_Locale", _configuration["Vnpay:Locale"]);
 			pay.AddRequestData("vnp_OrderInfo", $"{orderType}:{targetId}");
-			pay.AddRequestData("vnp_OrderType", "other");
+            pay.AddRequestData("vnp_OrderInfo", $"{orderType}:{targetId}:{model.AccountId}");
+            pay.AddRequestData("vnp_OrderType", "other");
 			pay.AddRequestData("vnp_ReturnUrl", urlCallBack);
 			pay.AddRequestData("vnp_TxnRef", tick);
 

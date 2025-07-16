@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrderService.Infrastructure.Read;
@@ -11,9 +12,11 @@ using OrderService.Infrastructure.Read;
 namespace OrderService.Infrastructure.Read.Migrations
 {
     [DbContext(typeof(OrderDbContextRead))]
-    partial class OrderDbContextReadModelSnapshot : ModelSnapshot
+    [Migration("20250716161240_AddCreatedAtColunm")]
+    partial class AddCreatedAtColunm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

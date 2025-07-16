@@ -7,9 +7,11 @@ using BookingService.Domain.IRepository;
 using BookingService.Infrastructure.Read;
 using BookingService.Infrastructure.Read.Repository;
 using BookingService.Infrastructure.Write;
+using BookingService.Infrastructure.Write.BackgroundServices;
 using BookingService.Infrastructure.Write.Message;
 using BookingService.Infrastructure.Write.Repository;
 using Contracts;
+using Contracts.Events;
 using MassTransit;
 using MassTransit.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +48,8 @@ namespace BookingService.API
 			builder.Services.AddScoped<IEventPublisher, MassTransitEventPublisher>();
 			builder.Services.AddScoped<IFeedbackRepositoryRead , FeedbackRepositoryRead>();
 			builder.Services.AddScoped<IFeedbackRepositoryWrite , FeedbackRepositoryWrite>();
+			builder.Services.AddHostedService<BookingStatusBackgroundService>();
+
 
 			builder.Services.AddMediatR(cfg =>
 			{
@@ -72,7 +76,7 @@ namespace BookingService.API
 				x.AddConsumer<CheckOutBookingConsumer>();
 				x.AddConsumer<FeedbackCreatedConsumer>();
 				x.AddConsumer<FeedbackUpdatedConsumer>();
-
+				x.AddConsumer<BookingOverTimeStatusChangedConsumer>();
 				x.UsingRabbitMq((context, cfg) =>
 				{
 					cfg.Host("localhost", "/", h =>

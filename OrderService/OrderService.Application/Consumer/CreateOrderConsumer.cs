@@ -23,7 +23,8 @@ namespace OrderService.Application.Consumer
                 OrderId = evt.OrderId,
                 UserId = evt.UserId,
                 TotalPrice = evt.TotalPrice,
-                Status = evt.Status,
+				CreatedAt = DateTime.Now,
+				Status = evt.Status,
                 OrderDetails = evt.OrderDetails?.ConvertAll(od => new OrderDetail
                 {
                     OrderDetailId = od.OrderDetailId,
