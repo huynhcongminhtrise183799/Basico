@@ -31,6 +31,9 @@ namespace BookingService.Infrastructure.Read.Migrations
                     b.Property<DateOnly>("BookingDate")
                         .HasColumnType("date");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uuid");
 

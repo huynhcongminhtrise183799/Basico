@@ -37,7 +37,8 @@ namespace BookingService.Application.Handler.CommandHandler
                 LawyerId = request.lawyerId,
                 ServiceId = request.ServiceId,
                 Status = BookingStatus.Pending.ToString(),
-                BookingSlots = request.SlotId.Select(slotId => new BookingSlots
+				CreatedAt = DateTime.Now,
+				BookingSlots = request.SlotId.Select(slotId => new BookingSlots
                 {
                     SlotId = Guid.Parse(slotId),
                     BookingId = bookingId

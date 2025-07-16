@@ -19,6 +19,8 @@ namespace OrderService.Application.DTOs.Vnpay
 		public string VnPayResponseCode { get; set; } // 0 : success , 1 : fail
 		public Guid TargetId { get; set; }   // Id truyền vào
 		public bool IsBooking { get; set; } // true: booking, false: order
-		public double Amount { get; set; }
+
+		public Guid? AccountId { get; set; }
+        public double Amount { get; set; }
 	}
 }

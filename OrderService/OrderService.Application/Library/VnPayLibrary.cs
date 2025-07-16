@@ -48,7 +48,8 @@ namespace OrderService.Application.Library
 			var parts = orderInfo.Split(':');
 			var isBooking = parts.Length > 0 && parts[0].ToUpper() == "BOOKING";
 			var targetId = parts.Length > 1 && Guid.TryParse(parts[1], out var parsedId) ? parsedId : Guid.Empty;
-			var vnpAmountRaw = vnPay.GetResponseData("vnp_Amount");
+            var accountId = parts.Length > 2 && Guid.TryParse(parts[2], out var parsedAccountId) ? parsedAccountId : (Guid?)null;
+            var vnpAmountRaw = vnPay.GetResponseData("vnp_Amount");
 
 			return new PaymentResponseModel
 			{
@@ -62,8 +63,9 @@ namespace OrderService.Application.Library
 				VnPayResponseCode = vnpResponseCode,
 				IsBooking = isBooking,
 				TargetId = targetId,
-				Status = vnpResponseCode == "00" ? PaymentStatus.Completed : PaymentStatus.Failed
-			};
+				Status = vnpResponseCode == "00" ? PaymentStatus.Completed : PaymentStatus.Failed,
+                AccountId = accountId
+            };
 		}
 
 

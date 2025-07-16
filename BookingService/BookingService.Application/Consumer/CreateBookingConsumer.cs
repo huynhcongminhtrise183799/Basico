@@ -32,6 +32,7 @@ namespace BookingService.Application.Consumer
 				Price = bookingEvent.Price,
 				Status = bookingEvent.Status,
 				Description = bookingEvent.Description,
+				CreatedAt = DateTime.UtcNow,
 				BookingSlots = bookingEvent.SlotId.Select(slotId => new BookingSlots
                 {
                     SlotId = Guid.Parse(slotId),
