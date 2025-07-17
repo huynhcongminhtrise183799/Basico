@@ -20,7 +20,9 @@ namespace OrderService.Domain.Entities
 
         public double TotalPrice { get; set; }
 
-        public string Status { get; set; }
+		public DateTime CreatedAt { get; set; }
+
+		public string Status { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 

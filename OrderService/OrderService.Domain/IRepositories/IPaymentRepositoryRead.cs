@@ -10,5 +10,11 @@ namespace OrderService.Domain.IRepositories
 	public interface IPaymentRepositoryRead
 	{
 		Task AddPaymentAsync(Payment payment);
+
+		Task<List<Payment>> RevenueByYear(string yearFrom, string yearTo);
+
+		Task<List<Payment>> RevenueByDate(string startDate, string endDate);
+		Task<List<Payment>> RevenueByMonth(string startMonth, string endMonth);
+
 	}
 }

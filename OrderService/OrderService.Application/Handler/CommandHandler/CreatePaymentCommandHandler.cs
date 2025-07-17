@@ -64,8 +64,13 @@ namespace OrderService.Application.Handler.CommandHandler
 				{
 					BookingId = payment.BookingId
 				};
-				await _publishEndpoint.Publish(@event, cancellationToken);
-			}
+				var @eventEmail = new SendEmailBookingEvent
+                {
+                    AccountId = model.AccountId
+                };
+                await _publishEndpoint.Publish(@event, cancellationToken);
+				await _publishEndpoint.Publish(@eventEmail, cancellationToken);
+            }
 			else
 			{
 				var order = await _orderRepositoryRead.GetOrderByIdAsync(payment.OrderId, cancellationToken);

@@ -1,7 +1,9 @@
 ﻿using BookingService.Domain.Entities;
 using BookingService.Domain.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,6 +58,18 @@ namespace BookingService.Infrastructure.Write.Repository
 			{
 				return false;
 			}
+		}
+
+		public async Task<List<Booking>> GetBookingOverTimeAsync()
+		{
+			var now = DateTime.Now;
+
+			return await _context.Bookings
+				.Where(b =>
+					b.Status.ToLower() == BookingStatus.Pending.ToString().ToLower() &&
+					b.CreatedAt.AddMinutes(2) <= now)
+				.ToListAsync();
+
 		}
 
 		public async Task<bool> UpdateBookingAsync(Booking booking)

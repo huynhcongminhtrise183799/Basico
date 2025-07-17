@@ -17,5 +17,7 @@ namespace OrderService.Domain.IRepositories
 		Task UpdateOrderStatus(Order order);
 
 		Task CancelOrderAsync(Guid orderId);
+
+		Task<List<Order>> GetOrderOverTimeAsync();
 	}
 }

@@ -273,5 +273,10 @@ namespace AccountService.Infrastructure.Read.Repository
 		{
 			return await _context.Accounts.FirstAsync(x => x.AccountPhone == phone);
 		}
+
+		public Task<List<Account>> GetAllAccounts()
+		{
+			return _context.Accounts.ToListAsync();
+		}
 	}
 }
