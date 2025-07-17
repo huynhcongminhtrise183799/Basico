@@ -1,4 +1,9 @@
-﻿using AccountService.Application.Commands.Lawyer;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AccountService.Application.Commands.Lawyer;
 using AccountService.Application.DTOs.Request;
 using AccountService.Application.Event.Lawyer;
 using AccountService.Domain.Entity;

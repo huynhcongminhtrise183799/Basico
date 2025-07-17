@@ -16,12 +16,13 @@ namespace BookingService.Application.Handler.QueryHandler
 	public class GetFreeSlotsForUpdateHandler : IRequestHandler<GetFreeSlotsForUpdateQuery, List<Slot>>
 	{
 		private readonly ISlotRepositoryRead _slotRepositoryRead;
-		private readonly IEventPublisher _publishEndpoint;
+		//private readonly IEventPublisher _publishEndpoint;
+		private readonly IClientFactory _clientFactory;
 
-		public GetFreeSlotsForUpdateHandler(ISlotRepositoryRead slotRepositoryRead, IEventPublisher eventPublisher)
+		public GetFreeSlotsForUpdateHandler(ISlotRepositoryRead slotRepositoryRead, IClientFactory clientFactory)
 		{
 			_slotRepositoryRead = slotRepositoryRead;
-			_publishEndpoint = eventPublisher;
+            _clientFactory = clientFactory;
 		}
 
 		public async Task<List<Slot>> Handle(GetFreeSlotsForUpdateQuery request, CancellationToken cancellationToken)
@@ -29,23 +30,23 @@ namespace BookingService.Application.Handler.QueryHandler
 			var checkDayOff = new CheckLawyerDayOff
 			{
 				CorrelationId = Guid.NewGuid(),
-				LawyerId = request.lawyerId,
-				DayOffDate = request.bookingDate
+				LawyerId = request.LawyerId,
+				DayOffDate = request.BookingDate
 			};
-			var client = _publishEndpoint.CreateRequestClient<CheckLawyerDayOff>();
+			var client = _clientFactory.CreateRequestClient<CheckLawyerDayOff>();
 			// Send the request and wait for the response
-			Console.WriteLine($"Requesting day off for lawyer {request.lawyerId} on {request.bookingDate}");
+			Console.WriteLine($"Requesting day off for lawyer {request.LawyerId} on {request.BookingDate}");
 			var response = await client.GetResponse<CheckLawyerDayOff>(checkDayOff, cancellationToken, timeout: RequestTimeout.After(s: 60));
 			Console.WriteLine($"Received response for day off: {response.Message.CorrelationId} - {response.Message.ShiftOffs?.Count ?? 0} shifts off");
 			var allSlots = await _slotRepositoryRead.GetAllSlots();
 			var currentTime = TimeOnly.FromDateTime(DateTime.Now);
 			var currentDay = DateOnly.FromDateTime(DateTime.Now);
-			if (request.bookingDate == currentDay)
+			if (request.BookingDate == currentDay)
 			{
 				allSlots = allSlots.Where(slot => slot.SlotStartTime >= currentTime).ToList();
 
 			}
-			var busySlots = await _slotRepositoryRead.GetBusySlotsForUpdate(request.bookingId,request.lawyerId, request.bookingDate);
+			var busySlots = await _slotRepositoryRead.GetBusySlotsForUpdate(request.BookingId,request.LawyerId, request.BookingDate);
 			var freeSlots = allSlots.Where(slot => !busySlots.Any(busySlot => busySlot.SlotId == slot.SlotId)).ToList();
 			if (response.Message.ShiftOffs != null)
 			{

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Contracts
 {
-	public class GetLawyerName
+	public class GetDetailBookingInformation
 	{
 		public Guid CorrelationId { get; set; }
 

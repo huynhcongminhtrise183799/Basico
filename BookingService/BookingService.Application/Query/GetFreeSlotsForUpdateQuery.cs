@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace BookingService.Application.Query
 {
-	public record GetFreeSlotsForUpdateQuery(Guid bookingId ,Guid lawyerId, DateOnly bookingDate) : IRequest<List<Slot>>;
+	public record GetFreeSlotsForUpdateQuery(Guid BookingId ,Guid LawyerId, DateOnly BookingDate) : IRequest<List<Slot>>;
 
 }

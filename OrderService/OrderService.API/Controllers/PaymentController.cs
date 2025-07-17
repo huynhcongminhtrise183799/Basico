@@ -34,7 +34,7 @@ namespace OrderService.API.Controllers
 			if (response.Success)
 			{
 				await _mediator.Send(new CreatePaymentCommand(response));
-				return Ok(response); // response là PaymentResponseModel
+                return Ok(response); // response là PaymentResponseModel
 			}
 			else
 			{
@@ -42,9 +42,9 @@ namespace OrderService.API.Controllers
 				{
 					message = "Payment fail"
 				}); // response là PaymentResponseModel
-			}
+            }
 
-
+			
 		}
 
 	}

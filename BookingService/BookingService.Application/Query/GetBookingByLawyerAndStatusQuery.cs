@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace BookingService.Application.Query
 {
-	public record GetBookingByLawyerAndStatusQuery(Guid LawyerId, string Status, DateOnly BookingDate) : IRequest<List<BookingDetailResponse>>;
+    public record GetBookingByLawyerAndStatusQuery(Guid LawyerId, string Status) : IRequest<List<BookingDetailResponse>>;
+
 
 
 }

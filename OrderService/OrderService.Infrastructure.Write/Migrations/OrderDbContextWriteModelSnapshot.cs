@@ -22,11 +22,14 @@ namespace OrderService.Infrastructure.Write.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("OrderService.Domain.Order", b =>
+            modelBuilder.Entity("OrderService.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("OrderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -43,7 +46,7 @@ namespace OrderService.Infrastructure.Write.Migrations
                     b.ToTable("Order", (string)null);
                 });
 
-            modelBuilder.Entity("OrderService.Domain.OrderDetail", b =>
+            modelBuilder.Entity("OrderService.Domain.Entities.OrderDetail", b =>
                 {
                     b.Property<Guid>("OrderDetailId")
                         .ValueGeneratedOnAdd()
@@ -71,7 +74,7 @@ namespace OrderService.Infrastructure.Write.Migrations
                     b.ToTable("OrderDetail", (string)null);
                 });
 
-            modelBuilder.Entity("OrderService.Domain.Payment", b =>
+            modelBuilder.Entity("OrderService.Domain.Entities.Payment", b =>
                 {
                     b.Property<Guid>("PaymentId")
                         .ValueGeneratedOnAdd()
@@ -106,9 +109,9 @@ namespace OrderService.Infrastructure.Write.Migrations
                     b.ToTable("Payment", (string)null);
                 });
 
-            modelBuilder.Entity("OrderService.Domain.OrderDetail", b =>
+            modelBuilder.Entity("OrderService.Domain.Entities.OrderDetail", b =>
                 {
-                    b.HasOne("OrderService.Domain.Order", "Order")
+                    b.HasOne("OrderService.Domain.Entities.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -118,17 +121,17 @@ namespace OrderService.Infrastructure.Write.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("OrderService.Domain.Payment", b =>
+            modelBuilder.Entity("OrderService.Domain.Entities.Payment", b =>
                 {
-                    b.HasOne("OrderService.Domain.Order", "Order")
+                    b.HasOne("OrderService.Domain.Entities.Order", "Order")
                         .WithOne("Payment")
-                        .HasForeignKey("OrderService.Domain.Payment", "OrderId")
+                        .HasForeignKey("OrderService.Domain.Entities.Payment", "OrderId")
                         .HasConstraintName("FK_Payment_Order");
 
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("OrderService.Domain.Order", b =>
+            modelBuilder.Entity("OrderService.Domain.Entities.Order", b =>
                 {
                     b.Navigation("OrderDetails");
 

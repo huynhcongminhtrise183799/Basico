@@ -11,15 +11,15 @@ namespace AccountService.Infrastructure.Read.Repository
 {
 	public class ServiceRepositoryRead : IServiceRepositoryRead
 	{
-		private readonly AccountDbContextRead accountDbContextRead;
+		private readonly AccountDbContextRead _accountDbContextRead;
 		public ServiceRepositoryRead(AccountDbContextRead accountRead)
 		{
-			accountDbContextRead = accountRead;
+            _accountDbContextRead = accountRead;
 		}
 
 		public async Task<string?> GetServiceNameByServiceId(Guid id)
 		{
-			return await accountDbContextRead.Services
+			return await _accountDbContextRead.Services
 				.Where(s => s.ServiceId == id)
 				.Select(s => s.ServiceName)
 				.FirstOrDefaultAsync();
@@ -27,7 +27,7 @@ namespace AccountService.Infrastructure.Read.Repository
 
 		public async Task<List<Service>> GetServicesByStatusAsync(string status)
 		{
-			return await accountDbContextRead.Services
+			return await _accountDbContextRead.Services
 				.Where(s => s.Status.ToUpper() == status.ToUpper())
 				.ToListAsync();
 		}

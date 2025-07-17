@@ -30,7 +30,8 @@ namespace OrderService.Application.Handler.CommandHandler
                 UserId = request.UserId,
                 TotalPrice = request.TotalPrice,
                 Status = OrderStatus.Pending.ToString(),
-                OrderDetails = request.OrderDetails?.Select(od => new OrderDetail
+				CreatedAt = DateTime.Now,
+				OrderDetails = request.OrderDetails?.Select(od => new OrderDetail
                 {
                     TicketPackageId = null,
                     FormTemplateId = od.FormTemplateId,

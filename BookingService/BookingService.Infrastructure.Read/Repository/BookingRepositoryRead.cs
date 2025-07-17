@@ -98,7 +98,7 @@ namespace BookingService.Infrastructure.Read.Repository
 			}
 		}
 
-		public async Task<List<Booking>> GetBookingsByLawyerIdAndStatus(Guid id, string status, DateOnly bookingDate)
+		public async Task<List<Booking>> GetBookingsByLawyerIdAndStatusAndDate(Guid id, string status, DateOnly bookingDate)
 		{
 			return await _context.Bookings
 				.Where(b => b.LawyerId == id && b.Status.ToUpper() == status.ToUpper() && b.BookingDate == bookingDate)
@@ -149,6 +149,13 @@ namespace BookingService.Infrastructure.Read.Repository
 				throw new KeyNotFoundException("Booking not found");
 			}
 		}
-	}
+
+        public async Task<List<Booking>> GetBookingsByLawyerIdAndStatus(Guid id, string status)
+        {
+            return await _context.Bookings
+                .Where(b => b.LawyerId == id && b.Status.ToUpper() == status.ToUpper())
+                .ToListAsync();
+        }
+    }
 
 }

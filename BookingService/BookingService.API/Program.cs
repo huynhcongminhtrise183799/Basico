@@ -7,9 +7,11 @@ using BookingService.Domain.IRepository;
 using BookingService.Infrastructure.Read;
 using BookingService.Infrastructure.Read.Repository;
 using BookingService.Infrastructure.Write;
+using BookingService.Infrastructure.Write.BackgroundServices;
 using BookingService.Infrastructure.Write.Message;
 using BookingService.Infrastructure.Write.Repository;
 using Contracts;
+using Contracts.Events;
 using MassTransit;
 using MassTransit.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +55,10 @@ namespace BookingService.API
 			builder.Services.AddScoped<IBookingSlotRepositoryRead, BookingSlotRepositoryRead>();
 			builder.Services.AddScoped<IBookingSlotsRepositoryWrite, BookingSlotRepositoryWrite>();
 			builder.Services.AddScoped<IEventPublisher, MassTransitEventPublisher>();
+			builder.Services.AddScoped<IFeedbackRepositoryRead , FeedbackRepositoryRead>();
+			builder.Services.AddScoped<IFeedbackRepositoryWrite , FeedbackRepositoryWrite>();
+			builder.Services.AddHostedService<BookingStatusBackgroundService>();
+
 
 			builder.Services.AddMediatR(cfg =>
 			{
@@ -61,7 +67,13 @@ namespace BookingService.API
 				cfg.RegisterServicesFromAssembly(typeof(UpdateBookingHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(CancelBookingHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetFreeSlotsForUpdateHandler).Assembly);
-			});
+				cfg.RegisterServicesFromAssembly(typeof(CreateFeedbackHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(UpdateFeedbackHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllFeedbackHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetDetailFeedbackHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetFeedbackByBookingIdHandler).Assembly);
+
+            });
 
 			builder.Services.AddMassTransit(x =>
 			{
@@ -71,7 +83,9 @@ namespace BookingService.API
 				x.AddConsumer<CheckInBookingConsumer>();
 				x.AddConsumer<PaymentSuccessConsumer>();
 				x.AddConsumer<CheckOutBookingConsumer>();
-
+				x.AddConsumer<FeedbackCreatedConsumer>();
+				x.AddConsumer<FeedbackUpdatedConsumer>();
+				x.AddConsumer<BookingOverTimeStatusChangedConsumer>();
 				x.UsingRabbitMq((context, cfg) =>
 				{
 					cfg.Host("localhost", "/", h =>
@@ -92,6 +106,7 @@ namespace BookingService.API
 				app.UseSwaggerUI();
 			}
 
+			app.UseHttpsRedirection();
 
 			//app.UseHttpsRedirection();
 			app.UseCors("AllowAll");

@@ -11,7 +11,7 @@ namespace BookingService.Domain.IRepository
 	{
 		Task AddBookedSlotAsync(List<BookingSlots> bookingSlots);
 
-		Task UpdateBookedSlotAsync(List<BookingSlots> bookingSlot);
+		Task<bool> UpdateBookedSlotAsync(List<BookingSlots> bookingSlot);
 
 		Task RemoveBookedSlotAsync(Guid slotId, Guid bookingId);
 	}

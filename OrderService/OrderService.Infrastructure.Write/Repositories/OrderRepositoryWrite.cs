@@ -1,4 +1,5 @@
-﻿using OrderService.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OrderService.Domain.Entities;
 using OrderService.Domain.IRepositories;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,19 @@ namespace OrderService.Infrastructure.Write.Repositories
 			}
 			
 		}
+
+		public async Task<List<Order>> GetOrderOverTimeAsync()
+		{
+			var now = DateTime.Now;
+
+			return await _dbContext.Orders
+				.Where(o =>
+					o.Status.ToLower() == OrderStatus.Pending.ToString().ToLower() &&
+					o.CreatedAt.AddMinutes(15) <= now)
+				.ToListAsync();
+		}
+
+
 
 		public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
 		{

@@ -12,13 +12,11 @@ namespace BookingService.Application.Consumer
 {
 	public class CreateBookingConsumer : IConsumer<CreateBookingEvent>
 	{
-		private readonly IBookingRepositoryRead _repo;
-		private readonly IBookingSlotRepositoryRead _bookingSlotRepositoryRead;
+		private readonly IBookingRepositoryRead _repository;
 
-		public CreateBookingConsumer(IBookingRepositoryRead repo, IBookingSlotRepositoryRead bookingSlotRepositoryRead)
+		public CreateBookingConsumer(IBookingRepositoryRead repository)
 		{
-			_repo = repo;
-			_bookingSlotRepositoryRead = bookingSlotRepositoryRead;
+            _repository = repository;
 		}
 
 		public async Task Consume(ConsumeContext<CreateBookingEvent> context)
@@ -33,15 +31,21 @@ namespace BookingService.Application.Consumer
 				BookingDate = bookingEvent.BookingDate,
 				Price = bookingEvent.Price,
 				Status = bookingEvent.Status,
-				Description = bookingEvent.Description
-			};
-			var bookingSlots = bookingEvent.SlotId.Select(slotId => new BookingSlots
-			{
-				SlotId = Guid.Parse(slotId),
-				BookingId = booking.BookingId
-			}).ToList();
-			await _repo.CreateBookingAsync(booking);
-			await _bookingSlotRepositoryRead.AddBookedSlotAsync(bookingSlots);
+				Description = bookingEvent.Description,
+				CreatedAt = DateTime.UtcNow,
+				BookingSlots = bookingEvent.SlotId.Select(slotId => new BookingSlots
+                {
+                    SlotId = Guid.Parse(slotId),
+                    BookingId = bookingEvent.BookingId
+                }).ToList()
+            };
+			//var bookingSlots = bookingEvent.SlotId.Select(slotId => new BookingSlots
+			//{
+			//	SlotId = Guid.Parse(slotId),
+			//	BookingId = booking.BookingId
+			//}).ToList();
+			await _repository.CreateBookingAsync(booking);
+			//await _bookingSlotRepositoryRead.AddBookedSlotAsync(bookingSlots);
 		}
 	}
 }

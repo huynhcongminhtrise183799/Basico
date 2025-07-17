@@ -30,35 +30,40 @@ namespace BookingService.Application.Handler.CommandHandler
 		{
 			var booking = new Booking
 			{
-				BookingId = request.bookingId,
-				BookingDate = request.bookingDate,
-				LawyerId = request.lawyerId,
-				CustomerId = request.customerId,
+				BookingId = request.BookingId,
+				BookingDate = request.BookingDate,
+				LawyerId = request.LawyerId,
+				CustomerId = request.CustomerId,
 				Description = request.Description,
 				Status = BookingStatus.Paid.ToString(),
-				ServiceId = request.serviceId,
-				Price = request.price
+				ServiceId = request.ServiceId,
+				Price = request.Price
 			};
-			var bookingSlots = request.slotId.Select(slotId => new BookingSlots
+			var bookingSlots = request.SlotId.Select(slotId => new BookingSlots
 			{
 				SlotId = Guid.Parse(slotId),
-				BookingId = request.bookingId,
+				BookingId = request.BookingId,
 			}).ToList();
 
-			await _bookingRepositoryWrite.UpdateBookingAsync(booking);
-			await _bookingSlotsRepositoryWrite.UpdateBookedSlotAsync(bookingSlots);
+			var resultUpdateBooking = await _bookingRepositoryWrite.UpdateBookingAsync(booking);
+			var resultUpdateBookingSlot = await _bookingSlotsRepositoryWrite.UpdateBookedSlotAsync(bookingSlots);
+            if (resultUpdateBooking == false || resultUpdateBookingSlot == false)
+			{
+				return false;
+			}
+			
 
 			var @event = new UpdateBookingEvent
 			{
-				BookingId = request.bookingId,
-				BookingDate = request.bookingDate,
-				LawyerId = request.lawyerId,
-				CustomerId = request.customerId,
+				BookingId = request.BookingId,
+				BookingDate = request.BookingDate,
+				LawyerId = request.LawyerId,
+				CustomerId = request.CustomerId,
 				Description = request.Description,
 				Status = BookingStatus.Paid.ToString(),
-				SlotId = request.slotId,
-				Price = request.price,
-				ServiceId = request.serviceId
+				SlotId = request.SlotId,
+				Price = request.Price,
+				ServiceId = request.ServiceId
 			};
 			await _publish.Publish(@event, cancellationToken);
 

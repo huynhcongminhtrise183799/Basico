@@ -11,11 +11,8 @@ using OrderService.Infrastructure.Read;
 using OrderService.Infrastructure.Read.Repositories;
 using OrderService.Infrastructure.Write;
 using OrderService.Infrastructure.Write.Repositories;
-using OrderService.Infrastructure.Write.Repositories;
-using MediatR;
-using OrderService.Application.Handler.CommandHandler;
-using OrderService.Infrastructure.Read.Repositories;
-using OrderService.Application.Consumer;
+using OrderService.Application.Handler.QueryHandler;
+using OrderService.Infrastructure.Write.BackgroundServices;
 
 namespace OrderService.API
 {
@@ -42,6 +39,7 @@ namespace OrderService.API
 			builder.Services.AddScoped<IPaymentRepositoryRead, PaymentRepositoryRead >();
 			builder.Services.AddScoped<IPaymentRepositoryWrite, PaymentRepositoryWrite >();
 			builder.Services.AddScoped<IOrderDetailRepositoryRead, OrderDetailRepositoryRead>();
+			builder.Services.AddHostedService<OrderStatusBackgroundService>();
 
 			// Đăng ký MediatR
 			builder.Services.AddMediatR(cfg =>
@@ -52,6 +50,11 @@ namespace OrderService.API
 				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentConsumer).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetRevenueByDateQueryHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetRevenueByYearQueryHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetRevenueByMonthQueryHandler).Assembly);
+
+
 			});
 
 			// MassTransit
@@ -62,6 +65,7 @@ namespace OrderService.API
 				x.AddConsumer<OrderCreatedEventConsumer>();
 				x.AddConsumer<UpdateOrderStatusConsumer>();
 				x.AddConsumer<OrderCancelledConsumer>();
+				x.AddConsumer<OrderOverTimeStatusChangedConsumer>();
 
 				x.UsingRabbitMq((context, cfg) =>
 				{

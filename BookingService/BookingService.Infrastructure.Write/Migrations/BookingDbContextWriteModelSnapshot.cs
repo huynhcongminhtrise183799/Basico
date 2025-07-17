@@ -31,6 +31,9 @@ namespace BookingService.Infrastructure.Write.Migrations
                     b.Property<DateOnly>("BookingDate")
                         .HasColumnType("date");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
