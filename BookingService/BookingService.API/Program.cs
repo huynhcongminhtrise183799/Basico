@@ -21,7 +21,16 @@ namespace BookingService.API
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
-
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAll", builder =>
+				{
+					builder
+						.AllowAnyOrigin()
+						.AllowAnyMethod()
+						.AllowAnyHeader();
+				});
+			});
 			// Add services to the container.
 
 			builder.Services.AddControllers();
@@ -83,8 +92,10 @@ namespace BookingService.API
 				app.UseSwaggerUI();
 			}
 
-			app.UseHttpsRedirection();
 
+			//app.UseHttpsRedirection();
+			app.UseCors("AllowAll");
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 

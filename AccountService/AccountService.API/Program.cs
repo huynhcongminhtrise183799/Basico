@@ -23,6 +23,17 @@ namespace AccountService.API
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAll", builder =>
+				{
+					builder
+						.AllowAnyOrigin() 
+						.AllowAnyMethod()
+						.AllowAnyHeader();
+				});
+			});
+
 			// Gọi service registration
 			ServiceRegistration.ConfigureServices(builder);
   
@@ -34,8 +45,8 @@ namespace AccountService.API
 				app.UseSwaggerUI();
 			}
 
-			app.UseHttpsRedirection();
-
+			//app.UseHttpsRedirection(); // Cái này chuyển http -> https mà mình đang cần test http nên comment lại
+			app.UseCors("AllowAll");
 			// Bắt buộc: Authentication phải đặt trước Authorization
 			app.UseAuthentication();
 			app.UseAuthorization();

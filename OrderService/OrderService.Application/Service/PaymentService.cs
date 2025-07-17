@@ -26,6 +26,7 @@ namespace OrderService.Application.Service
 
 			var pay = new VnPayLibrary();
 			var urlCallBack = _configuration["Vnpay:PaymentBackReturnUrl"];
+			//var returnUrl = model.ReturnUrl ?? _configuration["Vnpay:PaymentBackReturnUrl"]; // fallback nếu không có
 
 			var orderType = model.BookingId.HasValue ? "BOOKING" : "ORDER";
 			var targetId = model.BookingId ?? model.OrderId;
@@ -38,9 +39,10 @@ namespace OrderService.Application.Service
 			pay.AddRequestData("vnp_CurrCode", _configuration["Vnpay:CurrCode"]);
 			pay.AddRequestData("vnp_IpAddr", pay.GetIpAddress(context));
 			pay.AddRequestData("vnp_Locale", _configuration["Vnpay:Locale"]);
-			pay.AddRequestData("vnp_OrderInfo", $"{orderType}:{targetId}");
+			pay.AddRequestData("vnp_OrderInfo", $"{orderType}:{targetId}:{model.AccountId}");
 			pay.AddRequestData("vnp_OrderType", "other");
 			pay.AddRequestData("vnp_ReturnUrl", urlCallBack);
+			//pay.AddRequestData("vnp_ReturnUrl", returnUrl);
 			pay.AddRequestData("vnp_TxnRef", tick);
 
 			var paymentUrl = pay.CreateRequestUrl(_configuration["Vnpay:BaseUrl"], _configuration["Vnpay:HashSecret"]);

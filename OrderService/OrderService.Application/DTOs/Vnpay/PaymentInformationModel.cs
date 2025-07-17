@@ -11,7 +11,9 @@ namespace OrderService.Application.DTOs.Vnpay
 	{
 		public Guid? OrderId { get; set; }
 		public Guid? BookingId { get; set; }
+		public Guid? AccountId { get; set; }
 		public double Amount { get; set; }
+		//public string? ReturnUrl { get; set; }
 	}
 }
 	
