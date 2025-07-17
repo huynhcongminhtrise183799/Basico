@@ -93,16 +93,17 @@ namespace BookingService.API
 				app.UseSwaggerUI();
 			}
 
-			app.UseHttpsRedirection();
-
-			app.UseAuthorization();
             app.UseCors(builder =>
-builder.WithOrigins("http://localhost:3000")
-       .AllowAnyHeader()
-       .AllowAnyMethod());
+         builder.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
 
 
-            app.MapControllers();
+			app.MapControllers();
 
 			app.Run();
 		}
