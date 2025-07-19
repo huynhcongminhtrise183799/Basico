@@ -38,8 +38,12 @@ namespace AccountService.Application.Handler.CommandHandler.DayOff
 				ShiftId = Guid.Parse(shiftId),
 				Status = ShiftStatus.WAITING.ToString()
 			}).ToList();
-			await _repoWrite.AddLawyerDayOffScheduleAsync(lawyerDayOffSchedule);
-			await _specificWrite.AddAsync(specificDayOff);
+			var result_AddDayOff = await _repoWrite.AddLawyerDayOffScheduleAsync(lawyerDayOffSchedule);
+			var result_AddSpecific = await _specificWrite.AddAsync(specificDayOff);
+			if (!result_AddDayOff || !result_AddSpecific)
+			{
+				return null; 
+			}
 			var @event = new DayOffCreatedEvent
 			{
 				LawyerScheduleDayOffId = lawyerDayOffSchedule.LawyerDayOffScheduleId,

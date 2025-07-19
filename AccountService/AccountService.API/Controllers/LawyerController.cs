@@ -29,6 +29,11 @@ namespace AccountService.API.Controllers
 			};
 
 			var id = await _mediator.Send(command);
+			if (id == Guid.Empty)
+			{
+				return BadRequest(new { Message = "Create Failed !" });
+			}
+				
 
 			return Ok(new { Message = "Create Successfully !", Id = id });
 		}

@@ -30,9 +30,13 @@ namespace AccountService.Application.Handler.CommandHandler.Service
 				Status = ServiceStatus.Active.ToString()
 			};
 
-            await _repository.AddServiceAsync(service);
+           var result =  await _repository.AddServiceAsync(service);
+			if (!result)
+			{
+				return Guid.Empty;
+			}
 
-            await _publishEndpoint.Publish(new ServiceCreatedEvent
+			await _publishEndpoint.Publish(new ServiceCreatedEvent
             {
                 ServiceId = service.ServiceId,
                 ServiceName = service.ServiceName,

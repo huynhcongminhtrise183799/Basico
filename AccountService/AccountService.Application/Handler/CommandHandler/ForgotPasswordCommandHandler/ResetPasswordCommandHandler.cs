@@ -28,8 +28,13 @@ namespace AccountService.Application.Handler.CommandHandler.ForgotPasswordComman
 		{
 			var passwordHasher = new PasswordHasher<string>();
 			var hashedPassword = passwordHasher.HashPassword(null, request.NewPassword);
+			var result = await _repoWrite.ResetPasswordAsync(request.Email, hashedPassword);
+			if (!result)
+			{
+				return false; // Reset password failed
+			}
 			await _publishEndpoint.Publish(new ResetPasswordEvent(request.Email, hashedPassword));
-			return await _repoWrite.ResetPasswordAsync(request.Email, hashedPassword);
+			return true; // Reset password successful
 		}
 	}
 }

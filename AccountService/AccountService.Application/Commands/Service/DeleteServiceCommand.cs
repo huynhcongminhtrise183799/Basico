@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AccountService.Application.Commands.Service
 {
-    public class DeleteServiceCommand : IRequest
+    public class DeleteServiceCommand : IRequest<bool>
     {
         public Guid ServiceId { get; set; }
     }

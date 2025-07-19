@@ -38,7 +38,11 @@ namespace TicketService.API.Controllers
             var command = new CreateTicketPackageCommand(request.TicketPackageName, request.RequestAmount, request.Price);
 
             var result = await _mediator.Send(command);
-            return Ok(result);
+			if (result == null)
+			{
+				return BadRequest(new { message = "Ticket package could not be created." });
+			}
+			return Ok(result);
         }
 
         [HttpGet("ticket-packages")]
@@ -111,7 +115,11 @@ namespace TicketService.API.Controllers
             var command = new UpdateTicketPackageCommand(Guid.Parse(id), request.TicketPackageName, request.RequestAmount, request.Price, request.Status);
 
             var result = await _mediator.Send(command);
-            return Ok(result);
+			if (result == null)
+			{
+				return BadRequest(new { message = "Ticket package not found or could not be updated." });
+			}
+			return Ok(result);
         }
         [HttpDelete("ticket-package/{id}")]
         [SwaggerOperation(Summary = "Soft delete ticket-package")]
@@ -120,7 +128,11 @@ namespace TicketService.API.Controllers
         {
             var command = new DeleteTicketPackageCommand(Guid.Parse(id));
            var result =  await _mediator.Send(command);
-            return Ok(result);
+			if (!result)
+			{
+				return BadRequest(new { message = "Ticket package not found or could not be deleted." });
+			}
+			return Ok(result);
         }
     }
 }

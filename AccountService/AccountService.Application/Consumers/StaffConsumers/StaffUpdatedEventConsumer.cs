@@ -1,6 +1,5 @@
 ﻿using AccountService.Application.Event.StaffEvent;
 using AccountService.Domain.IRepositories;
-using AccountService.Infrastructure.Read;
 using MassTransit;
 using System;
 using System.Collections.Generic;

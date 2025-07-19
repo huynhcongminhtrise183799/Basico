@@ -1,6 +1,6 @@
 ﻿using AccountService.Application.Event.Lawyer;
 using AccountService.Domain.Entity;
-using AccountService.Infrastructure.Read;
+using AccountService.Domain.IRepositories;
 using MassTransit;
 using System;
 using System.Collections.Generic;
@@ -12,21 +12,23 @@ namespace AccountService.Application.Consumers.Lawyer
 {
     public class LawyerDeletedEventConsumer : IConsumer<LawyerDeletedEvent>
     {
-        private readonly AccountDbContextRead _dbContextRead;
+        private readonly IAccountRepositoryRead _repo;
 
-        public LawyerDeletedEventConsumer(AccountDbContextRead dbContextRead)
+        public LawyerDeletedEventConsumer(IAccountRepositoryRead repo)
         {
-            _dbContextRead = dbContextRead;
+            _repo = repo;
         }
 
         public async Task Consume(ConsumeContext<LawyerDeletedEvent> context)
         {
             var evt = context.Message;
-            var account = await _dbContextRead.Accounts.FindAsync(evt.AccountId);
+            var account = await _repo.GetAccountById(evt.AccountId);
             if (account == null) return;
 
             account.AccountStatus = Status.INACTIVE.ToString();
-            await _dbContextRead.SaveChangesAsync();
+           await _repo.UpdateAccount(account);
+
+           
         }
     }
 }

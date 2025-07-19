@@ -16,31 +16,58 @@ namespace AccountService.Infrastructure.Write.Repository
 		{
 			_context = context;
 		}
-		public async Task AddAsync(List<SpecificLawyerDayOffSchedule> specificLawyerDayOffSchedules)
+		public async Task<bool> AddAsync(List<SpecificLawyerDayOffSchedule> specificLawyerDayOffSchedules)
 		{
-			await _context.SpecificLawyerDayOffSchedules.AddRangeAsync(specificLawyerDayOffSchedules);
-			await _context.SaveChangesAsync();
+			try
+			{
+				await _context.SpecificLawyerDayOffSchedules.AddRangeAsync(specificLawyerDayOffSchedules);
+				await _context.SaveChangesAsync();
+				return true;
+			}
+			catch (Exception)
+			{
+
+				return false;
+			}
 		}
 
-		public Task DeleteAsync(Guid lawyerDayOffScheduleId)
+		public async Task<bool> DeleteAsync(Guid lawyerDayOffScheduleId)
 		{
-			var schedules = _context.SpecificLawyerDayOffSchedules.Where(s => s.LawyerDayOffScheduleId == lawyerDayOffScheduleId);
-			_context.SpecificLawyerDayOffSchedules.RemoveRange(schedules);
-			return _context.SaveChangesAsync();
+			try
+			{
+				var schedules = _context.SpecificLawyerDayOffSchedules.Where(s => s.LawyerDayOffScheduleId == lawyerDayOffScheduleId);
+				_context.SpecificLawyerDayOffSchedules.RemoveRange(schedules);
+				await _context.SaveChangesAsync();
+				return true;
+			}
+			catch (Exception)
+			{
+
+				return false;
+			}
 		}
 
-		public async Task UpdateAsync(List<SpecificLawyerDayOffSchedule> specificLawyerDayOffSchedule, Guid lawyerScheduleId)
+		public async Task<bool> UpdateAsync(List<SpecificLawyerDayOffSchedule> specificLawyerDayOffSchedule, Guid lawyerScheduleId)
 		{
 			// Xóa các ngày nghỉ hiện tại của luật sư
-			var schedule = await _context.SpecificLawyerDayOffSchedules.Where(s => s.LawyerDayOffScheduleId == lawyerScheduleId).ToListAsync();
-			if (schedule.Any())
+			try
 			{
-				 _context.SpecificLawyerDayOffSchedules.RemoveRange(schedule);
-			}
-			// Thêm các ngày nghỉ mới vào context
-			_context.SpecificLawyerDayOffSchedules.AddRange(specificLawyerDayOffSchedule);
+				var schedule = await _context.SpecificLawyerDayOffSchedules.Where(s => s.LawyerDayOffScheduleId == lawyerScheduleId).ToListAsync();
+				if (schedule.Any())
+				{
+					_context.SpecificLawyerDayOffSchedules.RemoveRange(schedule);
+				}
+				// Thêm các ngày nghỉ mới vào context
+				_context.SpecificLawyerDayOffSchedules.AddRange(specificLawyerDayOffSchedule);
 
-			await _context.SaveChangesAsync();
+				await _context.SaveChangesAsync();
+				return true;
+			}
+			catch (Exception)
+			{
+
+				return false;
+			}
 		}
 	}
 

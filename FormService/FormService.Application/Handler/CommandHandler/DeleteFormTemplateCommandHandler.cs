@@ -23,8 +23,12 @@ namespace FormService.Application.Handler.CommandHandler
         }
         public async Task<bool> Handle(DeleteFormTemplateCommand request, CancellationToken cancellationToken)
         {
-           await _formTemplateRepositoryWrite.DeleteFormTemplateAsync(request.id);
-            await _publishEndpoint.Publish(new FormTemplateDeletedEvent
+           var result = await _formTemplateRepositoryWrite.DeleteFormTemplateAsync(request.id);
+			if (!result)
+			{
+				return false;
+			}
+			await _publishEndpoint.Publish(new FormTemplateDeletedEvent
             {
                 Id = request.id
             }, cancellationToken);

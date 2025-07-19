@@ -23,8 +23,12 @@ namespace TicketService.Application.Handler.CommandHandler
         }
         public async Task<bool> Handle(DeleteTicketPackageCommand request, CancellationToken cancellationToken)
         {
-           await _repo.DeleteAsync(request.id);
-            var event_send = new TicketPackageDeletedEvent
+           var result = await _repo.DeleteAsync(request.id);
+			if (!result)
+			{
+				return false; 
+			}
+			var event_send = new TicketPackageDeletedEvent
             {
                 id = request.id
             };

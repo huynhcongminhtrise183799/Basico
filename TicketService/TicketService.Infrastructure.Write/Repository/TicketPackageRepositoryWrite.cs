@@ -15,23 +15,36 @@ namespace TicketService.Infrastructure.Write.Repository
         {
             _context = context;
         }
-        public async Task AddAsync(TicketPackage ticketPackage)
+        public async Task<bool> AddAsync(TicketPackage ticketPackage)
         {
-           await _context.TicketPackages.AddAsync(ticketPackage);
-            await _context.SaveChangesAsync();
+            try
+            {
+				await _context.TicketPackages.AddAsync(ticketPackage);
+				await _context.SaveChangesAsync();
+                return true;
+			}
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
-        public async Task DeleteAsync(Guid ticketPackageId)
+        public async Task<bool> DeleteAsync(Guid ticketPackageId)
         {
             var ticketPackage = await _context.TicketPackages.FindAsync(ticketPackageId);
             if (ticketPackage == null)
-                throw new KeyNotFoundException("Ticket package not found for deletion.");
+            {
+				throw new KeyNotFoundException("Ticket package not found for deletion.");
+			}
+                
 
             ticketPackage.Status = Status.INACTIVE.ToString();
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task UpdateAsync(TicketPackage ticketPackage)
+        public async Task<bool> UpdateAsync(TicketPackage ticketPackage)
         {
            var existingPackage = _context.TicketPackages.Find(ticketPackage.TicketPackageId);
             if (existingPackage != null)
@@ -40,7 +53,8 @@ namespace TicketService.Infrastructure.Write.Repository
                 existingPackage.RequestAmount = ticketPackage.RequestAmount;
                 existingPackage.Price = ticketPackage.Price;
                 existingPackage.Status = ticketPackage.Status;
-                return _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+                return true;
             }
             throw new KeyNotFoundException("Ticket package not found.");
         }

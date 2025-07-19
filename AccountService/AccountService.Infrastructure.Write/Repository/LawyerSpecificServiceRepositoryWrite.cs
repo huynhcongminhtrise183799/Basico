@@ -17,26 +17,44 @@ namespace AccountService.Infrastructure.Write.Repository
             _context = context;
         }
 
-        public async Task AddAsync(List<LawyerSpecificService> lawyerSpecificService)
+        public async Task<bool> AddAsync(List<LawyerSpecificService> lawyerSpecificService)
         {
-           await _context.LawyerSpecificServices.AddRangeAsync(lawyerSpecificService);
-            await _context.SaveChangesAsync();
+            try
+            {
+				await _context.LawyerSpecificServices.AddRangeAsync(lawyerSpecificService);
+				await _context.SaveChangesAsync();
+                return true;
+			}
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
-        public async Task UpdateAsync(List<LawyerSpecificService> lawyerSpecificService, Guid lawyerId)
+        public async Task<bool> UpdateAsync(List<LawyerSpecificService> lawyerSpecificService, Guid lawyerId)
         {
             // Lấy danh sách các service đã tồn tại của luật sư theo lawyerId
-            var existingServices = _context.LawyerSpecificServices
-                 .Where(x => x.LawyerId == lawyerId)
-                 .ToList();
+            try
+            {
+				var existingServices = _context.LawyerSpecificServices
+			   .Where(x => x.LawyerId == lawyerId)
+			   .ToList();
 
-            // Xóa các service hiện có
-            _context.LawyerSpecificServices.RemoveRange(existingServices);
+				// Xóa các service hiện có
+				_context.LawyerSpecificServices.RemoveRange(existingServices);
 
-            // Thêm các service mới vào context
-            await _context.LawyerSpecificServices.AddRangeAsync(lawyerSpecificService);
+				// Thêm các service mới vào context
+				await _context.LawyerSpecificServices.AddRangeAsync(lawyerSpecificService);
 
-            await _context.SaveChangesAsync();
+				await _context.SaveChangesAsync();
+                return true;
+			}
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
     }
 }

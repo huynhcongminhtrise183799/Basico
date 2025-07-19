@@ -96,13 +96,14 @@ namespace BookingService.Infrastructure.Write.Repository
 			}
 		}
 
-		public async Task UpdateStatusBookingToCompleted(Guid? bookingId)
+		public async Task<bool> UpdateStatusBookingToCompleted(Guid? bookingId)
 		{
 			var booking = await _context.Bookings.FindAsync(bookingId);
 			if (booking != null)
 			{
 				booking.Status = BookingStatus.Completed.ToString();
 				await _context.SaveChangesAsync();
+				return true;
 			}
 			else
 			{

@@ -1,5 +1,6 @@
 {
   "Routes": [
+    //Account Service
     {
       "DownstreamPathTemplate": "/api/Account/login",
       "DownstreamScheme": "http",
@@ -9,10 +10,10 @@
           "Port": 5073
         }
       ],
-      "UpstreamPathTemplate": "/api/login",
+      "UpstreamPathTemplate": "/api/Account/login",
       "UpstreamHttpMethod": [ "POST" ],
       "SwaggerKey": "accounts"
-    },
+    }, // login
     {
       "DownstreamPathTemplate": "/api/Account/profile",
       "DownstreamScheme": "http",
@@ -22,7 +23,7 @@
           "Port": 5073
         }
       ],
-      "UpstreamPathTemplate": "/api/profile",
+      "UpstreamPathTemplate": "/api/Account/profile",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "accounts",
       "AuthenticationOptions": {
@@ -30,7 +31,7 @@
         "AllowedScopes": []
       }
 
-    },
+    }, //profile
     {
       "DownstreamPathTemplate": "/api/Account/register",
       "DownstreamScheme": "http",
@@ -40,10 +41,10 @@
           "Port": 5073
         }
       ],
-      "UpstreamPathTemplate": "/api/register",
+      "UpstreamPathTemplate": "/api/Account/register",
       "UpstreamHttpMethod": [ "POST" ],
       "SwaggerKey": "accounts"
-    },
+    }, //register
     {
       "DownstreamPathTemplate": "/api/Account/signin-google",
       "DownstreamScheme": "http",
@@ -53,10 +54,829 @@
           "Port": 5073
         }
       ],
-      "UpstreamPathTemplate": "/api/signin-google",
+      "UpstreamPathTemplate": "/api/Account/signin-google",
       "UpstreamHttpMethod": [ "Post" ],
       "SwaggerKey": "accounts"
-    },
+    }, //login google
+    {
+      "DownstreamPathTemplate": "/api/Account/profile/update",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Account/profile/update",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //update-profile
+    {
+      "DownstreamPathTemplate": "/api/Account/all-user",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Account/all-user",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-all-user
+    {
+      "DownstreamPathTemplate": "/api/Account/user/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Account/user/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //delete-user
+    {
+      "DownstreamPathTemplate": "/api/Account/active-user/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Account/active-user/{id}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //active-user
+    {
+      "DownstreamPathTemplate": "/api/Lawyer",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Lawyer",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //create-lawyer
+    {
+      "DownstreamPathTemplate": "/api/Lawyer/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Lawyer/{id}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //update-lawyer
+    {
+      "DownstreamPathTemplate": "/api/Lawyer/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Lawyer/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //delete-lawyer
+    {
+      "DownstreamPathTemplate": "/api/Lawyer/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Lawyer/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+    }, //get-lawyer-byId
+    {
+      "DownstreamPathTemplate": "/api/Lawyer",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Lawyer",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+    }, //get-all-lawyer
+    {
+      "DownstreamPathTemplate": "/api/Lawyer/active",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Lawyer/active-",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+    }, //get-active-lawyer
+    {
+      "DownstreamPathTemplate": "/api/Lawyer/service/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Lawyer/service/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+    }, //get-lawyer-by-serviceId
+    {
+      "DownstreamPathTemplate": "/api/Service",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Service",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "accounts"
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    }, //create-service
+    {
+      "DownstreamPathTemplate": "/api/Service/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Service/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+    }, //get-service-by-id
+    {
+      "DownstreamPathTemplate": "/api/Service/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Service/{id}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //update-service
+    {
+      "DownstreamPathTemplate": "/api/Service/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Service/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //delete-service
+    {
+      "DownstreamPathTemplate": "/api/Service",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Service",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+    }, //get-all-service
+    {
+      "DownstreamPathTemplate": "/api/Service/active-services",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Service/active-services",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+    }, //get-all-service
+    {
+      "DownstreamPathTemplate": "/api/Staff",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Staff",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //create-staff
+    {
+      "DownstreamPathTemplate": "/api/Staff",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Staff",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //update-staff
+    {
+      "DownstreamPathTemplate": "/api/Staff/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Staff/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //delete-staff
+    {
+      "DownstreamPathTemplate": "/api/Staff",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Staff",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-all-staff
+    {
+      "DownstreamPathTemplate": "/api/Staff/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Staff/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-staff-by-id
+    {
+      "DownstreamPathTemplate": "/api/Staff/Active",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Staff/Active",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+
+    }, //get-active-staff
+    {
+      "DownstreamPathTemplate": "/api/shifts",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/shifts",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+    }, //get-all-shifts
+    {
+      "DownstreamPathTemplate": "/api/ForgotPassword/request",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ForgotPassword/request",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "accounts"
+    }, //send-otp
+    {
+      "DownstreamPathTemplate": "/api/ForgotPassword/verify",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ForgotPassword/verify",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "accounts"
+    }, //verify-otp
+    {
+      "DownstreamPathTemplate": "/api/ForgotPassword/reset",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ForgotPassword/reset",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "accounts"
+    }, //reset-password
+    {
+      "DownstreamPathTemplate": "/api/day-off",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/day-off",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //create-day-off
+    {
+      "DownstreamPathTemplate": "/api/day-off/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/day-off/{id}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //update-day-off
+    {
+      "DownstreamPathTemplate": "/api/day-off/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/day-off/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //delete-day-off
+    {
+      "DownstreamPathTemplate": "/api/day-off",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/day-off",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+    }, //get-day-off-by-date
+    {
+      "DownstreamPathTemplate": "/api/day-off/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/day-off/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+    }, //get-day-off-by-id
+    {
+      "DownstreamPathTemplate": "/api/day-off/justify/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/day-off/justify/{id}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "accounts",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //justify-day-off
+    {
+      "DownstreamPathTemplate": "/api/Dashboard/account",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5073
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Dashboard/account",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "accounts"
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    }, //dashboard-account
+    // BookingService
+    {
+      "DownstreamPathTemplate": "/api/Slot/free-slot",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Slot/free-slot",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "bookings"
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    }, //get-slot-booking
+    {
+      "DownstreamPathTemplate": "/api/Slot/slot-update/{bookingId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Slot/slot-update/{bookingId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-slot-update-booking
+    {
+      "DownstreamPathTemplate": "/api/Booking",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Booking",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //create-booking
+    {
+      "DownstreamPathTemplate": "/api/Booking/{bookingId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Booking/{bookingId}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //update-booking
+    {
+      "DownstreamPathTemplate": "/api/Booking/{bookingId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Booking/{bookingId}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //delete-booking
+    {
+      "DownstreamPathTemplate": "/api/Booking/{bookingId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Booking/{bookingId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-booking-by-id
+    {
+      "DownstreamPathTemplate": "/api/Booking",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Booking",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "bookings"
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    }, //get-booking-by-customer-status
+    {
+      "DownstreamPathTemplate": "/api/Booking/lawyer/{lawyerId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Booking/lawyer/{lawyerId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-booking-by-lawyer-status-bookingdate
+    {
+      "DownstreamPathTemplate": "/api/Booking/lawyer-all/{lawyerId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Booking/lawyer-all/{lawyerId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "bookings"
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    }, //get-booking-by-lawyer-status
+    {
+      "DownstreamPathTemplate": "/api/Booking/staff",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Booking/staff",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-booking-staff-status
+    {
+      "DownstreamPathTemplate": "/api/Booking/check-in/{bookingId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Booking/check-in/{bookingId}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //check-in booking
+    {
+      "DownstreamPathTemplate": "/api/Booking/check-out/{bookingId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Booking/check-out/{bookingId}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //check-out booking
+    {
+      "DownstreamPathTemplate": "/api/feedback",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/feedback",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //create feedback
+    {
+      "DownstreamPathTemplate": "/api/feedback/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/feedback/{id}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //update feedback
+    {
+      "DownstreamPathTemplate": "/api/feedbacks",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/feedbacks",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-all-feedback
+    {
+      "DownstreamPathTemplate": "/api/feedback/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/feedback/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-feedback-by-id
+    {
+      "DownstreamPathTemplate": "/api/feedback/booking/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5178
+        }
+      ],
+      "UpstreamPathTemplate": "/api/feedback/booking/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "bookings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-feedback-by-booking-id
+
+    //FormService
     {
       "DownstreamPathTemplate": "/api/template",
       "DownstreamScheme": "http",
@@ -73,7 +893,7 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
-    },
+    }, // create-form-template
     {
       "DownstreamPathTemplate": "/api/templates",
       "DownstreamScheme": "http",
@@ -86,7 +906,7 @@
       "UpstreamPathTemplate": "/api/templates",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "templates"
-    },
+    }, // get-all-template
     {
       "DownstreamPathTemplate": "/api/templates-active",
       "DownstreamScheme": "http",
@@ -99,7 +919,7 @@
       "UpstreamPathTemplate": "/api/templates-active",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "templates"
-    },
+    }, // get-all-active-template
     {
       "DownstreamPathTemplate": "/api/template/{id}",
       "DownstreamScheme": "http",
@@ -112,7 +932,7 @@
       "UpstreamPathTemplate": "/api/template/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "templates"
-    },
+    }, // get-template-by-id
     {
       "DownstreamPathTemplate": "/api/template/{id}",
       "DownstreamScheme": "http",
@@ -129,7 +949,7 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
-    },
+    }, // update-form-template
     {
       "DownstreamPathTemplate": "/api/template/{id}",
       "DownstreamScheme": "http",
@@ -146,7 +966,7 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
-    },
+    }, // delete-form-template
     {
       "DownstreamPathTemplate": "/api/template",
       "DownstreamScheme": "http",
@@ -159,7 +979,48 @@
       "UpstreamPathTemplate": "/api/template",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "templates"
-    },
+    }, // get theo page
+    {
+      "DownstreamPathTemplate": "/api/form/customer/{customerId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5257
+        }
+      ],
+      "UpstreamPathTemplate": "/api/form/customer/{customerId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "templates"
+    }, // get-form-template-by-customerId
+    {
+      "DownstreamPathTemplate": "/api/customer-form/{customerFormId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5257
+        }
+      ],
+      "UpstreamPathTemplate": "/api/customer-form/{customerFormId}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "templates"
+    }, // customer update form template
+    {
+      "DownstreamPathTemplate": "/api/customer-form/{customerFormId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5257
+        }
+      ],
+      "UpstreamPathTemplate": "/api/customer-form/{customerFormId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "templates"
+    }, //get customer form template
+
+    //TicketService
     {
       "DownstreamPathTemplate": "/api/ticket-package",
       "DownstreamScheme": "http",
@@ -176,8 +1037,7 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
-
-    },
+    }, // create-ticket-package
     {
       "DownstreamPathTemplate": "/api/ticket-packages",
       "DownstreamScheme": "http",
@@ -190,7 +1050,21 @@
       "UpstreamPathTemplate": "/api/ticket-packages",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "ticket-package"
-    },
+    }, // get-all-ticket-packages
+    {
+      "DownstreamPathTemplate": "/api/ticket-packages-active",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ticket-packages-active",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "ticket-package"
+    }, // get-all-active-ticket-packages
+
     {
       "DownstreamPathTemplate": "/api/ticket-package-active",
       "DownstreamScheme": "http",
@@ -203,7 +1077,7 @@
       "UpstreamPathTemplate": "/api/ticket-package-active",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "ticket-package"
-    },
+    }, // get-by-status-active
     {
       "DownstreamPathTemplate": "/api/ticket-package/{id}",
       "DownstreamScheme": "http",
@@ -216,7 +1090,7 @@
       "UpstreamPathTemplate": "/api/ticket-package/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "ticket-package"
-    },
+    }, // get-by-id
     {
       "DownstreamPathTemplate": "/api/ticket-package",
       "DownstreamScheme": "http",
@@ -229,7 +1103,7 @@
       "UpstreamPathTemplate": "/api/ticket-package",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "ticket-package"
-    },
+    }, // get-with-pagtion
     {
       "DownstreamPathTemplate": "/api/ticket-package/{id}",
       "DownstreamScheme": "http",
@@ -246,7 +1120,7 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
-    },
+    }, // update-ticket-package
     {
       "DownstreamPathTemplate": "/api/ticket-package/{id}",
       "DownstreamScheme": "http",
@@ -263,7 +1137,256 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
-    }
+    }, //delete-ticket-package
+    {
+      "DownstreamPathTemplate": "/api/Ticket",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Ticket",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "ticket-package",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //send-ticket
+    {
+      "DownstreamPathTemplate": "/api/Ticket/{id}/reply",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Ticket/{id}/reply",
+      "UpstreamHttpMethod": [ "Put" ],
+      "SwaggerKey": "ticket-package",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //reply-ticket
+    {
+      "DownstreamPathTemplate": "/api/Ticket/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Ticket/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "SwaggerKey": "ticket-package",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //delete-ticket
+    {
+      "DownstreamPathTemplate": "/api/Ticket/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Ticket/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "ticket-package",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-ticket-by-id
+    {
+      "DownstreamPathTemplate": "/api/Ticket/all",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Ticket/all",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "ticket-package",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-all-ticket
+    {
+      "DownstreamPathTemplate": "/api/Ticket/by-status",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Ticket/by-status",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "ticket-package",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-ticket-by-status
+    {
+      "DownstreamPathTemplate": "/api/Ticket/by-customer",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5107
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Ticket/by-customer",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "ticket-package",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-ticket-by-customer
+
+    //OrderService
+    {
+      "DownstreamPathTemplate": "/api/Dashboard/revenue",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5164
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Dashboard/revenue",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "orders"
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    }, //order-dashboard
+    {
+      "DownstreamPathTemplate": "/api/order/create-form",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5164
+        }
+      ],
+      "UpstreamPathTemplate": "/api/order/create-form",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "orders",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //create-order-form
+    {
+      "DownstreamPathTemplate": "/api/order/ticket-package",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5164
+        }
+      ],
+      "UpstreamPathTemplate": "/api/order/ticket-package",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "orders",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //create-order-ticket-package
+    {
+      "DownstreamPathTemplate": "/api/order",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5164
+        }
+      ],
+      "UpstreamPathTemplate": "/api/order",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "orders",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //get-order-by-id-and-status
+    {
+      "DownstreamPathTemplate": "/api/orders",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5164
+        }
+      ],
+      "UpstreamPathTemplate": "/api/orders",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "orders"
+    }, //get-all-order
+    {
+      "DownstreamPathTemplate": "/api/order/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5164
+        }
+      ],
+      "UpstreamPathTemplate": "/api/order/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "SwaggerKey": "orders",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }, //cancel-order
+    {
+      "DownstreamPathTemplate": "/api/Payment/create-payment-url",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5164
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Payment/create-payment-url",
+      "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "orders"
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    }, //create-payment-url
+    {
+      "DownstreamPathTemplate": "/api/Payment/payment-callback",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5164
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Payment/payment-callback",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "orders"
+    } //call-back-url
   ],
   "SwaggerEndPoints": [
     {
@@ -273,6 +1396,16 @@
           "Name": "Accounts API",
           "Version": "v1",
           "Url": "http://localhost:5073/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "bookings",
+      "Config": [
+        {
+          "Name": "Bookings API",
+          "Version": "v1",
+          "Url": "http://localhost:5178/swagger/v1/swagger.json"
         }
       ]
     },
@@ -293,6 +1426,16 @@
           "Name": "Ticket Package API",
           "Version": "v1",
           "Url": "http://localhost:5107/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "orders",
+      "Config": [
+        {
+          "Name": "Order Service API",
+          "Version": "v1",
+          "Url": "http://localhost:5164/swagger/v1/swagger.json"
         }
       ]
     }

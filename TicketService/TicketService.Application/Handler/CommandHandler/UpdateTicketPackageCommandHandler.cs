@@ -33,8 +33,12 @@ namespace TicketService.Application.Handler.CommandHandler
                 Price = request.price,
                 Status = request.status
             };
-            await _repo.UpdateAsync(package);
-            var event_send = new TicketPackageUpdatedEvent
+           var result  =  await _repo.UpdateAsync(package);
+			if (!result)
+			{
+				return null; 
+			}
+			var event_send = new TicketPackageUpdatedEvent
             {
                 TicketPackageId = package.TicketPackageId,
                 TicketPackageName = package.TicketPackageName,

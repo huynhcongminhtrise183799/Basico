@@ -16,13 +16,22 @@ namespace FormService.Infrastructure.Write.Repository
 		{
 			_context = context ;
 		}
-		public async Task AddAsync(CustomerForm customerForm)
+		public async Task<bool> AddAsync(CustomerForm customerForm)
 		{
-			await _context.CustomerForms.AddAsync(customerForm);
-			await _context.SaveChangesAsync();
+			try
+			{
+				await _context.CustomerForms.AddAsync(customerForm);
+				await _context.SaveChangesAsync();
+				return true;
+			}
+			catch (Exception)
+			{
+
+				return false;
+			}
 		}
 
-		public async Task UpdateAsync(CustomerForm customerForm)
+		public async Task<bool> UpdateAsync(CustomerForm customerForm)
 		{
 			var existingForm = await _context.CustomerForms.FirstOrDefaultAsync(cf => cf.CustomerFormId == customerForm.CustomerFormId);
 			if (existingForm != null)
@@ -30,6 +39,7 @@ namespace FormService.Infrastructure.Write.Repository
 				existingForm.CustomerFormData = customerForm.CustomerFormData;
 				existingForm.Status = customerForm.Status;
 				await _context.SaveChangesAsync();
+				return true;
 			}
 			else
 			{

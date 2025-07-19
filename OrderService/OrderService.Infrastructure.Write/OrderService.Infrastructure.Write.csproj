@@ -13,7 +13,7 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Contracts\Contracts\Contracts.csproj" />
+	  <ProjectReference Include="..\OrderService.Application\OrderService.Application.csproj" />
 	  <ProjectReference Include="..\OrderService.Domain\OrderService.Domain.csproj" />
 	</ItemGroup>
 </Project>

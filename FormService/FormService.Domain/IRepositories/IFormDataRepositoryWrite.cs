@@ -9,8 +9,8 @@ namespace FormService.Domain.IRepositories
 {
 	public interface IFormDataRepositoryWrite
 	{
-		Task AddAsync(CustomerForm customerForm);
+		Task<bool> AddAsync(CustomerForm customerForm);
 
-		Task UpdateAsync(CustomerForm customerForm);
+		Task<bool> UpdateAsync(CustomerForm customerForm);
 	}
 }

@@ -16,24 +16,34 @@ namespace FormService.Infrastructure.Write.Repository
         {
             _context = context;
         }
-        public async Task AddFormTemplateAsync(FormTemplate formTemplate)
+        public async Task<bool> AddFormTemplateAsync(FormTemplate formTemplate)
         {
-           await _context.FormTemplates.AddAsync(formTemplate);
-            await _context.SaveChangesAsync();
+            try
+            {
+				await _context.FormTemplates.AddAsync(formTemplate);
+				await _context.SaveChangesAsync();
+                return true;
+			}
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
-        public Task DeleteFormTemplateAsync(Guid formTemplateId)
+        public async Task<bool> DeleteFormTemplateAsync(Guid formTemplateId)
         {
           var formTemplate = _context.FormTemplates.Find(formTemplateId);
             if (formTemplate != null)
             {
                 formTemplate.Status = "INACTIVE";
-                return _context.SaveChangesAsync();
-            }
+                await _context.SaveChangesAsync();
+				return true;
+			}
             throw new KeyNotFoundException("Form template not found.");
         }
 
-        public Task UpdateFormTemplateAsync(FormTemplate formTemplate)
+        public async Task<bool> UpdateFormTemplateAsync(FormTemplate formTemplate)
         {
            var existingTemplate = _context.FormTemplates.Find(formTemplate.FormTemplateId);
             if (existingTemplate != null)
@@ -42,7 +52,8 @@ namespace FormService.Infrastructure.Write.Repository
                 existingTemplate.FormTemplateName = formTemplate.FormTemplateName;
                 existingTemplate.FormTemplateData = formTemplate.FormTemplateData;
                 existingTemplate.Status = formTemplate.Status;
-                return _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+                return true;
             }
             throw new KeyNotFoundException("Form template not found.");
         }

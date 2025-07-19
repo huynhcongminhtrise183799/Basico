@@ -1,7 +1,6 @@
 ﻿using AccountService.Application.Event.Lawyer;
 using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
-using AccountService.Infrastructure.Read;
 using MassTransit;
 using System;
 using System.Collections.Generic;
@@ -13,19 +12,19 @@ namespace AccountService.Application.Consumers.Lawyer
 {
     public class LawyerUpdatedEventConsumer : IConsumer<LawyerUpdatedEvent>
     {
-        private readonly AccountDbContextRead _dbContextRead;
+        private readonly IAccountRepositoryRead _repo;
         private readonly ILawyerSpecificServiceRepositoryRead _lawyerSpecific;
 
-        public LawyerUpdatedEventConsumer(AccountDbContextRead dbContextRead, ILawyerSpecificServiceRepositoryRead lawyerSpecific)
+        public LawyerUpdatedEventConsumer(IAccountRepositoryRead repo, ILawyerSpecificServiceRepositoryRead lawyerSpecific)
         {
-            _dbContextRead = dbContextRead;
+            _repo = repo;
             _lawyerSpecific = lawyerSpecific;
         }
 
         public async Task Consume(ConsumeContext<LawyerUpdatedEvent> context)
         {
             var evt = context.Message;
-            var account = await _dbContextRead.Accounts.FindAsync(evt.AccountId);
+            var account = await _repo.GetAccountById(evt.AccountId);
             if (account == null) return;
 
             account.AccountFullName = evt.AccountFullName;
@@ -35,8 +34,7 @@ namespace AccountService.Application.Consumers.Lawyer
             account.AccountImage = evt.AccountImage;
             account.AboutLawyer = evt.AboutLawyer;
 
-            _dbContextRead.Accounts.Update(account);
-            await _dbContextRead.SaveChangesAsync();
+           await _repo.UpdateAccount(account);
 
             var newLawyerService = evt.ServiceForLawyerDTOs.Select(service => new LawyerSpecificService
             {

@@ -9,12 +9,12 @@ namespace TicketService.Domain.IRepositories
 {
     public interface ITicketRepositoryWrite
     {
-        Task AddAsync(Ticket ticket);                       
+        Task<bool> AddAsync(Ticket ticket);                       
         Task<Ticket?> GetByIdAsync(Guid ticketId);         
         Task UpdateAsync(Ticket ticket);                  
         Task DeleteAsync(Guid ticketId);                   
         Task SaveChangesAsync();
 
-        Task ReplyTicket(Ticket ticket);
+        Task<bool> ReplyTicket(Ticket ticket);
     }
 }

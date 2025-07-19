@@ -10,9 +10,9 @@ namespace AccountService.Domain.IRepositories
     public interface ILawyerDayOffScheduleRepositoryWrite
     {
 
-		Task AddLawyerDayOffScheduleAsync(LawyerDayOffSchedule lawyerDayOffSchedule);
+		Task<bool> AddLawyerDayOffScheduleAsync(LawyerDayOffSchedule lawyerDayOffSchedule);
 
-		Task UpdateLawyerDayOffScheduleAsync(LawyerDayOffSchedule lawyerDayOffSchedule);
-		Task DeleteLawyerDayOffScheduleAsync(Guid id);
+		Task<bool> UpdateLawyerDayOffScheduleAsync(LawyerDayOffSchedule lawyerDayOffSchedule);
+		Task<bool> DeleteLawyerDayOffScheduleAsync(Guid id);
 	}
 }

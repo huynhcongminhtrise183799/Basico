@@ -23,7 +23,11 @@ namespace AccountService.Application.Handler.CommandHandler.AccountCommandHandle
 
 		public async Task<bool> Handle(BanUserCommnad request, CancellationToken cancellationToken)
 		{
-			 await _repoWrite.BanUserAccount(request.accountId);
+			var result =  await _repoWrite.BanUserAccount(request.accountId);
+			if (!result)
+			{
+				return false; // Ban user failed
+			}
 			var @event = new BanAccountEvent
 			{
 				AccountId = request.accountId,

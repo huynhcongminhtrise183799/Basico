@@ -22,11 +22,12 @@ namespace AccountService.Application.Handler.CommandHandler.StaffHandler
 
         public async Task<bool> Handle(DeleteStaffCommand request, CancellationToken cancellationToken)
         {
-			// Publish event trước
+			var result = await _repoWrite.DeleteStaff(request.StaffId);
+            if (!result) return false;
 			await _publishEndpoint.Publish(new StaffDeletedEvent(request.StaffId), cancellationToken);
 
-			// Sau đó mới gọi xóa thực tế
-			return await _repoWrite.DeleteStaff(request.StaffId);
+
+            return true;
 		}
     }
 }

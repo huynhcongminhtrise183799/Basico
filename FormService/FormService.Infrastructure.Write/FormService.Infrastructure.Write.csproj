@@ -12,6 +12,7 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5" />
 	</ItemGroup>
 <ItemGroup>
+  <ProjectReference Include="..\FormService.Application\FormService.Application.csproj" />
   <ProjectReference Include="..\FormService.Domain\FormService.Domain.csproj" />
 </ItemGroup>
 </Project>

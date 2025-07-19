@@ -9,8 +9,8 @@ namespace AccountService.Domain.IRepositories
 {
     public interface ILawyerSpecificServiceRepositoryWrite
     {
-        Task AddAsync(List<LawyerSpecificService> lawyerSpecificService);
+        Task<bool> AddAsync(List<LawyerSpecificService> lawyerSpecificService);
 
-        Task UpdateAsync(List<LawyerSpecificService> lawyerSpecificService, Guid lawyerId);
+        Task<bool> UpdateAsync(List<LawyerSpecificService> lawyerSpecificService, Guid lawyerId);
     }
 }

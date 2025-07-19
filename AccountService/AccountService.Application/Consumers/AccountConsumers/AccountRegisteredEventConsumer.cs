@@ -1,6 +1,6 @@
 ﻿using AccountService.Application.Event.AccountEvent;
 using AccountService.Domain.Entity;
-using AccountService.Infrastructure.Read;
+using AccountService.Domain.IRepositories;
 using MassTransit;
 using System;
 using System.Collections.Generic;
@@ -12,18 +12,18 @@ namespace AccountService.Application.Consumers.AccountConsumers
 {
     public class AccountRegisteredEventConsumer : IConsumer<AccountRegisteredEvent>
     {
-        private readonly AccountDbContextRead _context;
+        private readonly IAccountRepositoryRead _repo;
 
-        public AccountRegisteredEventConsumer(AccountDbContextRead context)
+        public AccountRegisteredEventConsumer(IAccountRepositoryRead repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public async Task Consume(ConsumeContext<AccountRegisteredEvent> context)
         {
             var evt = context.Message;
 
-            _context.Accounts.Add(new Account
+            await _repo.AddAsync(new Account
             {
                 AccountId = evt.AccountId,
                 AccountUsername = evt.AccountUsername,
@@ -35,7 +35,7 @@ namespace AccountService.Application.Consumers.AccountConsumers
                 AccountStatus = evt.AccountStatus,
                 AccountTicketRequest = evt.AccountTicketRequest
             });
-            await _context.SaveChangesAsync();
+            
         }
     }
 }
