@@ -97,17 +97,17 @@ namespace BookingService.API
 				app.UseSwaggerUI();
 			//}
 
-			app.UseHttpsRedirection();
-
-			app.UseAuthorization();
             app.UseCors(builder =>
      builder.AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod());
 
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
 
 
-            app.MapControllers();
+			app.MapControllers();
 
 			app.Run();
 		}
