@@ -1,7 +1,6 @@
 ﻿using AccountService.Application.Event.Lawyer;
 using AccountService.Domain.Entity;
 using AccountService.Domain.IRepositories;
-using AccountService.Infrastructure.Read;
 using MassTransit;
 using System;
 using System.Threading.Tasks;

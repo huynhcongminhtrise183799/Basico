@@ -34,8 +34,12 @@ namespace FormService.Application.Handler.CommandHandler
 				Price = request.Price,
 				Status = Status.ACTIVE.ToString()
             };
-            await _formTemplateRepositoryWrite.AddFormTemplateAsync(template);
-            var formTemplateCreatedEvent = new FormTemplateCreatedEvent
+            var resukt = await _formTemplateRepositoryWrite.AddFormTemplateAsync(template);
+			if (!resukt)
+			{
+				return null;
+			}
+			var formTemplateCreatedEvent = new FormTemplateCreatedEvent
             {
                 FormTemplateId = template.FormTemplateId,
                 ServiceId = template.ServiceId,

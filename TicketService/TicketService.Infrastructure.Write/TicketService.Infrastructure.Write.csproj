@@ -12,6 +12,7 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5" />
 	</ItemGroup>
 <ItemGroup>
+  <ProjectReference Include="..\TicketService.Application\TicketService.Application.csproj" />
   <ProjectReference Include="..\TicketService.Domain\TicketService.Domain.csproj" />
 </ItemGroup>
 </Project>

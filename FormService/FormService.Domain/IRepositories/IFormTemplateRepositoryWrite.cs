@@ -9,8 +9,8 @@ namespace FormService.Domain.IRepositories
 {
     public interface IFormTemplateRepositoryWrite
     {
-        Task AddFormTemplateAsync(FormTemplate formTemplate);
-        Task UpdateFormTemplateAsync(FormTemplate formTemplate);
-        Task DeleteFormTemplateAsync(Guid formTemplateId);
+        Task<bool> AddFormTemplateAsync(FormTemplate formTemplate);
+        Task<bool> UpdateFormTemplateAsync(FormTemplate formTemplate);
+        Task<bool> DeleteFormTemplateAsync(Guid formTemplateId);
     }
 }

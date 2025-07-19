@@ -97,15 +97,16 @@ namespace OrderService.Application.Library
 			return "127.0.0.1";
 		}
 
-		public void AddRequestData(string key, string value)
-		{
-			if (!string.IsNullOrEmpty(value))
-			{
-				_requestData.Add(key, value);
-			}
-		}
+        public void AddRequestData(string key, string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                _requestData[key] = value;
+            }
+        }
 
-		public void AddResponseData(string key, string value)
+
+        public void AddResponseData(string key, string value)
 		{
 			if (!string.IsNullOrEmpty(value))
 			{

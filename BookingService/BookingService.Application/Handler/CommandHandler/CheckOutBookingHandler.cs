@@ -22,7 +22,11 @@ namespace BookingService.Application.Handler.CommandHandler
 		}
 		public async Task<bool> Handle(CheckOutBookingCommand request, CancellationToken cancellationToken)
 		{
-			await _repoWrite.UpdateStatusBookingToCompleted(request.bookingId);
+			var result = await _repoWrite.UpdateStatusBookingToCompleted(request.bookingId);
+			if (!result)
+			{
+				return false;
+			}
 			var @event = new CheckOutBookingEvent
 			{
 				BookingId = request.bookingId

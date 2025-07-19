@@ -46,19 +46,36 @@ namespace AccountService.Infrastructure.Write.Repository
             return await _context.Accounts.FindAsync(accountId);
 		}
 
-        public async Task UpdateAccount(Account account)
+        public async Task<bool> UpdateAccount(Account account)
         {
-            _context.Accounts.Update(account);
-            await _context.SaveChangesAsync();
+			try
+			{
+				_context.Accounts.Update(account);
+				await _context.SaveChangesAsync();
+				return true; // Trả về true nếu cập nhật thành công
+			}
+			catch (Exception)
+			{
+
+				return false; // Trả về false nếu có lỗi xảy ra
+			}
 		}
 
 		// Staff management methods
-		public async Task AddStaff(Account staff)
+		public async Task<bool> AddStaff(Account staff)
 		{
-			staff.AccountRole = Role.STAFF.ToString(); // đảm bảo role là staff
-			staff.AccountStatus = Status.ACTIVE.ToString(); // mặc định trạng thái là ACTIVE
-			await _context.Accounts.AddAsync(staff);
-			await _context.SaveChangesAsync();
+			try
+			{
+				staff.AccountRole = Role.STAFF.ToString(); // đảm bảo role là staff
+				staff.AccountStatus = Status.ACTIVE.ToString(); // mặc định trạng thái là ACTIVE
+				await _context.Accounts.AddAsync(staff);
+				await _context.SaveChangesAsync();
+				return true;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
 		}
 
 		public async Task<bool> UpdateStaff(Account staff)
@@ -163,9 +180,19 @@ namespace AccountService.Infrastructure.Write.Repository
 			return result?.AccountId;
 		}
         //Lawyer methods
-        public async Task AddLawyerAsync(Account account, CancellationToken cancellationToken)
+        public async Task<bool> AddLawyerAsync(Account account, CancellationToken cancellationToken)
         {
-            await _context.Accounts.AddAsync(account, cancellationToken);
+			try
+			{
+				await _context.Accounts.AddAsync(account, cancellationToken);
+				await _context.SaveChangesAsync(cancellationToken);
+				return true;
+			}
+			catch (Exception)
+			{
+
+				return false;
+			}
         }
      
         public async Task<Account?> GetLawyerByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -173,16 +200,40 @@ namespace AccountService.Infrastructure.Write.Repository
             return await _context.Accounts.FindAsync(new object[] { id }, cancellationToken);
         }
 
-        public Task UpdateLawyerAsync(Account account, CancellationToken cancellationToken)
+        public async Task<bool> UpdateLawyerAsync(Account account, CancellationToken cancellationToken)
         {
-            _context.Accounts.Update(account);
-            return Task.CompletedTask;
+			try
+			{
+				_context.Accounts.Update(account);
+				await _context.SaveChangesAsync(cancellationToken);
+				return true;
+			}
+			catch (Exception)
+			{
+
+				return false;
+			}
         }
 
-        public Task DeleteLawyerAsync(Account account, CancellationToken cancellationToken)
+        public async Task<bool> DeleteLawyerAsync(Account account, CancellationToken cancellationToken)
         {
-            _context.Accounts.Remove(account);
-            return Task.CompletedTask;
+			try
+			{
+				var lawyer = await _context.Accounts.FindAsync(account.AccountId, cancellationToken);
+				if (lawyer == null)
+				{
+					return false; // Lawyer not found
+				}
+				lawyer.AccountStatus = Status.INACTIVE.ToString(); // Chuyển trạng thái sang INACTIVE
+				_context.Accounts.Update(lawyer);
+				await _context.SaveChangesAsync(cancellationToken);
+				return true; // Lawyer deleted successfully
+			}
+			catch (Exception)
+			{
+
+				return false; // Error occurred while deleting lawyer
+			}
         }
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
@@ -191,27 +242,55 @@ namespace AccountService.Infrastructure.Write.Repository
         }
 
         //Service methods
-        public async Task<Service> AddServiceAsync(Service service)
+        public async Task<bool> AddServiceAsync(Service service)
         {
-            _context.Services.Add(service);
-            await _context.SaveChangesAsync();
-            return service;
+			try
+			{
+				_context.Services.Add(service);
+				await _context.SaveChangesAsync();
+				return true; 
+			}
+			catch (Exception)
+			{
+
+				return false;
+			}
+           
         }
 
-        public async Task UpdateServiceAsync(Service service)
+        public async Task<bool> UpdateServiceAsync(Service service)
         {
-            _context.Services.Update(service);
-            await _context.SaveChangesAsync();
+			try
+			{
+				_context.Services.Update(service);
+				await _context.SaveChangesAsync();
+				return true;
+			}
+			catch (Exception)
+			{
+
+				return false;
+			}
         }
 
-        public async Task DeleteServiceAsync(Guid serviceId)
+        public async Task<bool> DeleteServiceAsync(Guid serviceId)
         {
-            var entity = await _context.Services.FirstOrDefaultAsync(x => x.ServiceId == serviceId);
-            if (entity != null)
-            {
-				entity.Status = ServiceStatus.Inactive.ToString(); // Chuyển trạng thái sang Inactive
-                await _context.SaveChangesAsync();
-            }
+			try
+			{
+				var entity = await _context.Services.FirstOrDefaultAsync(x => x.ServiceId == serviceId);
+				if (entity != null)
+				{
+					entity.Status = ServiceStatus.Inactive.ToString(); // Chuyển trạng thái sang Inactive
+					await _context.SaveChangesAsync();
+					return true; // Xóa thành công
+				}
+				return false; // Không tìm thấy dịch vụ với ID này
+			}
+			catch (Exception)
+			{
+
+				return false; // Lỗi xảy ra trong quá trình xóa
+			}
         }
 
         public async Task<Service> GetServiceByIdAsync(Guid serviceId)
@@ -225,13 +304,14 @@ namespace AccountService.Infrastructure.Write.Repository
                 .FirstOrDefaultAsync(a => a.AccountId == userId, cancellationToken);
         }
 
-		public async Task BanUserAccount(Guid accountId)
+		public async Task<bool> BanUserAccount(Guid accountId)
 		{
 			var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);
 			if (account != null)
 			{
 				account.AccountStatus = Status.INACTIVE.ToString(); // Cập nhật trạng thái tài khoản thành BANNED
 				await _context.SaveChangesAsync();
+				return true; // Trả về true nếu cập nhật thành công
 			}
 			else
 			{

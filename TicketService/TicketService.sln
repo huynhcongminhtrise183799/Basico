@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketService.API", "TicketService.API\TicketService.API.csproj", "{1412A676-6C2C-4F27-A5BC-1C9E299A3D72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketService.API", "TicketService.API\TicketService.API.csproj", "{1412A676-6C2C-4F27-A5BC-1C9E299A3D72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketService.Application", "TicketService.Application\TicketService.Application.csproj", "{D73F5A11-B4DE-488C-9FFD-D92C09B03224}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketService.Application", "TicketService.Application\TicketService.Application.csproj", "{D73F5A11-B4DE-488C-9FFD-D92C09B03224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketService.Domain", "TicketService.Domain\TicketService.Domain.csproj", "{C4E99540-F43A-4C95-8B6D-E442307A91D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketService.Domain", "TicketService.Domain\TicketService.Domain.csproj", "{C4E99540-F43A-4C95-8B6D-E442307A91D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketService.Infrastructure.Write", "TicketService.Infrastructure.Write\TicketService.Infrastructure.Write.csproj", "{82E69D62-7672-43CD-B01F-4776D7AA77A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketService.Infrastructure.Write", "TicketService.Infrastructure.Write\TicketService.Infrastructure.Write.csproj", "{82E69D62-7672-43CD-B01F-4776D7AA77A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketService.Infrastructure.Read", "TicketService.Infrastructure.Read\TicketService.Infrastructure.Read.csproj", "{A48C37A1-963D-44AD-B658-AF2C4CC0CFB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketService.Infrastructure.Read", "TicketService.Infrastructure.Read\TicketService.Infrastructure.Read.csproj", "{A48C37A1-963D-44AD-B658-AF2C4CC0CFB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "..\Contracts\Contracts\Contracts.csproj", "{DFE9835D-BFDE-0D0C-75EF-CA5F0CBE0DAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "..\Contracts\Contracts\Contracts.csproj", "{A64F75AF-A145-426C-89AA-F2670792A40A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{A48C37A1-963D-44AD-B658-AF2C4CC0CFB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A48C37A1-963D-44AD-B658-AF2C4CC0CFB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A48C37A1-963D-44AD-B658-AF2C4CC0CFB6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DFE9835D-BFDE-0D0C-75EF-CA5F0CBE0DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DFE9835D-BFDE-0D0C-75EF-CA5F0CBE0DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DFE9835D-BFDE-0D0C-75EF-CA5F0CBE0DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DFE9835D-BFDE-0D0C-75EF-CA5F0CBE0DAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A64F75AF-A145-426C-89AA-F2670792A40A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A64F75AF-A145-426C-89AA-F2670792A40A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A64F75AF-A145-426C-89AA-F2670792A40A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A64F75AF-A145-426C-89AA-F2670792A40A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

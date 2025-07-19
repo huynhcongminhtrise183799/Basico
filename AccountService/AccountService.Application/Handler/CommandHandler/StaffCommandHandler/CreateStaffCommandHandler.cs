@@ -35,8 +35,12 @@ namespace AccountService.Application.Handler.CommandHandler.StaffHandler
                 AccountUsername = request.Username,
                 AccountImage = request.ImageUrl,
 			};
-            await _repoWrite.AddStaff(staff);
-			await _publishEndpoint.Publish(
+           var result =  await _repoWrite.AddStaff(staff);
+			if (!result)
+            {
+                return Guid.Empty;
+			}
+				await _publishEndpoint.Publish(
 	                 new StaffCreatedEvent(staff.AccountId, staff.AccountFullName, staff.AccountEmail, staff.AccountPassword, staff.AccountUsername, staff.AccountGender, staff.AccountImage));
 			return staff.AccountId;
         }

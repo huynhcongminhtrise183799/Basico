@@ -73,6 +73,7 @@ namespace FormService.API
                 x.AddConsumer<FormTemplateUpdatedConsumer>();
                 x.AddConsumer<FormTemplateDeletedConsumer>();
                 x.AddConsumer<CreateCustomerFormDataConsumer>();
+                x.AddConsumer<CustomerFormUpdatedConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host("localhost", "/", h =>
@@ -95,9 +96,9 @@ namespace FormService.API
             builder.Services.AddScoped<IFormTemplateRepositoryWrite, FormTemplateRepositoryWrite>();
             builder.Services.AddScoped<IFormTemplateRepositoryRead, FormTemplateRepositoryRead>();
             builder.Services.AddScoped<IFormDataRepositoryWrite, FormDataRepositoryWrite>();
-			builder.Services.AddScoped<IFormDataRepositoryRead, FormDataRepositoryRead>();
+            builder.Services.AddScoped<IFormDataRepositoryRead, FormDataRepositoryRead>();
 
-			builder.Services.AddCors(options =>
+            builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", policy =>
                 {
@@ -109,20 +110,20 @@ namespace FormService.API
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+            //if (app.Environment.IsDevelopment())
+            //{
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            //}
 
             app.UseHttpsRedirection();
             app.UseCors("AllowAll");
 
             app.UseAuthorization();
             app.UseCors(builder =>
-builder.WithOrigins("http://localhost:3000")
-       .AllowAnyHeader()
-       .AllowAnyMethod());
+builder.AllowAnyOrigin()
+ .AllowAnyHeader()
+ .AllowAnyMethod());
 
 
             app.MapControllers();

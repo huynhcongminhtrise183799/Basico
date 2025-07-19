@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AccountService.Application.Handler.CommandHandler.Service
 {
-    public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand>
+    public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand, bool>
     {
         private readonly IAccountRepositoryWrite _repository;
         private readonly IPublishEndpoint _publishEndpoint;
@@ -24,28 +24,30 @@ namespace AccountService.Application.Handler.CommandHandler.Service
             _publishEndpoint = publishEndpoint;
         }
 
-        public async Task<Unit> Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
         {
             var service = await _repository.GetServiceByIdAsync(request.ServiceId);
             if (service != null)
             {
                 service.ServiceName = request.ServiceName;
                 service.ServiceDescription = request.ServiceDescription;
-                await _repository.UpdateServiceAsync(service);
+                var result = await _repository.UpdateServiceAsync(service);
+				if (!result)
+				{
+					return false;
+				}
 
-                await _publishEndpoint.Publish(new ServiceUpdatedEvent
+				await _publishEndpoint.Publish(new ServiceUpdatedEvent
                 {
                     ServiceId = service.ServiceId,
                     ServiceName = service.ServiceName,
                     ServiceDescription = service.ServiceDescription
                 }, cancellationToken);
-            }
-            return Unit.Value;
+				return true;
+			}
+            return false;
         }
 
-        Task IRequestHandler<UpdateServiceCommand>.Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
-        {
-            return Handle(request, cancellationToken);
-        }
+       
     }
 }

@@ -30,7 +30,11 @@ namespace FormService.Application.Handler.CommandHandler
 				Status = CustomerFormStatus.USED.ToString()
 			};
 
-			await _repoWrite.UpdateAsync(customerForm);
+			var result = await _repoWrite.UpdateAsync(customerForm);
+			if (!result)
+			{
+				return false;
+			}
 			var @event = new CustomerFormUpdatedEvent
 			{
 				CustomerFormId = request.CustomerFormId,

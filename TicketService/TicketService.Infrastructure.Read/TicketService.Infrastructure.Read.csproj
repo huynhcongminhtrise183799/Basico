@@ -9,7 +9,7 @@
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\TicketService.Application\TicketService.Application.csproj" />
 	  <ProjectReference Include="..\TicketService.Domain\TicketService.Domain.csproj" />
-	  <ProjectReference Include="..\TicketService.Infrastructure.Write\TicketService.Infrastructure.Write.csproj" />
 	</ItemGroup>
 </Project>

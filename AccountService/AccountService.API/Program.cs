@@ -1,20 +1,5 @@
 ﻿using AccountService.API.Configuration;
 
-using AccountService.API.OptionsSetup;
-using AccountService.Application.Handler.CommandHandler;
-using AccountService.Application.Handler.QueryHandler;
-using AccountService.Application.IService;
-using AccountService.Domain.IRepositories;
-using AccountService.Infrastructure.Read;
-using AccountService.Infrastructure.Read.Repository;
-using AccountService.Infrastructure.Write;
-using AccountService.Infrastructure.Write.Authenticate;
-using AccountService.Infrastructure.Write.Repository;
-using MassTransit;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-
 namespace AccountService.API
 {
 	public class Program
@@ -38,20 +23,20 @@ namespace AccountService.API
   
             var app = builder.Build();
 
-			if (app.Environment.IsDevelopment())
-			{
+			//if (app.Environment.IsDevelopment())
+			//{
 				app.UseSwagger();
 				app.UseSwaggerUI();
-			}
+			//}
 
 			app.UseHttpsRedirection();
 
 			// Bắt buộc: Authentication phải đặt trước Authorization
 			app.UseAuthentication();
-            app.UseCors(builder =>
+            /*app.UseCors(builder =>
 builder.WithOrigins("http://localhost:3000")
        .AllowAnyHeader()
-       .AllowAnyMethod());
+       .AllowAnyMethod());*/
             app.UseCors("AllowAll");
             app.UseAuthorization();
 

@@ -34,8 +34,12 @@ namespace FormService.Application.Handler.CommandHandler
 				Price = request.Price,
 				Status = request.status
             };
-            await _formTemplateRepositoryWrite.UpdateFormTemplateAsync(template);
-            await _publishEndpoint.Publish(new FormTemplateUpdatedEvent
+            var result = await _formTemplateRepositoryWrite.UpdateFormTemplateAsync(template);
+			if (!result)
+			{
+				return null;
+			}
+			await _publishEndpoint.Publish(new FormTemplateUpdatedEvent
             {
                 FormTemplateId = template.FormTemplateId,
                 ServiceId = template.ServiceId,

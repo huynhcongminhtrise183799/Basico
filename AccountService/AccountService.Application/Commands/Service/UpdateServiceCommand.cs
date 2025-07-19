@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AccountService.Application.Commands.Service
 {
-    public class UpdateServiceCommand : IRequest
+    public class UpdateServiceCommand : IRequest<bool>
     {
         public Guid ServiceId { get; set; }
         public string ServiceName { get; set; }

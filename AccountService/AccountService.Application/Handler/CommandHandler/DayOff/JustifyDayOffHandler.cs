@@ -29,7 +29,8 @@ namespace AccountService.Application.Handler.CommandHandler.DayOff
 				ShiftId = x.ShiftId,
 				Status = x.Status
 			}).ToList();
-			await _repoWrite.UpdateAsync(specificList, request.lawyerIdScheduleId);
+			 var result = await _repoWrite.UpdateAsync(specificList, request.lawyerIdScheduleId);
+			if (!result) { return false; } // Update failed
 			var @event = new DayOffJustifiedEvent
 			{
 				requests = request.requests,

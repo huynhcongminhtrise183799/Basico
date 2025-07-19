@@ -69,14 +69,14 @@ namespace APIGateway
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+            //if (app.Environment.IsDevelopment())
+            //{
                 app.UseSwagger();
                 app.UseSwaggerForOcelotUI(opt =>
                 {
                     opt.PathToSwaggerGenerator = "/swagger/docs";
                 });
-            }
+            //}
             app.UseCors("AllowSpecificOrigin");
             app.UseAuthentication();
             app.UseAuthorization();

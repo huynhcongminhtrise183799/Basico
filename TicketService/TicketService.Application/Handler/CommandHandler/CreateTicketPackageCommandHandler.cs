@@ -33,9 +33,13 @@ namespace TicketService.Application.Handler.CommandHandler
                 Status = Status.ACTIVE.ToString()
             };
 
-            await _repo.AddAsync(ticketPackage);
+            var result = await _repo.AddAsync(ticketPackage);
+			if (!result)
+			{
+				return null; 
+			}
 
-            var response = new TicketPackageResponse
+			var response = new TicketPackageResponse
             {
                 TicketPackageId = ticketPackage.TicketPackageId,
                 TicketPackageName = ticketPackage.TicketPackageName,

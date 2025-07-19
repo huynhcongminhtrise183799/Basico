@@ -1,30 +1,37 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-
-# This stage is used to build the service project
+﻿# Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["FormService.API/FormService.API.csproj", "FormService.API/"]
-RUN dotnet restore "./FormService.API/FormService.API.csproj"
-COPY . .
-WORKDIR "/src/FormService.API"
-RUN dotnet build "./FormService.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./FormService.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# --- Copy csproj files (Contracts và các project khác) ---
+COPY Contracts/Contracts/Contracts.csproj Contracts/
+COPY FormService/FormService.API/FormService.API.csproj FormService.API/
+COPY FormService/FormService.Application/FormService.Application.csproj FormService.Application/
+COPY FormService/FormService.Domain/FormService.Domain.csproj FormService.Domain/
+COPY FormService/FormService.Infrastructure.Write/FormService.Infrastructure.Write.csproj FormService.Infrastructure.Write/
+COPY FormService/FormService.Infrastructure.Read/FormService.Infrastructure.Read.csproj FormService.Infrastructure.Read/
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
+# Restore dependencies
+RUN dotnet restore FormService.API/FormService.API.csproj
+
+# --- Copy toàn bộ source code ---
+COPY Contracts/ Contracts/
+COPY FormService/FormService.API/ FormService.API/
+COPY FormService/FormService.Application/ FormService.Application/
+COPY FormService/FormService.Domain/ FormService.Domain/
+COPY FormService/FormService.Infrastructure.Write/ FormService.Infrastructure.Write/
+COPY FormService/FormService.Infrastructure.Read/ FormService.Infrastructure.Read/
+
+
+WORKDIR /src/FormService.API
+
+# Build & publish
+RUN dotnet publish FormService.API.csproj -c Release -o /app/publish
+
+# Stage 2: Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
+
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 80
 ENTRYPOINT ["dotnet", "FormService.API.dll"]

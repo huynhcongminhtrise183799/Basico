@@ -106,19 +106,19 @@ namespace TicketService.API
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+            //if (app.Environment.IsDevelopment())
+            //{
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            //}
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
             app.UseCors(builder =>
-builder.WithOrigins("http://localhost:3000")
-       .AllowAnyHeader()
-       .AllowAnyMethod());
+      builder.AllowAnyOrigin()
+             .AllowAnyHeader()
+             .AllowAnyMethod());
 
 
             app.MapControllers();

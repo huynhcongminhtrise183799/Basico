@@ -1,30 +1,37 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-
-# This stage is used to build the service project
+﻿# Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["BookingService.API/BookingService.API.csproj", "BookingService.API/"]
-RUN dotnet restore "./BookingService.API/BookingService.API.csproj"
-COPY . .
-WORKDIR "/src/BookingService.API"
-RUN dotnet build "./BookingService.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./BookingService.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# --- Copy csproj files (Contracts và các project khác) ---
+COPY Contracts/Contracts/Contracts.csproj Contracts/
+COPY BookingService/BookingService.API/BookingService.API.csproj BookingService.API/
+COPY BookingService/BookingService.Application/BookingService.Application.csproj BookingService.Application/
+COPY BookingService/BookingService.Domain/BookingService.Domain.csproj BookingService.Domain/
+COPY BookingService/BookingService.Infrastructure.Write/BookingService.Infrastructure.Write.csproj BookingService.Infrastructure.Write/
+COPY BookingService/BookingService.Infrastructure.Read/BookingService.Infrastructure.Read.csproj BookingService.Infrastructure.Read/
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
+# Restore dependencies
+RUN dotnet restore BookingService.API/BookingService.API.csproj
+
+# --- Copy toàn bộ source code ---
+COPY Contracts/ Contracts/
+COPY BookingService/BookingService.API/ BookingService.API/
+COPY BookingService/BookingService.Application/ BookingService.Application/
+COPY BookingService/BookingService.Domain/ BookingService.Domain/
+COPY BookingService/BookingService.Infrastructure.Write/ BookingService.Infrastructure.Write/
+COPY BookingService/BookingService.Infrastructure.Read/ BookingService.Infrastructure.Read/
+
+
+WORKDIR /src/BookingService.API
+
+# Build & publish
+RUN dotnet publish BookingService.API.csproj -c Release -o /app/publish
+
+# Stage 2: Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
+
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 80
 ENTRYPOINT ["dotnet", "BookingService.API.dll"]

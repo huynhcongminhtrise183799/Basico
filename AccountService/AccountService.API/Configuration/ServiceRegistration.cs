@@ -1,5 +1,4 @@
-﻿
-using AccountService.API.OptionsSetup;
+﻿using AccountService.API.OptionsSetup;
 using AccountService.Application.Commands.AccountCommands;
 using AccountService.Application.Consumers.AccountConsumers;
 using AccountService.Application.Consumers.StaffConsumers;
@@ -8,12 +7,8 @@ using AccountService.Application.Handler.CommandHandler.ForgotPasswordCommandHan
 using AccountService.Application.Handler.CommandHandler.StaffHandler;
 using AccountService.Application.Handler.QueryHandler.AccountQueryHandler;
 using AccountService.Application.Handler.QueryHandler.StaffQueryHandler;
-using AccountService.Application.Commands;
 using AccountService.Application.Consumers;
 using AccountService.Application.Consumers.Lawyer;
-using AccountService.Application.Consumers.Service;
-using AccountService.Application.Handler.CommandHandler;
-using AccountService.Application.Handler.QueryHandler;
 using AccountService.Application.IService;
 using AccountService.Application.Settings;
 using AccountService.Domain.IRepositories;
@@ -23,16 +18,12 @@ using AccountService.Infrastructure.Write;
 using AccountService.Infrastructure.Write.Authenticate;
 using AccountService.Infrastructure.Write.Email;
 using AccountService.Infrastructure.Write.Repository;
-using Example;
 using MassTransit;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 using AccountService.Application.Message;
 using AccountService.Infrastructure.Write.Message;
 using AccountService.Application.Queries.Service;

@@ -17,9 +17,19 @@ namespace TicketService.Infrastructure.Write.Repository
             _context = context;
         }
 
-        public async Task AddAsync(Ticket ticket)
+        public async Task<bool> AddAsync(Ticket ticket)
         {
-            await _context.Tickets.AddAsync(ticket);
+            try
+            {
+				await _context.Tickets.AddAsync(ticket);
+                await _context.SaveChangesAsync();
+				return true;
+			}
+            catch (Exception)
+            {
+
+               return false;
+			}
         }
 
         public async Task<Ticket?> GetByIdAsync(Guid ticketId)
@@ -47,16 +57,27 @@ namespace TicketService.Infrastructure.Write.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task ReplyTicket(Ticket ticket)
+        public async Task<bool> ReplyTicket(Ticket ticket)
         {
-            var existingTicket = await _context.Tickets.FindAsync(ticket.TicketId);
-            if (existingTicket != null)
+            try
             {
-                existingTicket.StaffId = ticket.StaffId;
-                existingTicket.Content_Response = ticket.Content_Response;
-                existingTicket.Status = ticket.Status;
-                await _context.SaveChangesAsync();
-            }
+				var existingTicket = await _context.Tickets.FindAsync(ticket.TicketId);
+				if (existingTicket != null)
+				{
+					existingTicket.StaffId = ticket.StaffId;
+					existingTicket.Content_Response = ticket.Content_Response;
+					existingTicket.Status = ticket.Status;
+					await _context.SaveChangesAsync();
+					return true;
+				}
+                return false;
+
+			}
+            catch (Exception)
+            {
+
+                return false;
+			}
         }
     }
 }

@@ -157,7 +157,7 @@ namespace FormService.API.Controllers
             }
             var command = new DeleteFormTemplateCommand(Guid.Parse(id));
             var result = await _mediator.Send(command);
-            if (result == null)
+            if (!result)
             {
                 return NotFound(new
                 {

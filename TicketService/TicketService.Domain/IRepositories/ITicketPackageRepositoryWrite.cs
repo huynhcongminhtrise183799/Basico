@@ -9,9 +9,9 @@ namespace TicketService.Domain.IRepositories
 {
     public interface ITicketPackageRepositoryWrite
     {
-        Task AddAsync(TicketPackage ticketPackage);
-        Task UpdateAsync(TicketPackage ticketPackage);
-        Task DeleteAsync(Guid ticketPackageId);
+        Task<bool> AddAsync(TicketPackage ticketPackage);
+        Task<bool> UpdateAsync(TicketPackage ticketPackage);
+        Task<bool> DeleteAsync(Guid ticketPackageId);
 
     }
 }

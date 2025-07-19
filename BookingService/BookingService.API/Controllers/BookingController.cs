@@ -132,7 +132,7 @@ namespace BookingService.API.Controllers
 			var result = await _mediator.Send(command);
 			if (!result)
 			{
-				return NotFound("Booking could not be checked in.");
+				return BadRequest("Booking could not be checked in.");
 			}
 
 			return Ok(new
@@ -148,7 +148,7 @@ namespace BookingService.API.Controllers
 			var result = await _mediator.Send(command);
 			if (!result)
 			{
-				return NotFound("Booking could not be checked out.");
+				return BadRequest("Booking could not be checked out.");
 			}
 
 			return Ok(new

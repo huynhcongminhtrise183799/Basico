@@ -18,14 +18,14 @@ namespace AccountService.Domain.IRepositories
         Task<bool> ExistsByEmailAsync(string email);
         Task<bool> ExistsByUsernameAsync(string username);
         Task<Account?> GetAccountById(Guid accountId);
-        Task UpdateAccount(Account account);
-        Task BanUserAccount(Guid accountId);
+        Task<bool> UpdateAccount(Account account);
+        Task<bool> BanUserAccount(Guid accountId);
 
 		Task ActiveUserAccount(Guid accountId);
 
 
 		// Staff
-		Task AddStaff(Account staff);
+		Task<bool> AddStaff(Account staff);
         Task<bool> UpdateStaff(Account staff);
         Task<bool> DeleteStaff(Guid staffId);
         Task<Account?> GetStaffById(Guid staffId);
@@ -38,15 +38,15 @@ namespace AccountService.Domain.IRepositories
         Task<Guid?> GetAccountIdIfOtpValidAsync(string email, string otp);
 
         // Lawyer
-        Task AddLawyerAsync(Account account, CancellationToken cancellationToken);
+        Task<bool> AddLawyerAsync(Account account, CancellationToken cancellationToken);
         Task<Account?> GetLawyerByIdAsync(Guid id, CancellationToken cancellationToken);
-        Task UpdateLawyerAsync(Account account, CancellationToken cancellationToken);
-        Task DeleteLawyerAsync(Account account, CancellationToken cancellationToken);
+        Task<bool> UpdateLawyerAsync(Account account, CancellationToken cancellationToken);
+        Task<bool> DeleteLawyerAsync(Account account, CancellationToken cancellationToken);
 
         // Service
-        Task<Service> AddServiceAsync(Service service);
-        Task UpdateServiceAsync(Service service);
-        Task DeleteServiceAsync(Guid serviceId);
+        Task<bool> AddServiceAsync(Service service);
+        Task<bool> UpdateServiceAsync(Service service);
+        Task<bool> DeleteServiceAsync(Guid serviceId);
         Task<Service> GetServiceByIdAsync(Guid serviceId);
 
         // Get by UserId

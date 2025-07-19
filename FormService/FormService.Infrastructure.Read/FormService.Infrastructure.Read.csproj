@@ -9,6 +9,7 @@
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\FormService.Application\FormService.Application.csproj" />
 	  <ProjectReference Include="..\FormService.Domain\FormService.Domain.csproj" />
 	</ItemGroup>
 </Project>

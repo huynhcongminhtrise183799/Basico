@@ -65,11 +65,14 @@ namespace AccountService.Application.Handler.CommandHandler.Lawyer
 
 
 
-            await _accountRepository.AddLawyerAsync(account, cancellationToken);
-            await _accountRepository.SaveChangesAsync(cancellationToken);
-            await _lawyerSpecificService.AddAsync(draf);
+           var result_AddLawyer =  await _accountRepository.AddLawyerAsync(account, cancellationToken);
+           var result_AddLawyerService =  await _lawyerSpecificService.AddAsync(draf);
+			if (result_AddLawyer == null || result_AddLawyerService == null)
+			{
+				return Guid.Empty; // Failed to create lawyer
+			}
 
-            var @event = new LawyerCreatedEvent
+			var @event = new LawyerCreatedEvent
             {
                 AccountId = account.AccountId,
                 AccountUsername = request.Lawyer.AccountUsername,
