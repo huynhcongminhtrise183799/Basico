@@ -26,26 +26,23 @@ namespace OrderService.API.Controllers
 			return Ok(new { Url = paymentUrl });
 		}
 
-		[HttpGet("payment-callback")]
-		public async Task<IActionResult> PaymentCallback()
-		{
-			var response = _paymentService.PaymentExecute(Request.Query);
+        [HttpPost("payment-callback")]
+        public async Task<IActionResult> PaymentCallbackPost([FromBody] Dictionary<string, string> formData)
+        {
+            var collections = new QueryCollection(formData.ToDictionary(kv => kv.Key, kv => new StringValues(kv.Value)));
 
-			if (response.Success)
-			{
-				await _mediator.Send(new CreatePaymentCommand(response));
-                return Ok(response); // response là PaymentResponseModel
-			}
-			else
-			{
-				return BadRequest(new
-				{
-					message = "Payment fail"
-				}); // response là PaymentResponseModel
+            var response = _paymentService.PaymentExecute(collections);
+
+            if (response.Success)
+            {
+                await _mediator.Send(new CreatePaymentCommand(response));
+                return Ok(response);
             }
+            else
+            {
+                return BadRequest(new { message = "Payment fail" });
+            }
+        }
 
-			
-		}
-
-	}
+    }
 }

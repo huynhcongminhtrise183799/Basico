@@ -1384,7 +1384,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Payment/payment-callback",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "SwaggerKey": "orders"
     } //call-back-url
   ],
