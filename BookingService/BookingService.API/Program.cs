@@ -54,31 +54,31 @@ namespace BookingService.API
 
             builder.Services.AddMediatR(cfg =>
 			{
-				cfg.RegisterServicesFromAssembly(typeof(CreateBookingHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetFreeSlotsForLawyerHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(UpdateBookingHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(CancelBookingHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetFreeSlotsForUpdateHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(CreateFeedbackHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(UpdateFeedbackHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetAllFeedbackHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetDetailFeedbackHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetFeedbackByBookingIdHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreateBookingHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetFreeSlotsForLawyerHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(UpdateBookingHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CancelBookingHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetFreeSlotsForUpdateHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreateFeedbackHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(UpdateFeedbackHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllFeedbackHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetDetailFeedbackHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetFeedbackByBookingIdHandlerService).Assembly);
 
             });
 
 			builder.Services.AddMassTransit(x =>
 			{
-				x.AddConsumer<CreateBookingConsumer>();
-				x.AddConsumer<CancelBookingConsumer>();
-				x.AddConsumer<UpdateBookingConsumer>();
-				x.AddConsumer<CheckInBookingConsumer>();
-				x.AddConsumer<PaymentSuccessConsumer>();
-				x.AddConsumer<CheckOutBookingConsumer>();
-				x.AddConsumer<FeedbackCreatedConsumer>();
-				x.AddConsumer<FeedbackUpdatedConsumer>();
-				x.AddConsumer<BookingOverTimeStatusChangedConsumer>();
-				x.AddConsumer<BookingOverTimeInDateStatusChangedConsumer>();
+				x.AddConsumer<CreateBookingConsumerService>();
+				x.AddConsumer<CancelBookingConsumerService>();
+				x.AddConsumer<UpdateBookingConsumerService>();
+				x.AddConsumer<CheckInBookingConsumerService>();
+				x.AddConsumer<PaymentSuccessConsumerService>();
+				x.AddConsumer<CheckOutBookingConsumerService>();
+				x.AddConsumer<FeedbackCreatedConsumerService>();
+				x.AddConsumer<FeedbackUpdatedConsumerService>();
+				x.AddConsumer<BookingOverTimeStatusChangedConsumerService>();
+				x.AddConsumer<BookingOverTimeInDateStatusChangedConsumerService>();
                 x.UsingRabbitMq((context, cfg) =>
 				{
 					cfg.Host("localhost", "/", h =>

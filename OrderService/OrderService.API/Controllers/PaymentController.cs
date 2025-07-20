@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using OrderService.Application.Command;
 using OrderService.Application.DTOs.Vnpay;
 using OrderService.Application.IService;

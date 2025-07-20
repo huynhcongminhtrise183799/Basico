@@ -36,14 +36,14 @@ namespace OrderService.API
 			builder.Services.AddMediatR(cfg =>
 			{
 				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentCommand).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentCommandHandlerService).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentEvent).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentConsumer).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreatePaymentConsumerService).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommandHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetRevenueByDateQueryHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetRevenueByYearQueryHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetRevenueByMonthQueryHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommandHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetRevenueByDateQueryHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetRevenueByYearQueryHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetRevenueByMonthQueryHandlerService).Assembly);
 
 
 			});
@@ -51,12 +51,12 @@ namespace OrderService.API
 			// MassTransit
 			builder.Services.AddMassTransit(x =>
 			{
-				x.AddConsumers(typeof(CreatePaymentConsumer).Assembly);
-				x.AddConsumers(typeof(CreateOrderConsumer).Assembly);
-				x.AddConsumer<OrderCreatedEventConsumer>();
-				x.AddConsumer<UpdateOrderStatusConsumer>();
-				x.AddConsumer<OrderCancelledConsumer>();
-				x.AddConsumer<OrderOverTimeStatusChangedConsumer>();
+				x.AddConsumers(typeof(CreatePaymentConsumerService).Assembly);
+				x.AddConsumers(typeof(CreateOrderConsumerService).Assembly);
+				x.AddConsumer<OrderCreatedEventConsumerService>();
+				x.AddConsumer<UpdateOrderStatusConsumerService>();
+				x.AddConsumer<OrderCancelledConsumerService>();
+				x.AddConsumer<OrderOverTimeStatusChangedConsumerService>();
 
 				x.UsingRabbitMq((context, cfg) =>
 				{
@@ -91,7 +91,7 @@ namespace OrderService.API
             builder.Services.AddScoped<IOrderRepositoryRead, OrderRepositoryRead>();
 
             // MediatR
-            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateOrderCommandHandler>());
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateOrderCommandHandlerService>());
 
             // Register Repository (CQRS Write)
             builder.Services.AddScoped<IOrderRepositoryWrite, OrderRepositoryWrite>();

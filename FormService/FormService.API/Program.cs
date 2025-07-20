@@ -64,16 +64,16 @@ namespace FormService.API
                 options.SuppressModelStateInvalidFilter = true;
             });
             builder.Services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssemblyContaining<CreateFormTemplateCommandHandler>()
+            cfg.RegisterServicesFromAssemblyContaining<CreateFormTemplateCommandHandlerService>()
                 );
 
             builder.Services.AddMassTransit(x =>
             {
-                x.AddConsumer<FormTemplateCreatedConsumer>();
-                x.AddConsumer<FormTemplateUpdatedConsumer>();
-                x.AddConsumer<FormTemplateDeletedConsumer>();
-                x.AddConsumer<CreateCustomerFormDataConsumer>();
-                x.AddConsumer<CustomerFormUpdatedConsumer>();
+                x.AddConsumer<FormTemplateCreatedConsumerService>();
+                x.AddConsumer<FormTemplateUpdatedConsumerService>();
+                x.AddConsumer<FormTemplateDeletedConsumerService>();
+                x.AddConsumer<CreateCustomerFormDataConsumerService>();
+                x.AddConsumer<CustomerFormUpdatedConsumerService>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host("localhost", "/", h =>
