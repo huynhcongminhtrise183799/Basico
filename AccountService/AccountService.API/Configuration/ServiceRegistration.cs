@@ -67,25 +67,25 @@ namespace AccountService.API.Configuration
 			services.AddMediatR(cfg =>
 			{
 				cfg.RegisterServicesFromAssembly(typeof(GoogleLoginCommand).Assembly);
-                cfg.RegisterServicesFromAssembly(typeof(LoginUserCommandHandler).Assembly);
-                cfg.RegisterServicesFromAssembly(typeof(ProfileQueryHandler).Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(LoginUserCommandHandlerService).Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(ProfileQueryHandlerService).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(UpdateProfileCommand).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(CreateStaffCommandHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(UpdateStaffCommandHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(DeleteStaffCommandHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetAllStaffQueryHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetStaffByIdQueryHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetAllActiveStaffQueryHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(ResetPasswordCommandHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(VerifyOtpCommandHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(ForgotPasswordCommandHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreateStaffCommandHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(UpdateStaffCommandHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(DeleteStaffCommandHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllStaffQueryHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetStaffByIdQueryHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllActiveStaffQueryHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(ResetPasswordCommandHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(VerifyOtpCommandHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(ForgotPasswordCommandHandlerService).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetAllServiceByStatusQuery).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetLawyersByServiceIdQuery).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(RegisterAccountCommandHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetAllShiftHandler).Assembly);
-				cfg.RegisterServicesFromAssembly(typeof(GetAllAccountQueryHandler).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(RegisterAccountCommandHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllShiftHandlerService).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetAllAccountQueryHandlerService).Assembly);
 			});
-			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RegisterAccountCommandHandler>());
+			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RegisterAccountCommandHandlerService>());
 
 
 			// Behavior Options
@@ -121,27 +121,27 @@ namespace AccountService.API.Configuration
 			// MassTransit
 			builder.Services.AddMassTransit(x =>
 			{
-				x.AddConsumers(typeof(GoogleAccountCreatedConsumers).Assembly);
-				x.AddConsumer<AccountRegisteredEventConsumer>();
-				x.AddConsumer<UpdateProfileEventConsumer>();
-				x.AddConsumer<StaffCreatedEventConsumers>();
-				x.AddConsumer<StaffUpdatedEventConsumer>();
-				x.AddConsumer<StaffDeletedEventConsumer>();
-                x.AddConsumer<LawyerCreatedEventConsumer>();
-                x.AddConsumer<LawyerUpdatedEventConsumer>();
-                x.AddConsumer<LawyerDeletedEventConsumer>();
-				x.AddConsumer<CheckLawyerDayOffConsumer>();
-				x.AddConsumer<GetDetailBookingInformationConsumer>();
-				x.AddConsumer<UpdateAccountTicketRequestConsumer>();
-                x.AddConsumer<ValidatationRequestTicketConsumer>();
-				x.AddConsumer<DecreseTicketRequestConsumer>();
-				x.AddConsumer<BanAccountConsumer>();
-				x.AddConsumer<ActiveAccountConsumer>();
-				x.AddConsumer<DayOffCreatedConsumer>();
-				x.AddConsumer<DayOffJustifiedConsumer>();
-				x.AddConsumer<DayOffUpdatedConsumer>();
-				x.AddConsumer<DayOffDeletedConsumer>();
-				x.AddConsumer<BuyFormSuccessConsumer>();
+				x.AddConsumers(typeof(GoogleAccountCreatedConsumersService).Assembly);
+				x.AddConsumer<AccountRegisteredEventConsumerService>();
+				x.AddConsumer<UpdateProfileEventConsumerService>();
+				x.AddConsumer<StaffCreatedEventConsumersService>();
+				x.AddConsumer<StaffUpdatedEventConsumerService>();
+				x.AddConsumer<StaffDeletedEventConsumerService>();
+                x.AddConsumer<LawyerCreatedEventConsumerService>();
+                x.AddConsumer<LawyerUpdatedEventConsumerService>();
+                x.AddConsumer<LawyerDeletedEventConsumerService>();
+				x.AddConsumer<CheckLawyerDayOffConsumerService>();
+				x.AddConsumer<GetDetailBookingInformationConsumerService>();
+				x.AddConsumer<UpdateAccountTicketRequestConsumerService>();
+                x.AddConsumer<ValidatationRequestTicketConsumerService>();
+				x.AddConsumer<DecreseTicketRequestConsumerService>();
+				x.AddConsumer<BanAccountConsumerService>();
+				x.AddConsumer<ActiveAccountConsumerService>();
+				x.AddConsumer<DayOffCreatedConsumerService>();
+				x.AddConsumer<DayOffJustifiedConsumerService>();
+				x.AddConsumer<DayOffUpdatedConsumerService>();
+				x.AddConsumer<DayOffDeletedConsumerService>();
+				x.AddConsumer<BuyFormSuccessConsumerService>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {

@@ -72,7 +72,7 @@ namespace TicketService.API.Controllers
         [HttpGet("by-customer")]
         public async Task<IActionResult> GetByCustomerId([FromQuery] Guid userId)
         {
-            var tickets = await _mediator.Send(new GetTicketsByCustomerIdQuery { UserId = userId });
+            var tickets = await _mediator.Send(new GetTicketsByCustomerIdQueryService { UserId = userId });
             return Ok(tickets);
         }
     }

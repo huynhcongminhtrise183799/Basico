@@ -64,18 +64,18 @@ namespace TicketService.API
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateTicketPackageCommandHandler>());
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateTicketPackageCommandHandlerService>());
      
 
             builder.Services.AddMassTransit(x =>
             {
-                x.AddConsumer<TicketPackageCreatedConsumer>();
-                x.AddConsumer<TicketPackageUpdatedConsumer>();
-                x.AddConsumer<TicketPackageDeletedConsumer>();
-                x.AddConsumer<TicketCreatedConsumer>();
-                x.AddConsumer<TicketRepliedConsumer>();
-                x.AddConsumer<TicketDeletedConsumer>();
-                x.AddConsumer<GetRequestAmountConsumer>();
+                x.AddConsumer<TicketPackageCreatedConsumerService>();
+                x.AddConsumer<TicketPackageUpdatedConsumerService>();
+                x.AddConsumer<TicketPackageDeletedConsumerService>();
+                x.AddConsumer<TicketCreatedConsumerService>();
+                x.AddConsumer<TicketRepliedConsumerService>();
+                x.AddConsumer<TicketDeletedConsumerService>();
+                x.AddConsumer<GetRequestAmountConsumerService>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
