@@ -49,9 +49,10 @@ namespace BookingService.API
 			builder.Services.AddScoped<IFeedbackRepositoryRead , FeedbackRepositoryRead>();
 			builder.Services.AddScoped<IFeedbackRepositoryWrite , FeedbackRepositoryWrite>();
 			builder.Services.AddHostedService<BookingStatusBackgroundService>();
+            builder.Services.AddHostedService<AutoCompletedBookingBackgroundService>();
 
 
-			builder.Services.AddMediatR(cfg =>
+            builder.Services.AddMediatR(cfg =>
 			{
 				cfg.RegisterServicesFromAssembly(typeof(CreateBookingHandler).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(GetFreeSlotsForLawyerHandler).Assembly);
@@ -77,7 +78,8 @@ namespace BookingService.API
 				x.AddConsumer<FeedbackCreatedConsumer>();
 				x.AddConsumer<FeedbackUpdatedConsumer>();
 				x.AddConsumer<BookingOverTimeStatusChangedConsumer>();
-				x.UsingRabbitMq((context, cfg) =>
+				x.AddConsumer<BookingOverTimeInDateStatusChangedConsumer>();
+                x.UsingRabbitMq((context, cfg) =>
 				{
 					cfg.Host("localhost", "/", h =>
 					{

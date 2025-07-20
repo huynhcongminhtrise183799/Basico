@@ -156,6 +156,25 @@ namespace BookingService.Infrastructure.Read.Repository
                 .Where(b => b.LawyerId == id && b.Status.ToUpper() == status.ToUpper())
                 .ToListAsync();
         }
+
+        public async Task<List<Booking>?> GetBookingOverTimeByBookingDate(DateOnly bookingDate)
+        {
+            var now = TimeOnly.FromDateTime(DateTime.Now);
+
+            var bookings = await _context.Bookings
+                .Where(b => b.BookingDate == bookingDate && b.Status == BookingStatus.Paid.ToString())
+                .Include(b => b.BookingSlots)
+                .ThenInclude(bs => bs.Slot)
+                .ToListAsync();
+
+            var expiredBookings = bookings
+                .Where(b => b.BookingSlots.Any(bs => bs.Slot != null)
+                         && b.BookingSlots.Max(bs => bs.Slot.SlotEndTime) < now)
+                .ToList();
+
+            return expiredBookings;
+        }
+
     }
 
 }
