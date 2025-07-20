@@ -2,6 +2,7 @@
 using BookingService.Application.DTOs.Request;
 using BookingService.Application.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace BookingService.API.Controllers
         {
             _mediator = mediator;
         }
-
+        [Authorize(Roles = "USER")]
         [HttpPost("feedback")]
         public async Task<IActionResult> CreateFeedback([FromBody] CreateFeedbackRequest request)
         {
@@ -33,7 +34,7 @@ namespace BookingService.API.Controllers
             });
 
         }
-
+        [Authorize(Roles = "USER")]
         [HttpPut("feedback/{id}")]
         public async Task<IActionResult> UpdateFeedback(string id, [FromBody] UpdateFeedbackRequest request)
         {

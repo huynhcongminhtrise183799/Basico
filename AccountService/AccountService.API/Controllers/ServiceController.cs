@@ -2,6 +2,7 @@
 using AccountService.Application.Queries.Service;
 using Application.Services.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountService.API.Controllers
@@ -13,13 +14,14 @@ namespace AccountService.API.Controllers
         private readonly IMediator _mediator;
         public ServiceController(IMediator mediator) => _mediator = mediator;
 
+        [Authorize(Roles ="MANAGER")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateServiceCommand command)
         {
             var id = await _mediator.Send(command);
             return Ok(new { message = "Create Service successfully", id });
         }
-
+        [Authorize(Roles = "MANAGER")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateServiceCommand command)
         {
@@ -27,7 +29,7 @@ namespace AccountService.API.Controllers
             await _mediator.Send(command);
             return Ok(new { message = "Update Service successfully" });
         }
-
+        [Authorize(Roles = "MANAGER")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {

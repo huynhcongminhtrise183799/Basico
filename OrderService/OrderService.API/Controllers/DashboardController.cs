@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.Application.Queries;
@@ -16,8 +17,8 @@ namespace OrderService.API.Controllers
 		{
 			_mediator = mediator;
 		}
-
-		[HttpGet("revenue")]
+        [Authorize(Roles = "MANAGER")]
+        [HttpGet("revenue")]
 		public async Task<IActionResult> GetRevenue([FromQuery] string startDate, [FromQuery] string endDate, [FromQuery] string groupBy)
 		{
 			switch (groupBy)

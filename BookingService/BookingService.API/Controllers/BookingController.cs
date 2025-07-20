@@ -3,6 +3,7 @@ using BookingService.Application.DTOs.Request;
 using BookingService.Application.Handler.CommandHandler;
 using BookingService.Application.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,8 +19,8 @@ namespace BookingService.API.Controllers
 		{
 			_mediator = mediator;
 		}
-
-		[HttpPost]
+        [Authorize(Roles = "USER")]
+        [HttpPost]
 		[SwaggerOperation(Summary = "Tạo booking")]
 		public async Task<IActionResult> CreateBooking([FromBody] CreateBookingDTO request)
 		{
@@ -33,7 +34,8 @@ namespace BookingService.API.Controllers
 
 			return Ok(result);
 		}
-		[HttpPut("{bookingId}")]
+        [Authorize(Roles = "USER")]
+        [HttpPut("{bookingId}")]
 		[SwaggerOperation(Summary = "Update booking")]
 		public async Task<IActionResult> UpdateBooking(Guid bookingId,[FromBody] UpdateBookingDTO request)
 		{
@@ -47,7 +49,8 @@ namespace BookingService.API.Controllers
 
 			return Ok(result);
 		}
-		[HttpDelete("{bookingId}")]
+        [Authorize(Roles = "USER")]
+        [HttpDelete("{bookingId}")]
 		[SwaggerOperation(Summary = "Cancel booking")]
 		public async Task<IActionResult> DeleteBooking(Guid bookingId)
 		{
@@ -84,8 +87,8 @@ namespace BookingService.API.Controllers
 			return Ok(result);
 		}
 
-
-		[HttpGet("lawyer/{lawyerId}")]
+        [Authorize(Roles = "LAWYER")]
+        [HttpGet("lawyer/{lawyerId}")]
 		[SwaggerOperation(Summary = "Lấy ra những booking của lawyer theo ngày và status " +
 			"1. Paid" +
 			"2. CheckedIn" +
@@ -97,7 +100,7 @@ namespace BookingService.API.Controllers
 			return Ok(result);
 		}
 
-
+        [Authorize(Roles = "LAWYER")]
         [HttpGet("lawyer-all/{lawyerId}")]
         [SwaggerOperation(Summary = "Lấy ra những booking của lawyer và status " +
             "1. Paid" +
@@ -110,7 +113,7 @@ namespace BookingService.API.Controllers
             return Ok(result);
         }
 
-
+        [Authorize(Roles = "STAFF")]
         [HttpGet("staff")]
 		[SwaggerOperation(Summary = "Lấy tất cả booking theo ngày và status" +
 			"1. Paid" +
@@ -123,8 +126,8 @@ namespace BookingService.API.Controllers
 			var result = await _mediator.Send(query);
 			return Ok(result);
 		}
-
-		[HttpPut("check-in/{bookingId}")]
+        [Authorize(Roles = "STAFF")]
+        [HttpPut("check-in/{bookingId}")]
 		[SwaggerOperation(Summary = "Check in booking")]
 		public async Task<IActionResult> CheckInBooking(Guid bookingId)
 		{
@@ -140,7 +143,8 @@ namespace BookingService.API.Controllers
 				message = "Booking checked in successfully."
 			});
 		}
-		[HttpPut("check-out/{bookingId}")]
+        [Authorize(Roles = "STAFF")]
+        [HttpPut("check-out/{bookingId}")]
 		[SwaggerOperation(Summary = "Check out booking")]
 		public async Task<IActionResult> CheckOutBooking(Guid bookingId)
 		{
