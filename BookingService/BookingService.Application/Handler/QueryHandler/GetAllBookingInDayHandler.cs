@@ -66,7 +66,7 @@ namespace BookingService.Application.Handler.QueryHandler
 				}
 				return bookingDetailResponses;
 			}
-			return null;
+			return bookingDetailResponses;
 		}
 	}
 }

@@ -10,8 +10,9 @@ namespace AccountService.Domain.Entity
 	{
 		WAITING,
 		APPROVED,
-		REJECTED
-	}
+		REJECTED,
+        CANCELLED
+    }
 	public class SpecificLawyerDayOffSchedule
 	{
 		public Guid LawyerDayOffScheduleId { get; set; }
