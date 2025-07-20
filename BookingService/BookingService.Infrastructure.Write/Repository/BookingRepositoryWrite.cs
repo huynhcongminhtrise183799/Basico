@@ -30,7 +30,25 @@ namespace BookingService.Infrastructure.Write.Repository
 			return true;
 		}
 
-		public async Task<bool> CreateBookingAsync(Booking booking)
+        public async Task CompletedBookingStatus(List<Guid>? bookingIds)
+        {
+            if (bookingIds == null || bookingIds.Count == 0)
+                return;
+
+            var bookings = await _context.Bookings
+                .Where(b => bookingIds.Contains(b.BookingId))
+                .ToListAsync();
+
+            foreach (var booking in bookings)
+            {
+                booking.Status = BookingStatus.Completed.ToString();
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<bool> CreateBookingAsync(Booking booking)
 		{
 			try
 			{

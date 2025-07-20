@@ -22,5 +22,7 @@ namespace BookingService.Domain.IRepository
 		Task<bool> UpdateStatusBookingToCompleted(Guid? bookingId);
 
 		Task<List<Booking>> GetBookingOverTimeAsync();
+
+		Task CompletedBookingStatus(List<Guid>? bookingId);
 	}
 }

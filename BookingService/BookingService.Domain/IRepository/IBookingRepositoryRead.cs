@@ -36,5 +36,7 @@ namespace BookingService.Domain.IRepository
 
 		Task UpdateStatusBookingToCompleted(Guid? bookingId);
 
-	}
+		Task<List<Booking>?> GetBookingOverTimeByBookingDate(DateOnly bookingDate);
+
+    }
 }
