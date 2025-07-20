@@ -3,6 +3,7 @@ using AccountService.Application.DTOs.LawyerDTO;
 using AccountService.Application.Queries.Lawyer;
 using AccountService.Domain.Entity;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountService.API.Controllers
@@ -16,8 +17,8 @@ namespace AccountService.API.Controllers
 		{
 			_mediator = mediator;
 		}
-
-		[HttpPost]
+        [Authorize(Roles = "MANAGER")]
+        [HttpPost]
 		public async Task<IActionResult> CreateLawyer([FromBody] CreateLawyerDto dto)
 		{
 			if (!ModelState.IsValid)
@@ -37,8 +38,8 @@ namespace AccountService.API.Controllers
 
 			return Ok(new { Message = "Create Successfully !", Id = id });
 		}
-
-		[HttpPut("{id}")]
+        [Authorize(Roles = "MANAGER")]
+        [HttpPut("{id}")]
 		public async Task<IActionResult> UpdateLawyer(Guid id, [FromBody] UpdateLawyerDto dto)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -48,8 +49,8 @@ namespace AccountService.API.Controllers
 			await _mediator.Send(command);
 			return Ok(new { Message = "Update Successfully !!" });
 		}
-
-		[HttpDelete("{id}")]
+        [Authorize(Roles = "MANAGER")]
+        [HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteLawyer(Guid id)
 		{
 			var command = new DeleteLawyerCommand(id);

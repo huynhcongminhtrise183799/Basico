@@ -5,6 +5,7 @@ using AccountService.Application.DTOs.Request;
 using AccountService.Application.Queries;
 using AccountService.Application.Queries.StaffQuery;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Claims;
@@ -22,7 +23,7 @@ namespace AccountService.API.Controllers
         {
             _mediator = mediator;
         }
-
+        [Authorize(Roles = "MANAGER")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] StaffCreateRequest request)
         {
@@ -30,7 +31,8 @@ namespace AccountService.API.Controllers
             var staffId = await _mediator.Send(command);
             return Ok(new { StaffId = staffId });
         }
-		[HttpPut]
+        [Authorize(Roles = "MANAGER")]
+        [HttpPut]
 		public async Task<IActionResult> Update([FromBody] StaffUpdateRequest request)
 		{
 			var command = new UpdateStaffCommand(request.StaffId, request.FullName, request.Gender, request.ImageUrl);
@@ -39,8 +41,8 @@ namespace AccountService.API.Controllers
 			return Ok(new { message = "Update successful" });
 		}
 
-
-		[HttpDelete("{id}")]
+        [Authorize(Roles = "MANAGER")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var command = new DeleteStaffCommand(id);

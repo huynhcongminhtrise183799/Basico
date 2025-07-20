@@ -1,5 +1,6 @@
 ﻿using AccountService.Application.Queries.Dashboard;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,8 @@ namespace AccountService.API.Controllers
 		{
 			_mediator = mediator;
 		}
-
-		[HttpGet("account")]
+        [Authorize(Roles = "MANAGER")]
+        [HttpGet("account")]
 		public async Task<IActionResult> GetAccountDashboard()
 		{
 			var query = new GetAccountDashboardQuery();

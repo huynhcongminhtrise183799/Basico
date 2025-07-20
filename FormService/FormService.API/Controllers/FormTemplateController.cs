@@ -2,6 +2,7 @@
 using FormService.Application.DTOs.Request;
 using FormService.Application.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -17,7 +18,7 @@ namespace FormService.API.Controllers
         {
             _mediator = mediator;
         }
-
+        [Authorize(Roles = "MANAGER")]
         [HttpPost("template")]
         public async Task<IActionResult> CreateFormTemplate([FromBody] CreateFormTemplateRequest request)
         {
@@ -95,6 +96,7 @@ namespace FormService.API.Controllers
             }
             return Ok(result);
         }
+        [Authorize(Roles = "MANAGER")]
         [HttpPut("template/{id}")]
         [SwaggerOperation(
     Summary = "Update template"
@@ -140,7 +142,7 @@ namespace FormService.API.Controllers
             }
             return Ok(result);
         }
-        
+        [Authorize(Roles = "MANAGER")]
         [HttpDelete("template/{id}")]
         [SwaggerOperation(
     Summary = "Xóa template"
