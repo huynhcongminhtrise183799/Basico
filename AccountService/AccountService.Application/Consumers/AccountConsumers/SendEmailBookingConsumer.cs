@@ -15,10 +15,17 @@ namespace AccountService.Application.Consumers.AccountConsumers
         private readonly IEmailService _emailService;
         private readonly IAccountRepositoryRead _accountRepositoryRead;
 
+        public SendEmailBookingConsumer(IEmailService emailService, IAccountRepositoryRead accountRepositoryRead)
+        {
+            _emailService = emailService;
+            _accountRepositoryRead = accountRepositoryRead;
+        }
+
         public async Task Consume(ConsumeContext<SendEmailBookingEvent> context)
         {
             var message = context.Message;
-            var account = await _accountRepositoryRead.GetAccountById(message.AccountId.Value);
+            var accountId = message.AccountId.Value;
+            var account = await _accountRepositoryRead.GetAccountById(accountId);
 
             var emailContent = $"success";
 
