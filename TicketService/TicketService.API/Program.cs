@@ -20,6 +20,16 @@ namespace TicketService.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -111,9 +121,10 @@ namespace TicketService.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            //app.UseHttpsRedirection();
+            app.UseCors("AllowAll");
 
-            app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
